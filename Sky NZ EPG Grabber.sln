@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ClassLibrary5", "ClassLibrary5\ClassLibrary5.vbproj", "{4CE62C29-4290-42FA-90F8-0950A805273E}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SkyNZGrabber", "ClassLibrary5\SkyNZGrabber.vbproj", "{4CE62C29-4290-42FA-90F8-0950A805273E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

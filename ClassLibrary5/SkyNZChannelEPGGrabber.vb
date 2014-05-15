@@ -11,7 +11,7 @@ Imports System.Collections.Specialized
 Imports SetupTv
 Imports TvControl
 Imports TvLibrary.Log
-Public Class Sky_UkGrabber
+Public Class Sky_NZGrabber
 
     Implements ITvServerPlugin
     Dim settings As Settings
@@ -62,7 +62,7 @@ Public Class Sky_UkGrabber
                             End Select
                         End If
                     End If
-                    End If
+                End If
             End If
         End If
 
@@ -82,7 +82,7 @@ Public Class Sky_UkGrabber
 
     Public ReadOnly Property Name As String Implements TvEngine.ITvServerPlugin.Name
         Get
-            Return "Sky UK Grabber"
+            Return "Sky NZ Grabber"
         End Get
     End Property
 
@@ -168,7 +168,7 @@ Public Class Settings
     End Property
     Public Property frequency() As Integer
         Get
-            Return Convert.ToInt32(GetSkySetting("frequency", 11778000))
+            Return Convert.ToInt32(GetSkySetting("frequency", 12519000))
         End Get
         Set(ByVal value As Integer)
             UpdateSetting("frequency", value.ToString)
@@ -176,7 +176,7 @@ Public Class Settings
     End Property
     Public Property SymbolRate() As Integer
         Get
-            Return Convert.ToInt32(GetSkySetting("SymbolRate", 27500))
+            Return Convert.ToInt32(GetSkySetting("SymbolRate", 22500))
         End Get
         Set(ByVal value As Integer)
             UpdateSetting("SymbolRate", value.ToString)
@@ -184,7 +184,7 @@ Public Class Settings
     End Property
     Public Property NID() As Integer
         Get
-            Return Convert.ToInt32(GetSkySetting("NID", 2))
+            Return Convert.ToInt32(GetSkySetting("NID", &HA9))
         End Get
         Set(ByVal value As Integer)
             UpdateSetting("NID", value.ToString)
@@ -200,7 +200,7 @@ Public Class Settings
     End Property
     Public Property ServiceID() As Integer
         Get
-            Return Convert.ToInt32(GetSkySetting("ServiceID", 4152))
+            Return Convert.ToInt32(GetSkySetting("ServiceID", 9003))
         End Get
         Set(ByVal value As Integer)
             UpdateSetting("ServiceID", value.ToString)
@@ -208,7 +208,7 @@ Public Class Settings
     End Property
     Public Property TransportID() As Integer
         Get
-            Return Convert.ToInt32(GetSkySetting("TransportID", 2004))
+            Return Convert.ToInt32(GetSkySetting("TransportID", 3))
         End Get
         Set(ByVal value As Integer)
             UpdateSetting("TransportID", value.ToString)
@@ -1832,9 +1832,9 @@ exitsub:
         Dim Channel As TvDatabase.Channel
         DVBSChannel = New DVBSChannel()
 
-        Dim channelss As List(Of TvDatabase.Channel) = _layer.GetChannelsByName("Sky UK Grabber")
+        Dim channelss As List(Of TvDatabase.Channel) = _layer.GetChannelsByName("Sky NZ Grabber")
         If channelss.Count = 0 Then
-            Channel = _layer.AddNewChannel("Sky UK Grabber")
+            Channel = _layer.AddNewChannel("Sky NZ Grabber", 10000)
             Channel.VisibleInGuide = False
             Channel.SortOrder = 10000
             Channel.IsRadio = True
@@ -1849,7 +1849,7 @@ exitsub:
             DVBSChannel.IsTv = False
             DVBSChannel.LogicalChannelNumber = 10000
             DVBSChannel.ModulationType = CType(Settings.modulation - 1, DirectShowLib.BDA.ModulationType)
-            DVBSChannel.Name = "Sky UK Grabber"
+            DVBSChannel.Name = "Sky NZ Grabber"
             DVBSChannel.NetworkId = Settings.NID
             DVBSChannel.Pilot = -1
             DVBSChannel.PmtPid = 0
@@ -1874,7 +1874,7 @@ exitsub:
                 End If
             Next
             _layer.AddChannelToRadioGroup(Channel, TvConstants.RadioGroupNames.AllChannels)
-            RaiseEvent OnMessage("Sky UK Grabber channel added to database", False)
+            RaiseEvent OnMessage("Sky NZ Grabber channel added to database", False)
         Else
             Channel = channelss(0)
             '  Dim num As Integer = Settings.CardToUseIndex
