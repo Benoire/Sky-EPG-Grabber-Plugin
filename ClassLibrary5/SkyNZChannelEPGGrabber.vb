@@ -1,4 +1,6 @@
-﻿Imports Custom_Data_Grabber
+﻿Imports DirectShowLib.BDA
+Imports Microsoft.VisualBasic.CompilerServices
+Imports Custom_Data_Grabber
 Imports TvDatabase
 Imports TvLibrary.Channels
 Imports TvLibrary.Epg
@@ -135,8 +137,7 @@ Public Class Settings
         FireEvent = True
     End Sub
     Function GetSkySetting(ByVal _Setting As String, ByVal defaultvalue As Object) As String
-        Dim str As String = layer.GetSetting("OTVC_" + _Setting, defaultvalue.ToString()).Value
-        Return str
+        Return layer.GetSetting("OTVC_" + _Setting, defaultvalue.ToString()).Value
     End Function
     Sub UpdateSetting(ByVal _Setting As String, ByVal value As String)
         Dim setting As Setting = layer.GetSetting("OTVC_" + _Setting, "0")
@@ -200,7 +201,7 @@ Public Class Settings
     End Property
     Public Property ServiceID() As Integer
         Get
-            Return Convert.ToInt32(GetSkySetting("ServiceID", 9003))
+            Return Convert.ToInt32(GetSkySetting("ServiceID", 330))
         End Get
         Set(ByVal value As Integer)
             UpdateSetting("ServiceID", value.ToString)
@@ -274,7 +275,7 @@ Public Class Settings
         End Set
     End Property
     Public Property Wed() As Boolean
-         Get
+        Get
             Return Convert.ToBoolean(GetSkySetting("Wed", True))
         End Get
         Set(ByVal value As Boolean)
@@ -532,277 +533,276 @@ Public Class Settings
 
 
     Public Sub New()
-        Themes.Add(&H0, "No Category")
-        Themes.Add(&H1, "")
-        Themes.Add(&H2, "")
-        Themes.Add(&H3, "")
-        Themes.Add(&H4, "")
-        Themes.Add(&H5, "")
-        Themes.Add(&H6, "")
-        Themes.Add(&H7, "")
-        Themes.Add(&H8, "")
-        Themes.Add(&H9, "")
-        Themes.Add(&HA, "")
-        Themes.Add(&HB, "")
-        Themes.Add(&HC, "")
-        Themes.Add(&HD, "")
-        Themes.Add(&HE, "")
-        Themes.Add(&HF, "")
-        Themes.Add(&H10, "")
-        Themes.Add(&H11, "")
-        Themes.Add(&H12, "")
-        Themes.Add(&H13, "")
-        Themes.Add(&H14, "")
-        Themes.Add(&H15, "")
-        Themes.Add(&H16, "")
-        Themes.Add(&H17, "")
-        Themes.Add(&H18, "")
-        Themes.Add(&H19, "")
-        Themes.Add(&H1A, "")
-        Themes.Add(&H1B, "")
-        Themes.Add(&H1C, "")
-        Themes.Add(&H1D, "")
-        Themes.Add(&H1E, "")
-        Themes.Add(&H1F, "")
-        Themes.Add(&H20, "Specialist - Undefined")
-        Themes.Add(&H21, "Specialist - Adult")
-        Themes.Add(&H22, "Specialist - Events")
-        Themes.Add(&H23, "Specialist - Shopping")
-        Themes.Add(&H24, "Specialist - Gaming")
-        Themes.Add(&H25, "")
-        Themes.Add(&H26, "")
-        Themes.Add(&H27, "")
-        Themes.Add(&H28, "")
-        Themes.Add(&H29, "")
-        Themes.Add(&H2A, "")
-        Themes.Add(&H2B, "")
-        Themes.Add(&H2C, "")
-        Themes.Add(&H2D, "")
-        Themes.Add(&H2E, "")
-        Themes.Add(&H2F, "")
-        Themes.Add(&H30, "")
-        Themes.Add(&H31, "")
-        Themes.Add(&H32, "")
-        Themes.Add(&H33, "")
-        Themes.Add(&H34, "")
-        Themes.Add(&H35, "")
-        Themes.Add(&H36, "")
-        Themes.Add(&H37, "")
-        Themes.Add(&H38, "")
-        Themes.Add(&H39, "")
-        Themes.Add(&H3A, "")
-        Themes.Add(&H3B, "")
-        Themes.Add(&H3C, "")
-        Themes.Add(&H3D, "")
-        Themes.Add(&H3E, "")
-        Themes.Add(&H3F, "")
-        Themes.Add(&H40, "Children - Undefined")
-        Themes.Add(&H41, "Children - Cartoons")
-        Themes.Add(&H42, "Children - Comedy")
-        Themes.Add(&H43, "Children - Drama")
-        Themes.Add(&H44, "Children - Educational")
-        Themes.Add(&H45, "Children - Under 5")
-        Themes.Add(&H46, "Children - Factual")
-        Themes.Add(&H47, "Children - Magazine")
-        Themes.Add(&H48, "Children - Games Shows")
-        Themes.Add(&H49, "Children - Games")
-        Themes.Add(&H4A, "")
-        Themes.Add(&H4B, "")
-        Themes.Add(&H4C, "")
-        Themes.Add(&H4D, "")
-        Themes.Add(&H4E, "")
-        Themes.Add(&H4F, "")
-        Themes.Add(&H50, "")
-        Themes.Add(&H51, "")
-        Themes.Add(&H52, "")
-        Themes.Add(&H53, "")
-        Themes.Add(&H54, "")
-        Themes.Add(&H55, "")
-        Themes.Add(&H56, "")
-        Themes.Add(&H57, "")
-        Themes.Add(&H58, "")
-        Themes.Add(&H59, "")
-        Themes.Add(&H5A, "")
-        Themes.Add(&H5B, "")
-        Themes.Add(&H5C, "")
-        Themes.Add(&H5D, "")
-        Themes.Add(&H5E, "")
-        Themes.Add(&H5F, "")
-        Themes.Add(&H60, "Entertainment - Undefined")
-        Themes.Add(&H61, "Entertainment - Action")
-        Themes.Add(&H62, "Entertainment - Comedy")
-        Themes.Add(&H63, "Entertainment - Detective")
-        Themes.Add(&H64, "Entertainment - Drama")
-        Themes.Add(&H65, "Entertainment - Game Show")
-        Themes.Add(&H66, "Entertainment - Sci-FI")
-        Themes.Add(&H67, "Entertainment - Soap")
-        Themes.Add(&H68, "Entertainment - Animation")
-        Themes.Add(&H69, "Entertainment - Chat Show")
-        Themes.Add(&H6A, "Entertainment - Cooking")
-        Themes.Add(&H6B, "Entertainment - Factual")
-        Themes.Add(&H6C, "Entertainment - Fashion")
-        Themes.Add(&H6D, "Entertainment - Gardening")
-        Themes.Add(&H6E, "Entertainment - Travel")
-        Themes.Add(&H6F, "Entertainment - Technology")
-        Themes.Add(&H70, "Entertainment - Arts")
-        Themes.Add(&H71, "Entertainment - Lifestyle")
-        Themes.Add(&H72, "Entertainment - Home")
-        Themes.Add(&H73, "Entertainment - Magazine")
-        Themes.Add(&H74, "Entertainment - Medical")
-        Themes.Add(&H75, "Entertainment - Review")
-        Themes.Add(&H76, "Entertainment - Antiques")
-        Themes.Add(&H77, "Entertainment - Motors")
-        Themes.Add(&H78, "Entertainment - Art&Lit")
-        Themes.Add(&H79, "Entertainment - Ballet")
-        Themes.Add(&H7A, "Entertainment - Opera")
-        Themes.Add(&H7B, "")
-        Themes.Add(&H7C, "")
-        Themes.Add(&H7D, "")
-        Themes.Add(&H7E, "")
-        Themes.Add(&H7F, "")
-        Themes.Add(&H80, "Music & Radio - Undefined")
-        Themes.Add(&H81, "Music & Radio - Classical")
-        Themes.Add(&H82, "Music & Radio - Folk and Country")
-        Themes.Add(&H83, "Music & Radio - National Music")
-        Themes.Add(&H84, "Music & Radio - Jazz")
-        Themes.Add(&H85, "Music & Radio - Opera")
-        Themes.Add(&H86, "Music & Radio - Rock&Pop")
-        Themes.Add(&H87, "Music & Radio - Alternative Music")
-        Themes.Add(&H88, "Music & Radio - Events")
-        Themes.Add(&H89, "Music & Radio - Club and Dance")
-        Themes.Add(&H8A, "Music & Radio - Hip Hop")
-        Themes.Add(&H8B, "Music & Radio - Soul/R&B")
-        Themes.Add(&H8C, "Music & Radio - Dance")
-        Themes.Add(&H8D, "Music & Radio - Ballet")
-        Themes.Add(&H8E, "")
-        Themes.Add(&H8F, "Music & Radio - Current Affairs")
-        Themes.Add(&H90, "Music & Radio - Features")
-        Themes.Add(&H91, "Music & Radio - Arts & Lit.")
-        Themes.Add(&H92, "Music & Radio - Factual")
-        Themes.Add(&H93, "")
-        Themes.Add(&H94, "")
-        Themes.Add(&H95, "Music & Radio - Lifestyle")
-        Themes.Add(&H96, "Music & Radio - News and Weather")
-        Themes.Add(&H97, "Music & Radio - Easy Listening")
-        Themes.Add(&H98, "Music & Radio - Discussion")
-        Themes.Add(&H99, "Music & Radio - Entertainment")
-        Themes.Add(&H9A, "Music & Radio - Religious")
-        Themes.Add(&H9B, "")
-        Themes.Add(&H9C, "")
-        Themes.Add(&H9D, "")
-        Themes.Add(&H9E, "")
-        Themes.Add(&H9F, "")
-        Themes.Add(&HA0, "News & Documentaries - Undefined")
-        Themes.Add(&HA1, "News & Documentaries - Business")
-        Themes.Add(&HA2, "News & Documentaries - World Cultures")
-        Themes.Add(&HA3, "News & Documentaries - Adventure")
-        Themes.Add(&HA4, "News & Documentaries - Biography")
-        Themes.Add(&HA5, "News & Documentaries - Educational")
-        Themes.Add(&HA6, "News & Documentaries - Feature")
-        Themes.Add(&HA7, "News & Documentaries - Politics")
-        Themes.Add(&HA8, "News & Documentaries - News")
-        Themes.Add(&HA9, "News & Documentaries - Nature")
-        Themes.Add(&HAA, "News & Documentaries - Religious")
-        Themes.Add(&HAB, "News & Documentaries - Science")
-        Themes.Add(&HAC, "News & Documentaries - Showbiz")
-        Themes.Add(&HAD, "News & Documentaries - War Documentary")
-        Themes.Add(&HAE, "News & Documentaries - Historical")
-        Themes.Add(&HAF, "News & Documentaries - Ancient")
-        Themes.Add(&HB0, "News & Documentaries - Transport")
-        Themes.Add(&HB1, "News & Documentaries - Docudrama")
-        Themes.Add(&HB2, "News & Documentaries - World Affairs")
-        Themes.Add(&HB3, "News & Documentaries - Features")
-        Themes.Add(&HB4, "News & Documentaries - Showbiz")
-        Themes.Add(&HB5, "News & Documentaries - Politics")
-        Themes.Add(&HB6, "News & Documentaries - Transport")
-        Themes.Add(&HB7, "News & Documentaries - World Affairs")
-        Themes.Add(&HB8, "")
-        Themes.Add(&HB9, "")
-        Themes.Add(&HBA, "")
-        Themes.Add(&HBB, "")
-        Themes.Add(&HBC, "")
-        Themes.Add(&HBD, "")
-        Themes.Add(&HBE, "")
-        Themes.Add(&HBF, "")
-        Themes.Add(&HC0, "Movie")
-        Themes.Add(&HC1, "Movie - Action")
-        Themes.Add(&HC2, "Movie - Animation")
-        Themes.Add(&HC3, "")
-        Themes.Add(&HC4, "Movie - Comedy")
-        Themes.Add(&HC5, "Movie - Family")
-        Themes.Add(&HC6, "Movie - Drama")
-        Themes.Add(&HC7, "")
-        Themes.Add(&HC8, "Movie - Sci-Fi")
-        Themes.Add(&HC9, "Movie - Thriller")
-        Themes.Add(&HCA, "Movie - Horror")
-        Themes.Add(&HCB, "Movie - Romance")
-        Themes.Add(&HCC, "Movie - Musical")
-        Themes.Add(&HCD, "Movie - Mystery")
-        Themes.Add(&HCE, "Movie - Western")
-        Themes.Add(&HCF, "Movie - Factual")
-        Themes.Add(&HD0, "Movie - Fantasy")
-        Themes.Add(&HD1, "Movie - Erotic")
-        Themes.Add(&HD2, "Movie - Adventure")
-        Themes.Add(&HD3, "Movies - War")
-        Themes.Add(&HD4, "")
-        Themes.Add(&HD5, "")
-        Themes.Add(&HD6, "")
-        Themes.Add(&HD7, "")
-        Themes.Add(&HD8, "")
-        Themes.Add(&HD9, "")
-        Themes.Add(&HDA, "")
-        Themes.Add(&HDB, "")
-        Themes.Add(&HDC, "")
-        Themes.Add(&HDD, "")
-        Themes.Add(&HDE, "")
-        Themes.Add(&HDF, "")
-        Themes.Add(&HE0, "Sports - Undefined")
-        Themes.Add(&HE1, "Sports - American Football")
-        Themes.Add(&HE2, "Sports - Athletics")
-        Themes.Add(&HE3, "Sports - Baseball")
-        Themes.Add(&HE4, "Sports - Basketball")
-        Themes.Add(&HE5, "Sports - Boxing")
-        Themes.Add(&HE6, "Sports - Cricket")
-        Themes.Add(&HE7, "Sports - Fishing")
-        Themes.Add(&HE8, "Sports - Football")
-        Themes.Add(&HE9, "Sports - Golf")
-        Themes.Add(&HEA, "Sports - Ice Hockey")
-        Themes.Add(&HEB, "Sports - Motor Sport")
-        Themes.Add(&HEC, "Sports - Racing")
-        Themes.Add(&HED, "Sports - Rugby")
-        Themes.Add(&HEE, "Sports - Equestrian")
-        Themes.Add(&HEF, "Sports - Winter Sports")
-        Themes.Add(&HF0, "Sports - Snooker / Pool")
-        Themes.Add(&HF1, "Sports - Tennis")
-        Themes.Add(&HF2, "Sports - Wrestling")
-        Themes.Add(&HF3, "Sports - Darts")
-        Themes.Add(&HF4, "Sports - Watersports")
-        Themes.Add(&HF5, "Sports - Extreme")
-        Themes.Add(&HF6, "Sports - Other")
-        Themes.Add(&HF7, "")
-        Themes.Add(&HF8, "")
-        Themes.Add(&HF9, "")
-        Themes.Add(&HFA, "")
-        Themes.Add(&HFB, "")
-        Themes.Add(&HFC, "")
-        Themes.Add(&HFD, "")
-        Themes.Add(&HFE, "")
-        Themes.Add(&HFF, "")
+        Me.Themes.Add(0, "No Category")
+        Me.Themes.Add(1, "")
+        Me.Themes.Add(2, "")
+        Me.Themes.Add(3, "")
+        Me.Themes.Add(4, "")
+        Me.Themes.Add(5, "")
+        Me.Themes.Add(6, "")
+        Me.Themes.Add(7, "")
+        Me.Themes.Add(8, "")
+        Me.Themes.Add(9, "")
+        Me.Themes.Add(10, "")
+        Me.Themes.Add(11, "")
+        Me.Themes.Add(12, "")
+        Me.Themes.Add(13, "")
+        Me.Themes.Add(14, "")
+        Me.Themes.Add(15, "")
+        Me.Themes.Add(&H10, "")
+        Me.Themes.Add(&H11, "")
+        Me.Themes.Add(&H12, "")
+        Me.Themes.Add(&H13, "")
+        Me.Themes.Add(20, "")
+        Me.Themes.Add(&H15, "")
+        Me.Themes.Add(&H16, "")
+        Me.Themes.Add(&H17, "")
+        Me.Themes.Add(&H18, "")
+        Me.Themes.Add(&H19, "")
+        Me.Themes.Add(&H1A, "")
+        Me.Themes.Add(&H1B, "")
+        Me.Themes.Add(&H1C, "")
+        Me.Themes.Add(&H1D, "")
+        Me.Themes.Add(30, "")
+        Me.Themes.Add(&H1F, "")
+        Me.Themes.Add(&H20, "Movie")
+        Me.Themes.Add(&H21, "Movie - Thriller")
+        Me.Themes.Add(&H22, "Movie - Action")
+        Me.Themes.Add(&H23, "Movie - Sci Fi")
+        Me.Themes.Add(&H24, "Movie - Comedy")
+        Me.Themes.Add(&H25, "Movie - Family")
+        Me.Themes.Add(&H26, "Movie - Romance")
+        Me.Themes.Add(&H27, "Movie - Historical")
+        Me.Themes.Add(40, "Movie - Factual")
+        Me.Themes.Add(&H29, "Movie - Animation")
+        Me.Themes.Add(&H2A, "Movie - Horror")
+        Me.Themes.Add(&H2B, "Movie - Documentary")
+        Me.Themes.Add(&H2C, "Movie - Documentary")
+        Me.Themes.Add(&H2D, "Movie - Documentary")
+        Me.Themes.Add(&H2E, "Movie - Western")
+        Me.Themes.Add(&H2F, "Movie - Other")
+        Me.Themes.Add(&H30, "")
+        Me.Themes.Add(&H31, "")
+        Me.Themes.Add(50, "")
+        Me.Themes.Add(&H33, "")
+        Me.Themes.Add(&H34, "")
+        Me.Themes.Add(&H35, "")
+        Me.Themes.Add(&H36, "")
+        Me.Themes.Add(&H37, "")
+        Me.Themes.Add(&H38, "")
+        Me.Themes.Add(&H39, "")
+        Me.Themes.Add(&H3A, "")
+        Me.Themes.Add(&H3B, "")
+        Me.Themes.Add(60, "")
+        Me.Themes.Add(&H3D, "")
+        Me.Themes.Add(&H3E, "")
+        Me.Themes.Add(&H3F, "")
+        Me.Themes.Add(&H40, "News & Documentaries")
+        Me.Themes.Add(&H41, "News & Documentaries - News & Weather")
+        Me.Themes.Add(&H42, "News & Documentaries - Magazine")
+        Me.Themes.Add(&H43, "News & Documentaries - Documentary")
+        Me.Themes.Add(&H44, "News & Documentaries - Discussion")
+        Me.Themes.Add(&H45, "News & Documentaries - Educational")
+        Me.Themes.Add(70, "News & Documentaries - Feature")
+        Me.Themes.Add(&H47, "News & Documentaries - Politics")
+        Me.Themes.Add(&H48, "News & Documentaries - News")
+        Me.Themes.Add(&H49, "News & Documentaries - Nature")
+        Me.Themes.Add(&H4A, "News & Documentaries - Religious")
+        Me.Themes.Add(&H4B, "News & Documentaries - Science")
+        Me.Themes.Add(&H4C, "News & Documentaries - Showbiz")
+        Me.Themes.Add(&H4D, "News & Documentaries - War Documentary")
+        Me.Themes.Add(&H4E, "News & Documentaries - Historical")
+        Me.Themes.Add(&H4F, "News & Documentaries - Other")
+        Me.Themes.Add(80, "")
+        Me.Themes.Add(&H51, "")
+        Me.Themes.Add(&H52, "")
+        Me.Themes.Add(&H53, "")
+        Me.Themes.Add(&H54, "")
+        Me.Themes.Add(&H55, "")
+        Me.Themes.Add(&H56, "")
+        Me.Themes.Add(&H57, "")
+        Me.Themes.Add(&H58, "")
+        Me.Themes.Add(&H59, "")
+        Me.Themes.Add(90, "")
+        Me.Themes.Add(&H5B, "")
+        Me.Themes.Add(&H5C, "")
+        Me.Themes.Add(&H5D, "")
+        Me.Themes.Add(&H5E, "")
+        Me.Themes.Add(&H5F, "")
+        Me.Themes.Add(&H60, "Entertainment")
+        Me.Themes.Add(&H61, "Entertainment - Contests")
+        Me.Themes.Add(&H62, "Entertainment - Magazine")
+        Me.Themes.Add(&H63, "Entertainment - Talk Show")
+        Me.Themes.Add(100, "Entertainment - Reality")
+        Me.Themes.Add(&H65, "Entertainment - Action")
+        Me.Themes.Add(&H66, "Entertainment - Drama")
+        Me.Themes.Add(&H67, "Entertainment - Comedy")
+        Me.Themes.Add(&H68, "Entertainment - Documentary")
+        Me.Themes.Add(&H69, "Entertainment - Soap")
+        Me.Themes.Add(&H6A, "Entertainment - Sci-Fi")
+        Me.Themes.Add(&H6B, "Entertainment - Crime")
+        Me.Themes.Add(&H6C, "Entertainment - Game Show")
+        Me.Themes.Add(&H6D, "Entertainment - Reality")
+        Me.Themes.Add(110, "Entertainment - Talk Show")
+        Me.Themes.Add(&H6F, "Entertainment - Other")
+        Me.Themes.Add(&H70, "Entertainment - Arts")
+        Me.Themes.Add(&H71, "Entertainment - Lifestyle")
+        Me.Themes.Add(&H72, "Entertainment - Home")
+        Me.Themes.Add(&H73, "Entertainment - Magazine")
+        Me.Themes.Add(&H74, "Entertainment - Medical")
+        Me.Themes.Add(&H75, "Entertainment - Review")
+        Me.Themes.Add(&H76, "Entertainment - Antiques")
+        Me.Themes.Add(&H77, "Entertainment - Motors")
+        Me.Themes.Add(120, "Entertainment - Art&Lit")
+        Me.Themes.Add(&H79, "Entertainment - Ballet")
+        Me.Themes.Add(&H7A, "Entertainment - Opera")
+        Me.Themes.Add(&H7B, "")
+        Me.Themes.Add(&H7C, "")
+        Me.Themes.Add(&H7D, "")
+        Me.Themes.Add(&H7E, "")
+        Me.Themes.Add(&H7F, "")
+        Me.Themes.Add(&H80, "Sports")
+        Me.Themes.Add(&H81, "Sports - Special Event")
+        Me.Themes.Add(130, "Sports - Magazine")
+        Me.Themes.Add(&H83, "Sports - Football")
+        Me.Themes.Add(&H84, "Sports - Tennis/Squash")
+        Me.Themes.Add(&H85, "Sports - Team Sports")
+        Me.Themes.Add(&H86, "Sports - Athletics")
+        Me.Themes.Add(&H87, "Sports - MotorSport")
+        Me.Themes.Add(&H88, "Sports - Water Sports")
+        Me.Themes.Add(&H89, "Sports - Winter Sports")
+        Me.Themes.Add(&H8A, "Sports - Equestrian")
+        Me.Themes.Add(&H8B, "Sports - Martial Sports")
+        Me.Themes.Add(140, "Sports - Rugby")
+        Me.Themes.Add(&H8D, "Sports - Cycling")
+        Me.Themes.Add(&H8E, "Sports - Other")
+        Me.Themes.Add(&H8F, "")
+        Me.Themes.Add(&H90, "")
+        Me.Themes.Add(&H91, "")
+        Me.Themes.Add(&H92, "")
+        Me.Themes.Add(&H93, "")
+        Me.Themes.Add(&H94, "")
+        Me.Themes.Add(&H95, "")
+        Me.Themes.Add(150, "")
+        Me.Themes.Add(&H97, "")
+        Me.Themes.Add(&H98, "")
+        Me.Themes.Add(&H99, "")
+        Me.Themes.Add(&H9A, "")
+        Me.Themes.Add(&H9B, "")
+        Me.Themes.Add(&H9C, "")
+        Me.Themes.Add(&H9D, "")
+        Me.Themes.Add(&H9E, "")
+        Me.Themes.Add(&H9F, "")
+        Me.Themes.Add(160, "Children")
+        Me.Themes.Add(&HA1, "Children - Pre-School Programmes")
+        Me.Themes.Add(&HA2, "Children - Programmes for 6-14 years")
+        Me.Themes.Add(&HA3, "Children - Programmes for 10-16 years")
+        Me.Themes.Add(&HA4, "Children - Educational")
+        Me.Themes.Add(&HA5, "Children - Cartoons")
+        Me.Themes.Add(&HA6, "")
+        Me.Themes.Add(&HA7, "")
+        Me.Themes.Add(&HA8, "Children - Factual")
+        Me.Themes.Add(&HA9, "Children - Cartoons")
+        Me.Themes.Add(170, "")
+        Me.Themes.Add(&HAB, "")
+        Me.Themes.Add(&HAC, "")
+        Me.Themes.Add(&HAD, "")
+        Me.Themes.Add(&HAE, "")
+        Me.Themes.Add(&HAF, "Children - Other")
+        Me.Themes.Add(&HB0, "")
+        Me.Themes.Add(&HB1, "")
+        Me.Themes.Add(&HB2, "")
+        Me.Themes.Add(&HB3, "")
+        Me.Themes.Add(180, "")
+        Me.Themes.Add(&HB5, "")
+        Me.Themes.Add(&HB6, "")
+        Me.Themes.Add(&HB7, "")
+        Me.Themes.Add(&HB8, "")
+        Me.Themes.Add(&HB9, "")
+        Me.Themes.Add(&HBA, "")
+        Me.Themes.Add(&HBB, "")
+        Me.Themes.Add(&HBC, "")
+        Me.Themes.Add(&HBD, "")
+        Me.Themes.Add(190, "")
+        Me.Themes.Add(&HBF, "")
+        Me.Themes.Add(&HC0, "Music")
+        Me.Themes.Add(&HC1, "Music - Rock")
+        Me.Themes.Add(&HC2, "Music - Live")
+        Me.Themes.Add(&HC3, "")
+        Me.Themes.Add(&HC4, "")
+        Me.Themes.Add(&HC5, "")
+        Me.Themes.Add(&HC6, "")
+        Me.Themes.Add(&HC7, "")
+        Me.Themes.Add(200, "")
+        Me.Themes.Add(&HC9, "")
+        Me.Themes.Add(&HCA, "")
+        Me.Themes.Add(&HCB, "")
+        Me.Themes.Add(&HCC, "")
+        Me.Themes.Add(&HCD, "")
+        Me.Themes.Add(&HCE, "")
+        Me.Themes.Add(&HCF, "Music - Other")
+        Me.Themes.Add(&HD0, "")
+        Me.Themes.Add(&HD1, "")
+        Me.Themes.Add(210, "")
+        Me.Themes.Add(&HD3, "")
+        Me.Themes.Add(&HD4, "")
+        Me.Themes.Add(&HD5, "")
+        Me.Themes.Add(&HD6, "")
+        Me.Themes.Add(&HD7, "")
+        Me.Themes.Add(&HD8, "")
+        Me.Themes.Add(&HD9, "")
+        Me.Themes.Add(&HDA, "")
+        Me.Themes.Add(&HDB, "")
+        Me.Themes.Add(220, "")
+        Me.Themes.Add(&HDD, "")
+        Me.Themes.Add(&HDE, "")
+        Me.Themes.Add(&HDF, "")
+        Me.Themes.Add(&HE0, "Arts & Culture")
+        Me.Themes.Add(&HE1, "Arts & Culture - Performing Arts")
+        Me.Themes.Add(&HE2, "Arts & Culture - Fine Arts")
+        Me.Themes.Add(&HE3, "Arts & Culture - Religion")
+        Me.Themes.Add(&HE4, "Arts & Culture - Traditional Arts")
+        Me.Themes.Add(&HE5, "")
+        Me.Themes.Add(230, "")
+        Me.Themes.Add(&HE7, "")
+        Me.Themes.Add(&HE8, "")
+        Me.Themes.Add(&HE9, "")
+        Me.Themes.Add(&HEA, "Arts & Culture - Magazine")
+        Me.Themes.Add(&HEB, "Arts & Culture - Fashions")
+        Me.Themes.Add(&HEC, "Arts & Culture - Other")
+        Me.Themes.Add(&HED, "")
+        Me.Themes.Add(&HEE, "")
+        Me.Themes.Add(&HEF, "")
+        Me.Themes.Add(240, "")
+        Me.Themes.Add(&HF1, "")
+        Me.Themes.Add(&HF2, "")
+        Me.Themes.Add(&HF3, "")
+        Me.Themes.Add(&HF4, "")
+        Me.Themes.Add(&HF5, "")
+        Me.Themes.Add(&HF6, "")
+        Me.Themes.Add(&HF7, "")
+        Me.Themes.Add(&HF8, "")
+        Me.Themes.Add(&HF9, "")
+        Me.Themes.Add(250, "")
+        Me.Themes.Add(&HFB, "")
+        Me.Themes.Add(&HFC, "")
+        Me.Themes.Add(&HFD, "")
+        Me.Themes.Add(&HFE, "")
+        Me.Themes.Add(&HFF, "")
     End Sub
 End Class
 
 Public Class SkyGrabber
     Dim MapCards As List(Of Integer)
-    Dim CardstoMap As New List(Of Card)
+    ReadOnly CardstoMap As List(Of Card) = New List(Of Card)
 
-
-    Dim Settings As New Settings
+    ReadOnly Settings As Settings = New Settings()
     Public firstask As Boolean = True
-    Public WithEvents Sky As CustomDataGRabber
-    Public Channels As New Dictionary(Of Integer, Sky_Channel)
-    Public Bouquets As New Dictionary(Of Integer, SkyBouquet)
-    Public SDTInfo As New Dictionary(Of String, SDTInfo)
-    Public NITInfo As New Dictionary(Of Integer, NITSatDescriptor)
+    Public WithEvents Sky As CustomDataGRabber 'Prviate _Sky as CustomDataGrabber in latst code.
+    Public Channels As Dictionary(Of Integer, Sky_Channel) = New Dictionary(Of Integer, Sky_Channel)
+    Public Bouquets As Dictionary(Of Integer, SkyBouquet) = New Dictionary(Of Integer, SkyBouquet)
+    Public SDTInfo As Dictionary(Of String, SDTInfo) = New Dictionary(Of String, SDTInfo)
+    Public NITInfo As Dictionary(Of Integer, NITSatDescriptor) = New Dictionary(Of Integer, NITSatDescriptor)
 
     Dim numberBouquetsPopulated As Integer = 0
     Dim SDTCount As Integer = 0
@@ -813,21 +813,21 @@ Public Class SkyGrabber
     Dim GotAllTID As Boolean = False
     Public titlesDecoded As Integer = 0
     Dim summariesDecoded As Integer = 0
-    Public titleDataCarouselStartLookup As New Dictionary(Of Integer, String)
-    Public completedTitleDataCarousels As New List(Of Integer)
-    Public summaryDataCarouselStartLookup As New Dictionary(Of Integer, String)
-    Public completedSummaryDataCarousels As New List(Of Integer)
-    Public CatsDesc As New Dictionary(Of String, String)
-    Private orignH As New HuffmanTreeNode
+    Public titleDataCarouselStartLookup As Dictionary(Of Integer, String) = New Dictionary(Of Integer, String)
+    Public completedTitleDataCarousels As List(Of Integer) = New List(Of Integer)
+    Public summaryDataCarouselStartLookup As Dictionary(Of Integer, String) = New Dictionary(Of Integer, String)
+    Public completedSummaryDataCarousels As List(Of Integer) = New List(Of Integer)
+    Public CatsDesc As Dictionary(Of String, String) = New Dictionary(Of String, String)
+    Private orignH As HuffmanTreeNode = New HuffmanTreeNode()
     Private nH As HuffmanTreeNode
-    Dim _layer As New TvBusinessLayer
+    Dim _layer As TvBusinessLayer = New TvBusinessLayer()
     Dim CPUHog As Integer = 0
     Dim MaxThisCanDo As Integer = 0
     Dim start As DateTime
     Dim DVBSChannel As DVBSChannel
     Dim FirstLCN As LCNHolder
     Public NITGot As Boolean = False
-    Public Regions As New List(Of String)
+    Public Regions As List(Of String) = New List(Of String)()
     Public BouquetIDtoUse As Integer
     Public RegionIDtoUse As Integer
     Public GrabEPG As Boolean
@@ -858,26 +858,17 @@ Public Class SkyGrabber
         GotAllTID = False
     End Sub
 
-    Function AreAllTitlesPopulated()
-
-        If completedTitleDataCarousels.Count = 8 Then
-            Return True
-        Else
-            Return False
-        End If
-
+    Function AreAllTitlesPopulated() As Object
+        Return completedTitleDataCarousels.Count = 8
     End Function
 
     Function DoesTidCarryEpgTitleData(ByVal TableID As Integer) As Boolean
-        If TableID = &HA0 Or TableID = &HA1 Or TableID = &HA2 Or TableID = &HA3 Then
-            Return True
-        Else
-            Return False
-        End If
+        Return TableID = 160 Or TableID = &HA1 Or TableID = &HA2 Or TableID = &HA3
     End Function
 
     Function IsTitleDataCarouselOnPidComplete(ByVal pid As Integer) As Boolean
-        For Each pid1 As Integer In completedTitleDataCarousels
+        Dim pid1 As Integer
+        For Each pid1 In completedTitleDataCarousels
             If (pid1 = pid) Then
                 Return True
             End If
@@ -898,20 +889,14 @@ Public Class SkyGrabber
     End Sub
 
     Function AreAllSummariesPopulated()
-
-        If completedSummaryDataCarousels.Count = 8 Then
-            Return True
-        Else
-            Return False
-        End If
-
+        Return completedSummaryDataCarousels.Count = 8
     End Function
 
     Private Sub OnSummaryReceived(ByVal pid As Integer, ByVal summaryChannelEventUnionId As String)
         If summaryDataCarouselStartLookup.ContainsKey(pid) Then
             If (summaryDataCarouselStartLookup(pid) = summaryChannelEventUnionId) Then
                 completedSummaryDataCarousels.Add(pid)
-                If (AreAllSummariesPopulated()) Then
+                If Not (AreAllSummariesPopulated()) Then
                     Return
                 End If
             End If
@@ -921,135 +906,114 @@ Public Class SkyGrabber
     End Sub
 
     Function IsSummaryDataCarouselOnPidComplete(ByVal pid As Integer) As Boolean
-        For Each pid1 As Integer In completedSummaryDataCarousels
+        Dim pid1 As Integer
+        For Each pid1 In completedSummaryDataCarousels
             If pid1 = pid Then Return True
         Next
         Return False
     End Function
 
     Sub UpdateEPGEvent(ByRef channelId As Integer, ByVal eventId As Integer, ByVal SkyEvent As SkyEvent)
-        If Channels.ContainsKey(channelId) Then
-            If Channels(channelId).Events.ContainsKey(eventId) Then
-                Channels(channelId).Events(eventId) = SkyEvent
-            End If
+        If Channels.ContainsKey(channelId) AndAlso Channels(channelId).Events.ContainsKey(eventId) Then
+            Channels.Item(channelId).Events.Item(eventId) = SkyEvent
         End If
     End Sub
 
     Sub UpdateChannel(ByVal ChannelId As Integer, ByVal Channel As Sky_Channel)
-
         If Channels.ContainsKey(ChannelId) Then
-            Channels(ChannelId) = Channel
+            Channels.Item(ChannelId) = Channel
         End If
-
     End Sub
 
     Function GetEpgEvent(ByVal channelId As Long, ByVal eventId As Integer) As SkyEvent
         Dim channel As Sky_Channel = GetChannel(channelId)
-        If channel.Events.ContainsKey(eventId) = False Then
+        If Not channel.Events.ContainsKey(eventId) Then
             channel.Events.Add(eventId, New SkyEvent)
         End If
-        Dim returnEvent As SkyEvent = channel.Events(eventId)
-        Return returnEvent
+        Return channel.Events.Item(eventId)
     End Function
 
-    Private Sub OnTitleSectionReceived(ByVal pid As Integer, ByVal section As Section)
+    Private Sub OnTitleSectionReceived(ByVal pid As Integer, ByVal section As Custom_Data_Grabber.Section)
         Try
-            If (IsTitleDataCarouselOnPidComplete(pid)) Then
-                Return
-            End If
-
-            If (DoesTidCarryEpgTitleData(section.table_id) = False) Then
-                Return
-            End If
-
-            Dim buffer() As Byte = section.Data
-            Dim totalLength As Integer = (((buffer(1) And &HF) * 256) + buffer(2)) - 2
-            If (section.section_length < 20) Then
-                Return
-            End If
-            Dim channelId As Long = (buffer(3) * (2 ^ 8)) + buffer(4)
-            Dim mjdStart As Long = (buffer(8) * (2 ^ 8)) + buffer(9)
-            If (channelId = 0 Or mjdStart = 0) Then
-                Return
-            End If
-            Dim currentTitleItem As Integer = 10
-            Dim iterationCounter As Integer = 0
-            Do While (currentTitleItem < totalLength)
-                If (iterationCounter > 512) Then
-                    Return
-                End If
-
-
-                iterationCounter += 1
-
-                Dim eventId As Integer = (buffer(currentTitleItem + 0) * (2 ^ 8)) + buffer(currentTitleItem + 1)
-
-
-                Dim headerType As Double = (buffer(currentTitleItem + 2) And &HF0) >> 4
-                Dim bodyLength As Integer = ((buffer(currentTitleItem + 2) And &HF) * (2 ^ 8)) + buffer(currentTitleItem + 3)
-
-                Dim carouselLookupId As String = channelId.ToString & ":" & eventId.ToString
-
-                OnTitleReceived(pid, carouselLookupId)
-
-
-                If (IsTitleDataCarouselOnPidComplete(pid)) Then
-                    Return
-                End If
-
-                Dim epgEvent As SkyEvent = GetEpgEvent(channelId, eventId)
-
-                If epgEvent Is Nothing Then
-                    Return
-                End If
-
-                epgEvent.mjdStart = mjdStart
-                epgEvent.EventID = eventId
-
-                Dim headerLength As Integer = 4
-
-                Dim currentTitleItemBody As Integer = currentTitleItem + headerLength
-
-                Dim titleDescriptor As Integer = buffer(currentTitleItemBody + 0)
-                Dim encodedBufferLength As Integer = buffer(currentTitleItemBody + 1) - 7
-
-                If (titleDescriptor = &HB5) Then
-
-                    epgEvent.StartTime = (buffer(currentTitleItemBody + 2) * (2 ^ 9)) Or (buffer(currentTitleItemBody + 3) * (2 ^ 1))
-                    epgEvent.Duration = (buffer(currentTitleItemBody + 4) * (2 ^ 9)) Or (buffer(currentTitleItemBody + 5) * (2 ^ 1))
-                    Dim themeId As Byte = buffer(currentTitleItemBody + 6)
-                    epgEvent.Category = themeId
-                    epgEvent.SetFlags(buffer(currentTitleItemBody + 7))
-                    epgEvent.SetCategory(buffer(currentTitleItemBody + 8))
-
-                    epgEvent.seriesTermination = ((buffer(currentTitleItemBody + 8) And &H40) >> 6) Xor &H1
-
-                    If (encodedBufferLength <= 0) Then
-                        currentTitleItem += (headerLength + bodyLength)
-                    End If
-
-                    If (epgEvent.Title = "") Then
-                        '//	Decode the huffman buffer
-                        Dim huffbuff(&H1000) As Byte
-                        If (currentTitleItemBody + 9 + encodedBufferLength > buffer.Length) Then
-                            Return
+            If Not (IsTitleDataCarouselOnPidComplete(pid)) AndAlso DoesTidCarryEpgTitleData(section.table_id) Then
+                Dim buffer() As Byte = section.Data
+                Dim totalLength As Integer = (((buffer(1) And 15) * 256) + buffer(2)) - 2
+                If (section.section_length >= 20) Then
+                    Dim channelId As Long = (buffer(3) * (2 ^ 8)) + buffer(4)
+                    Dim mjdStart As Long = (buffer(8) * (2 ^ 8)) + buffer(9)
+                    If Not (channelId = 0 Or mjdStart = 0) Then
+                        Dim currentTitleItem As Integer = 10
+                        Dim iterationCounter As Integer = 0
+                        Do While (currentTitleItem < totalLength)
+                            If (iterationCounter > 512) Then
+                                Return
+                            End If
+                            iterationCounter += 1
+                            Dim eventId As Integer = (buffer(currentTitleItem + 0) * (2 ^ 8)) + buffer(currentTitleItem + 1)
+                            Dim headerType As Double = (buffer(currentTitleItem + 2) And &HF0) >> 4
+                            Dim bodyLength As Integer = ((buffer(currentTitleItem + 2) And &HF) * (2 ^ 8)) + buffer(currentTitleItem + 3)
+                            Dim carouselLookupId As String = channelId.ToString & ":" & eventId.ToString
+                            OnTitleReceived(pid, carouselLookupId) ' check code for titlechanneleventunionid as this might be carousellookupid
+                            If (IsTitleDataCarouselOnPidComplete(pid)) Then
+                                Return
+                            End If
+                            Dim epgEvent As SkyEvent = GetEpgEvent(channelId, eventId)
+                            If epgEvent Is Nothing Then
+                                Return
+                            End If
+                            epgEvent.mjdStart = mjdStart
+                            epgEvent.EventID = eventId
+                            Const headerLength As Integer = 4
+                            Dim currentTitleItemBody As Integer = currentTitleItem + headerLength
+                            Dim titleDescriptor As Integer = buffer(currentTitleItemBody + 0)
+                            Dim encodedBufferLength As Integer = buffer(currentTitleItemBody + 1) - 7
+                            If (titleDescriptor = &HB5) Then
+                                epgEvent.StartTime = (buffer(currentTitleItemBody + 2) * (2 ^ 9)) Or (buffer(currentTitleItemBody + 3) * (2 ^ 1))
+                                epgEvent.Duration = (buffer(currentTitleItemBody + 4) * (2 ^ 9)) Or (buffer(currentTitleItemBody + 5) * (2 ^ 1))
+                                Dim themeId As Byte = buffer(currentTitleItemBody + 6)
+                                epgEvent.Category = themeId
+                                epgEvent.SetFlags(buffer(currentTitleItemBody + 7))
+                                epgEvent.SetCategory(buffer(currentTitleItemBody + 8))
+                                epgEvent.seriesTermination = ((buffer(currentTitleItemBody + 8) And &H40) >> 6) Xor &H1
+                                If (encodedBufferLength <= 0) Then
+                                    currentTitleItem += (headerLength + bodyLength)
+                                End If
+                                If (epgEvent.Title = "") Then
+                                    '//	Decode the huffman buffer
+                                    Dim huffbuff As Byte() = New Byte(&H1001 - 1) {}
+                                    If (currentTitleItemBody + 9 + encodedBufferLength > buffer.Length) Then
+                                        Return
+                                    End If
+                                    Array.Copy(buffer, currentTitleItemBody + 9, huffbuff, 0, encodedBufferLength)
+                                    epgEvent.Title = NewHuffman(huffbuff, encodedBufferLength)
+                                    Dim title As String = ""
+                                    If Not epgEvent.Title.StartsWith("[[") Then
+                                        title = epgEvent.Title
+                                    Else
+                                        Dim index As Integer = epgEvent.Title.IndexOf("]")
+                                        If (((index <> -1) AndAlso (Conversions.ToString(epgEvent.Title.Chars((index + 1))) = "]")) AndAlso ((index + 2) < epgEvent.Title.Length)) Then
+                                            title = epgEvent.Title.Substring((index + 2))
+                                        Else
+                                            title = epgEvent.Title
+                                        End If
+                                    End If
+                                    epgEvent.Title = title
+                                    If (epgEvent.Title <> "") Then
+                                        OnTitleDecoded()
+                                    End If
+                                Else
+                                    Return
+                                End If
+                                Dim channelid2 As Integer = channelId
+                                UpdateEPGEvent(channelid2, epgEvent.EventID, epgEvent)
+                                channelId = channelid2
+                            End If
+                            currentTitleItem += (bodyLength + headerLength)
+                        Loop
+                        If (currentTitleItem <> (totalLength + 1)) Then
                         End If
-                        Array.Copy(buffer, currentTitleItemBody + 9, huffbuff, 0, encodedBufferLength)
-                        epgEvent.Title = NewHuffman(huffbuff, encodedBufferLength)
-                        If (epgEvent.Title <> "") Then
-                            OnTitleDecoded()
-                        End If
-
-                    Else
-                        Return
                     End If
-                    UpdateEPGEvent(channelId, epgEvent.EventID, epgEvent)
                 End If
-                currentTitleItem += (bodyLength + headerLength)
-            Loop
-
-            If Not (currentTitleItem = (totalLength + 1)) Then
-                Return
             End If
         Catch err As Exception
             RaiseEvent OnMessage("Error decoding title, " & err.Message, False)
@@ -1059,27 +1023,25 @@ Public Class SkyGrabber
 
     Public Event OnMessage(ByVal Text As String, ByVal UpdateLast As Boolean)
 
-    Sub ParseNIT(ByVal Data As Section, ByVal Length As Integer)
+    Sub ParseNIT(ByVal Data As Custom_Data_Grabber.Section, ByVal Length As Integer)
         Try
             If NITGot Then Return
             Dim buf As Byte() = Data.Data
             Dim section_syntax_indicator As Integer = buf(1) And &H80
-            Dim section_length As Integer = ((buf(1) And &HF) * 256) Or buf(2)
+            Dim section_length As Integer = ((buf(1) And 15) * 256) Or buf(2)
             Dim network_id As Integer = (buf(3) * 256) Or buf(4)
             Dim version_number As Integer = (buf(5) >> 1) And &H1F
             Dim current_next_indicator As Integer = buf(5) And 1
             Dim section_number As Integer = buf(6)
             Dim last_section_number As Integer = buf(7)
-            Dim network_descriptor_length As Integer = ((buf(8) And &HF) * 256) Or buf(9)
+            Dim network_descriptor_length As Integer = ((buf(8) And 15) * 256) Or buf(9)
             Dim l1 As Integer = network_descriptor_length
             Dim pointer As Integer = 10
             Dim x As Integer = 0
-
             Do While (l1 > 0)
                 Dim indicator As Integer = buf(pointer)
                 x = buf(pointer + 1) + 2
-                'LogDebug("decode nit desc1:%x len:%d", indicator,x)
-
+                'LogDebug("decode nit desc1:%x len:%d", indicator, x)
                 If (indicator = &H40) Then
                     Dim netWorkName As String = System.Text.Encoding.GetEncoding("iso-8859-1").GetString(buf, pointer + 2, x - 2)
                 End If
@@ -1087,39 +1049,36 @@ Public Class SkyGrabber
                 pointer += x
             Loop
             pointer = 10 + network_descriptor_length
-
-            If (pointer > section_length) Then Return
-
-            'LogDebug("NIT: decode() network:'%s'", m_nit.NetworkName)
-
-            Dim transport_stream_loop_length As Integer = ((buf(pointer) And &HF) * 256) + buf(pointer + 1)
-            l1 = transport_stream_loop_length
-            pointer += 2
-
-            Do While (l1 > 0)
-
-                If (pointer + 2 > section_length) Then Return
-
-                Dim transport_stream_id As Integer = (buf(pointer) * 256) + buf(pointer + 1)
-                Dim original_network_id As Integer = (buf(pointer + 2) * 256) + buf(pointer + 3)
-                Dim transport_descriptor_length As Integer = ((buf(pointer + 4) And &HF) * 256) + buf(pointer + 5)
-                pointer += 6
-                l1 -= 6
-
-                Dim l2 As Integer = transport_descriptor_length
-                Do While (l2 > 0)
-                    If (pointer + 2 > section_length) Then Return
-                    Dim indicator As Integer = buf(pointer)
-                    x = buf(pointer + 1) + 2
-                    If (indicator = &H43) Then ' sat
-                        DVB_GetSatDelivSys(buf, pointer, x, original_network_id, transport_stream_id)
+            If (pointer <= section_length) Then
+                'LogDebug("NIT: decode() network:'%s'", m_nit.NetworkName)
+                Dim transport_stream_loop_length As Integer = ((buf(pointer) And &HF) * 256) + buf(pointer + 1)
+                l1 = transport_stream_loop_length
+                pointer += 2
+                Do While (l1 > 0)
+                    If (pointer + 2 > section_length) Then
+                        Return
                     End If
-                    pointer += x
-                    l2 -= x
-                    l1 -= x
+                    Dim transport_stream_id As Integer = (buf(pointer) * 256) + buf(pointer + 1) 'new code uses TransportID
+                    Dim original_network_id As Integer = (buf(pointer + 2) * 256) + buf(pointer + 3) 'new code uses networkID
+                    Dim transport_descriptor_length As Integer = ((buf(pointer + 4) And &HF) * 256) + buf(pointer + 5)
+                    pointer += 6
+                    l1 -= 6
+                    Dim l2 As Integer = transport_descriptor_length
+                    Do While (l2 > 0)
+                        If (pointer + 2 > section_length) Then
+                            Return
+                        End If
+                        Dim indicator As Integer = buf(pointer)
+                        x = buf(pointer + 1) + 2
+                        If (indicator = &H43) Then ' sat
+                            DVB_GetSatDelivSys(buf, pointer, x, original_network_id, transport_stream_id)
+                        End If
+                        pointer += x
+                        l2 -= x
+                        l1 -= x
+                    Loop
                 Loop
-            Loop
-
+            End If
         Catch ex As Exception
             RaiseEvent OnMessage("Error Parsing NIT", False)
         End Try
@@ -1131,123 +1090,110 @@ Public Class SkyGrabber
             Dim descriptor_tag = b(pointer + 0)
             Dim descriptor_length = b(pointer + 1)
 
-            If (descriptor_length > 13) Then Return
-            Dim satteliteNIT As New NITSatDescriptor
-            satteliteNIT.TID = TransportID
-            satteliteNIT.Frequency = (100000000 * ((b(pointer + 2) >> 4) And &HF))
-            satteliteNIT.Frequency += (10000000 * (b(pointer + 2) And &HF))
-            satteliteNIT.Frequency += (1000000 * ((b(pointer + 3) >> 4) And &HF))
-            satteliteNIT.Frequency += (100000 * (b(pointer + 3) And &HF))
-            satteliteNIT.Frequency += (10000 * ((b(pointer + 4) >> 4) And &HF))
-            satteliteNIT.Frequency += (1000 * (b(pointer + 4) And &HF))
-            satteliteNIT.Frequency += (100 * ((b(pointer + 5) >> 4) And &HF))
-            satteliteNIT.Frequency += (10 * (b(pointer + 5) And &HF))
-            satteliteNIT.OrbitalPosition += (1000 * ((b(pointer + 6) >> 4) And &HF))
-            satteliteNIT.OrbitalPosition += (100 * ((b(pointer + 6) And &HF)))
-            satteliteNIT.OrbitalPosition += (10 * ((b(pointer + 7) >> 4) And &HF))
-            satteliteNIT.OrbitalPosition += (b(pointer + 7) And &HF)
-
-            satteliteNIT.WestEastFlag = (b(pointer + 8) And &H80) >> 7
-
-            Dim Polarisation = (b(pointer + 8) And &H60) >> 5
-
-            satteliteNIT.Polarisation = Polarisation + 1
-            satteliteNIT.isS2 = (b(pointer + 8) And &H4) >> 2
-            If (satteliteNIT.isS2) Then
-                Dim rollOff = (b(pointer + 8) And &H18) >> 3
-                Select Case rollOff
-                    Case Is = 0
-                        satteliteNIT.RollOff = 3
-                    Case Is = 1
-                        satteliteNIT.RollOff = 2
-                    Case Is = 2
-                        satteliteNIT.RollOff = 1
-                End Select
-            Else
-                satteliteNIT.RollOff = -1
-
-            End If
-
-            satteliteNIT.Modulation = (b(pointer + 8) And &H3)
-
-            satteliteNIT.Symbolrate = (100000 * ((b(pointer + 9) >> 4) And &HF))
-            satteliteNIT.Symbolrate += (10000 * ((b(pointer + 9) And &HF)))
-            satteliteNIT.Symbolrate += (1000 * ((b(pointer + 10) >> 4) And &HF))
-            satteliteNIT.Symbolrate += (100 * ((b(pointer + 10) And &HF)))
-            satteliteNIT.Symbolrate += (10 * ((b(pointer + 11) >> 4) And &HF))
-            satteliteNIT.Symbolrate += (1 * ((b(pointer + 11) And &HF)))
-
-            Dim fec As Integer = (b(pointer + 12) And &HF)
-
-            Select Case fec
-                Case 0
-                    fec = 0
-                Case 1
-                    fec = 1
-                Case 2
-                    fec = 2
-                Case 3
-                    fec = 3
-                Case 4
-                    fec = 6
-                Case 5
-                    fec = 8
-                Case 6
-                    fec = 13
-                Case 7
-                    fec = 4
-                Case 8
-                    fec = 5
-                Case 9
-                    fec = 14
-                Case Else
-                    fec = 0
-            End Select
-
-            satteliteNIT.FECInner = fec
-            If Not NITInfo.ContainsKey(TransportID) Then
-                NITInfo.Add(TransportID, satteliteNIT)
-            Else
-                If GotAllTID <> True Then
-                    RaiseEvent OnMessage("Got Network Information, " & NITInfo.Count & " transponders", False)
+            If (descriptor_length <= 13) Then
+                Dim satteliteNIT As New NITSatDescriptor
+                satteliteNIT.TID = TransportID
+                satteliteNIT.Frequency = (100000000 * ((b(pointer + 2) >> 4) And &HF))
+                satteliteNIT.Frequency += (10000000 * (b(pointer + 2) And &HF))
+                satteliteNIT.Frequency += (1000000 * ((b(pointer + 3) >> 4) And &HF))
+                satteliteNIT.Frequency += (100000 * (b(pointer + 3) And &HF))
+                satteliteNIT.Frequency += (10000 * ((b(pointer + 4) >> 4) And &HF))
+                satteliteNIT.Frequency += (1000 * (b(pointer + 4) And &HF))
+                satteliteNIT.Frequency += (100 * ((b(pointer + 5) >> 4) And &HF))
+                satteliteNIT.Frequency += (10 * (b(pointer + 5) And &HF))
+                satteliteNIT.OrbitalPosition += (1000 * ((b(pointer + 6) >> 4) And &HF))
+                satteliteNIT.OrbitalPosition += (100 * ((b(pointer + 6) And &HF)))
+                satteliteNIT.OrbitalPosition += (10 * ((b(pointer + 7) >> 4) And &HF))
+                satteliteNIT.OrbitalPosition += (b(pointer + 7) And &HF)
+                satteliteNIT.WestEastFlag = (b(pointer + 8) And &H80) >> 7
+                Dim Polarisation As Integer = (b(pointer + 8) And &H60) >> 5
+                satteliteNIT.Polarisation = Polarisation + 1
+                satteliteNIT.isS2 = (b(pointer + 8) And &H4) >> 2
+                If (satteliteNIT.isS2 > 0) Then
+                    Dim rollOff = (b(pointer + 8) And &H18) >> 3
+                    Select Case rollOff
+                        Case Is = 0
+                            satteliteNIT.RollOff = 3
+                        Case Is = 1
+                            satteliteNIT.RollOff = 2
+                        Case Is = 2
+                            satteliteNIT.RollOff = 1
+                    End Select
+                Else
+                    satteliteNIT.RollOff = -1
                 End If
-                GotAllTID = True
-                Return
+                satteliteNIT.Modulation = (b(pointer + 8) And &H3)
+                satteliteNIT.Symbolrate = (100000 * ((b(pointer + 9) >> 4) And &HF))
+                satteliteNIT.Symbolrate += (10000 * ((b(pointer + 9) And &HF)))
+                satteliteNIT.Symbolrate += (1000 * ((b(pointer + 10) >> 4) And &HF))
+                satteliteNIT.Symbolrate += (100 * ((b(pointer + 10) And &HF)))
+                satteliteNIT.Symbolrate += (10 * ((b(pointer + 11) >> 4) And &HF))
+                satteliteNIT.Symbolrate += (1 * ((b(pointer + 11) And &HF)))
+                Dim fec As Integer = (b(pointer + 12) And &HF)
+                Select Case fec
+                    Case 0
+                        fec = 0
+                    Case 1
+                        fec = 1
+                    Case 2
+                        fec = 2
+                    Case 3
+                        fec = 3
+                    Case 4
+                        fec = 6
+                    Case 5
+                        fec = 8
+                    Case 6
+                        fec = 13
+                    Case 7
+                        fec = 4
+                    Case 8
+                        fec = 5
+                    Case 9
+                        fec = 14
+                    Case Else
+                        fec = 0
+                End Select
+                satteliteNIT.FECInner = fec
+                If Not NITInfo.ContainsKey(TransportID) Then
+                    NITInfo.Add(TransportID, satteliteNIT)
+                Else
+                    If GotAllTID <> True Then
+                        RaiseEvent OnMessage("Got Network Information, " & NITInfo.Count & " transponders", False)
+                    End If
+                    GotAllTID = True
+                    Return
+                End If
             End If
-
         End If
-
-
-
     End Sub
 
-    Public Sub OnTSPacket(ByVal Pid As Integer, ByVal Length As Integer, ByVal Data As Section) Handles Sky.OnPacket
+    Public Sub OnTSPacket(ByVal Pid As Integer, ByVal Length As Integer, ByVal Data As Custom_Data_Grabber.Section)
         '  Try
         Select Case Pid
             Case Is = &H10
                 'NIT
-                If GotAllTID = False Then
+                If Not GotAllTID Then
                     ParseNIT(Data, Length)
                 End If
-
+                Exit Select
             Case Is = &H11
                 'SDT/BAT
                 ParseChannels(Data, Length)
-
+                Exit Select
             Case Is = &H30, &H31, &H32, &H33, &H34, &H35, &H36, &H37
                 'OpenTV Titles
                 OnTitleSectionReceived(Pid, Data)
-
+                Exit Select
             Case Is = &H40, &H41, &H42, &H43, &H44, &H45, &H46, &H47
                 'OpenTV Sumarries
                 OnSummarySectionReceived(Pid, Data)
+                Exit Select
         End Select
-
         If IsEverythingGrabbed() Then
             RaiseEvent OnMessage("Everything Grabbed", False)
             Sky.SendComplete(0)
         End If
-
     End Sub
 
     Sub CreateGroups()
@@ -1274,17 +1220,16 @@ Public Class SkyGrabber
             If Settings.GetSkySetting("CatByte3", "-1") <> "-1" And Settings.GetSkySetting("CatText3", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText3", ""))
             If Settings.GetSkySetting("CatByte2", "-1") <> "-1" And Settings.GetSkySetting("CatText2", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText2", ""))
             If Settings.GetSkySetting("CatByte1", "-1") <> "-1" And Settings.GetSkySetting("CatText1", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText1", ""))
-            Dim a As Integer = groups.Count
-            For Each Name As String In groups
-                _layer.CreateGroup(Name)
-                Dim group1 As ChannelGroup
-                group1 = _layer.GetGroupByName(Name)
-                group1.SortOrder = a
-                group1.Persist()
-                a -= 1
+            Dim count As Integer = groups.Count
+            Dim name As String
+            For Each name In groups
+                _layer.CreateGroup(name)
+                Dim groupbyname As ChannelGroup = _layer.GetGroupByName(name)
+                groupbyname.SortOrder = count
+                groupbyname.Persist()
+                count -= 1
             Next
         End If
-
     End Sub
 
     Public Sub UpdateAddChannels()
@@ -1298,17 +1243,20 @@ Public Class SkyGrabber
             Dim UseModNotSetSD As Boolean = Settings.UseNotSetModSD
             Dim UseModNotSetHD As Boolean = Settings.UseNotSetModHD
             Dim IgnoreScrambled As Boolean = Settings.IgnoreScrambled
+            Dim nID As Integer = Settings.NID
+            Dim channelnumber As Integer = 10000
             RaiseEvent OnMessage("", False)
             For Each pair As KeyValuePair(Of Integer, Sky_Channel) In Channels
-
                 ChannelsAdded += 1
                 RaiseEvent OnMessage("(" & ChannelsAdded & "/" & Channels.Count & ") Channels sorted", True)
                 Dim ScannedChannel As Sky_Channel = pair.Value
+                ScannedChannel = Nothing
                 Dim ChannelId As Integer = pair.Key
                 If ChannelId < 1 Then Continue For
+                Dim VisibleInGuide As Boolean
                 Dim DBChannel As Channel
                 Dim channel As New DVBSChannel
-                Dim currentDetail As TuningDetail
+                Dim currentDetail As TuningDetail = Nothing '= nothing has been added.
                 If ScannedChannel.NID = 0 Or ScannedChannel.TID = 0 Or ScannedChannel.SID = 0 Then
                     Continue For
                 End If
@@ -1327,246 +1275,242 @@ Public Class SkyGrabber
                 If Not checker Is Nothing Then
                     Dim Channels As List(Of TuningDetail) = checker.ReferringTuningDetail
                     For Each Chann As TuningDetail In Channels
-                        If Chann.ChannelType = 3 And Chann.NetworkId = 2 Then
+                        If Chann.ChannelType = 3 And Chann.NetworkId = nID Then
                             currentDetail = Chann
                             Exit For
                         End If
                     Next
                 End If
                 ' 
-                If currentDetail Is Nothing Then
-                    'add new channel
+                If (Not currentDetail Is Nothing) Then
+                    GoTo AddNewChannel
+                End If
 AddNewChannel:
-                    Dim NIT As NITSatDescriptor
-                    If Not NITInfo.ContainsKey(ScannedChannel.TID) Then
-                        'no nit info
-                        RaiseEvent OnMessage("No NIT found for : " & ScannedChannel.SID, False)
-                        RaiseEvent OnMessage("", False)
-                        Continue For
-                    End If
-                    DBChannel = _layer.AddNewChannel(SDT.ChannelName)
-                    NIT = NITInfo(ScannedChannel.TID)
-                    DVBSChannel.BandType = 0
-                    DVBSChannel.DisEqc = CType(DiseqC, DisEqcType)
-                    DVBSChannel.FreeToAir = True
-                    DVBSChannel.Frequency = NIT.Frequency
-                    DVBSChannel.SymbolRate = NIT.Symbolrate
-                    DVBSChannel.InnerFecRate = CType(NIT.FECInner, DirectShowLib.BDA.BinaryConvolutionCodeRate)
-                    DVBSChannel.IsRadio = SDT.isRadio
-                    DVBSChannel.IsTv = SDT.isTV
-                    DVBSChannel.FreeToAir = Not SDT.isFTA
-                    DBChannel.SortOrder = 10000
-                    DVBSChannel.LogicalChannelNumber = 10000
-                    DBChannel.VisibleInGuide = True
-                    If UseSkyNumbers Then
-                        If ScannedChannel.LCNCount > 0 Then
+
+                If Not NITInfo.ContainsKey(ScannedChannel.TID) Then
+                    RaiseEvent OnMessage("No NIT found for : " & ScannedChannel.SID, False)
+                    RaiseEvent OnMessage("", False)
+                    Continue For
+                End If
+
+                If UseSkyNumbers Then
+                    If ScannedChannel.LCNCount > 0 Then
+                        If ScannedChannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
                             If ScannedChannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
-                                Dim LCNtouse As LCNHolder = ScannedChannel.GetLCN(BouquetIDtoUse, RegionIDtoUse)
-                                DVBSChannel.LogicalChannelNumber = LCNtouse.SkyNum
-                                DBChannel.SortOrder = LCNtouse.SkyNum
-                            Else
-                                If ScannedChannel.ContainsLCN(BouquetIDtoUse, 255) Then
-                                    Dim LCNtouse As LCNHolder = ScannedChannel.GetLCN(BouquetIDtoUse, 255)
-                                    DVBSChannel.LogicalChannelNumber = LCNtouse.SkyNum
-                                    DBChannel.SortOrder = LCNtouse.SkyNum
-                                End If
+                                channelnumber = ScannedChannel.GetLCN(BouquetIDtoUse, RegionIDtoUse).SkyNum
+                            ElseIf ScannedChannel.ContainsLCN(BouquetIDtoUse, 255) Then
+                                channelnumber = ScannedChannel.GetLCN(BouquetIDtoUse, 255).SkyNum
                             End If
-
-                            If DVBSChannel.LogicalChannelNumber = 10000 Then
-                                DBChannel.VisibleInGuide = False
+                            If (channelnumber = 10000) Then
+                                VisibleInGuide = False
                             End If
                         End If
-                    End If
-
-                    If (NIT.isS2 And UseModNotSetHD) Or (NIT.isS2 = False And UseModNotSetSD) Then
-                        DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotSet
-                    Else
-                        Select Case NIT.Modulation
-                            Case 1
-                                If NIT.isS2 Then
-                                    DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbcQpsk
-                                Else
-                                    DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModQpsk
-                                End If
-                            Case 2
-                                If NIT.isS2 Then
-                                    DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbc8Psk
-                                Else
-                                    DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
-                                End If
-                            Case Else
-                                DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
-                        End Select
-                    End If
-                    DVBSChannel.Name = SDT.ChannelName
-                    DVBSChannel.NetworkId = ScannedChannel.NID
-                    DVBSChannel.Pilot = -1
-                    DVBSChannel.Rolloff = -1
-                    If NIT.isS2 = 1 Then
-                        DVBSChannel.Rolloff = CType(NIT.RollOff, DirectShowLib.BDA.RollOff)
-                    End If
-                    DVBSChannel.PmtPid = 0
-                    DVBSChannel.Polarisation = CType(NIT.Polarisation, DirectShowLib.BDA.Polarisation)
-                    DVBSChannel.Provider = SDT.Provider
-                    DVBSChannel.ServiceId = ScannedChannel.SID
-                    DVBSChannel.TransportId = ScannedChannel.TID
-                    DVBSChannel.SwitchingFrequency = SwitchingFrequency ' Option for user to enter
-                    DBChannel.IsRadio = SDT.isRadio
-                    DBChannel.IsTv = SDT.isTV
-                    DBChannel.ExternalId = ScannedChannel.NID & ":" & ScannedChannel.ChannelID.ToString
-                    DBChannel.Persist()
-                    MapChannelToCards(DBChannel)
-                    AddChannelToGroups(DBChannel, SDT, DVBSChannel, UseSkyCategories)
-                    _layer.AddTuningDetails(DBChannel, DVBSChannel)
-                Else
-
-                    DBChannel = currentDetail.ReferencedChannel()
-
-                    If DBChannel.ExternalId <> ScannedChannel.NID & ":" & ChannelId.ToString Then
-                        'Problem with TVServer so need to add new channel.
-                        GoTo AddNewChannel
-                    End If
-                    Dim checkDVBSChannel As DVBSChannel = _layer.GetTuningChannel(currentDetail)
-                    If checkDVBSChannel Is Nothing Then
-                        Continue For
-                    End If
-
-                    If DBChannel Is Nothing Then
-                        Continue For
-                    End If
-
-                    Dim Checksdt As SDTInfo
-
-                    If SDTInfo.ContainsKey(ScannedChannel.NID & "-" & ScannedChannel.TID & "-" & ScannedChannel.SID) Then
-                        Dim haschanged As Boolean = False
-                        Dim deleteepg As Boolean = False
-                        Checksdt = SDTInfo(ScannedChannel.NID & "-" & ScannedChannel.TID & "-" & ScannedChannel.SID)
-
-                        If DBChannel.DisplayName <> Checksdt.ChannelName Or currentDetail.Name <> Checksdt.ChannelName Then
-                            RaiseEvent OnMessage("Channel " & DBChannel.DisplayName & " name changed to " & Checksdt.ChannelName, False)
-                            DBChannel.DisplayName = Checksdt.ChannelName
-                            checkDVBSChannel.Name = Checksdt.ChannelName
-                            'Check Channel hasn't become a real channel from a test channel
-                            If ScannedChannel.LCNCount > 0 And DBChannel.VisibleInGuide = False Then
-                                DBChannel.VisibleInGuide = True
-                                RaiseEvent OnMessage("Channel " & DBChannel.DisplayName & " is now part of the EPG making visible " & Checksdt.ChannelName & ".", False)
-                            End If
-                            haschanged = True
-                        End If
-
-                        If checkDVBSChannel.Provider <> Checksdt.Provider Then
-                            RaiseEvent OnMessage("Channel " & DBChannel.DisplayName & " Provider name changed to " & Checksdt.Provider & ".", False)
-                            RaiseEvent OnMessage("", False)
-                            checkDVBSChannel.Provider = Checksdt.Provider
-                            haschanged = True
-                        End If
-
-                        If currentDetail.TransportId <> ScannedChannel.TID Then
-                            'Moved transponder
-                            RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " tuning details changed.", False)
-                            RaiseEvent OnMessage("", False)
-                            Dim NIT As NITSatDescriptor
-                            If NITInfo.ContainsKey(ScannedChannel.TID) Then
-                                NIT = NITInfo(ScannedChannel.TID)
-                            Else
-                                Continue For
-                            End If
-                            checkDVBSChannel.BandType = 0
-                            checkDVBSChannel.Frequency = NIT.Frequency
-                            checkDVBSChannel.SymbolRate = NIT.Symbolrate
-                            checkDVBSChannel.InnerFecRate = CType(NIT.FECInner, DirectShowLib.BDA.BinaryConvolutionCodeRate)
-                            If (NIT.isS2 And UseModNotSetHD) Or (NIT.isS2 = False And UseModNotSetSD) Then
-                                checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotSet
-                            Else
-                                Select Case NIT.Modulation
-                                    Case 1
-                                        If NIT.isS2 Then
-                                            checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbcQpsk
-                                        Else
-                                            checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModQpsk
-                                        End If
-                                    Case 2
-                                        If NIT.isS2 Then
-                                            checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbc8Psk
-                                        Else
-                                            checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
-                                        End If
-                                    Case Else
-                                        checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
-                                End Select
-
-                            End If
-
-                            checkDVBSChannel.Pilot = -1
-                            checkDVBSChannel.Rolloff = -1
-
-                            If NIT.isS2 = 1 Then
-                                checkDVBSChannel.Rolloff = CType(NIT.RollOff, DirectShowLib.BDA.RollOff)
-                            End If
-
-                            checkDVBSChannel.PmtPid = 0
-                            checkDVBSChannel.Polarisation = CType(NIT.Polarisation, DirectShowLib.BDA.Polarisation)
-                            checkDVBSChannel.TransportId = ScannedChannel.TID
-                            checkDVBSChannel.SwitchingFrequency = SwitchingFrequency ' Option for user to enter
-
-                            haschanged = True
-                            deleteepg = True
-                            RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " tuning details changed.", False)
-                            RaiseEvent OnMessage("", False)
-                        End If
-
-                        If currentDetail.ServiceId <> ScannedChannel.SID Then
-                            checkDVBSChannel.ServiceId = ScannedChannel.SID
-                            checkDVBSChannel.PmtPid = 0
-                            RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " serviceID changed.", False)
-                            RaiseEvent OnMessage("", False)
-                            haschanged = True
-                            deleteepg = True
-                        End If
-
-                        If UseSkyRegions = True Then
-                            Dim checkLCN As Integer = 10000
-                            If UseSkyNumbers Then
-                                If ScannedChannel.LCNCount > 0 Then
-                                    If ScannedChannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
-                                        Dim LCN As LCNHolder = ScannedChannel.GetLCN(BouquetIDtoUse, RegionIDtoUse)
-                                        checkLCN = LCN.SkyNum
-                                    Else
-                                        If ScannedChannel.ContainsLCN(BouquetIDtoUse, 255) Then
-                                            Dim LCN As LCNHolder = ScannedChannel.GetLCN(BouquetIDtoUse, 255)
-                                            checkLCN = LCN.SkyNum
-                                        End If
-                                    End If
-
-                                    If (currentDetail.ChannelNumber <> checkLCN And checkLCN < 1000) Or (checkLCN = 10000 And DBChannel.SortOrder <> 10000) Then
-
-                                        RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " number has changed from : " & checkDVBSChannel.LogicalChannelNumber & " to : " & checkLCN & ".", False)
-                                        RaiseEvent OnMessage("", False)
-                                        DBChannel.RemoveFromAllGroups()
-                                        currentDetail.ChannelNumber = checkLCN
-                                        checkDVBSChannel.LogicalChannelNumber = checkLCN
-                                        DBChannel.SortOrder = checkLCN
-                                        DBChannel.VisibleInGuide = True
-                                        haschanged = True
-                                        AddChannelToGroups(DBChannel, Checksdt, checkDVBSChannel, UseSkyCategories)
-                                    End If
-
-                                End If
-                            End If
-                        End If
-
-                        If haschanged Then
-                            DBChannel.Persist()
-                            Dim tuning As TuningDetail = _layer.UpdateTuningDetails(DBChannel, checkDVBSChannel, currentDetail)
-                            tuning.Persist()
-                            MapChannelToCards(DBChannel)
-                            If deleteepg Then
-                                _layer.RemoveAllPrograms(DBChannel.IdChannel)
-                            End If
-                        End If
-
                     End If
                 End If
+                DBChannel = _layer.AddNewChannel(SDT.ChannelName, channelnumber)
+                If DBChannel Is Nothing Then
+                    RaiseEvent OnMessage(("Error adding new channel : " & ScannedChannel.SID), False)
+                    RaiseEvent OnMessage("", False)
+                End If
+
+                Dim NIT As NITSatDescriptor = NITInfo(ScannedChannel.TID)
+                DVBSChannel.BandType = BandType.Universal
+                DVBSChannel.DisEqc = CType(DiseqC, DisEqcType)
+                DVBSChannel.FreeToAir = True
+                DVBSChannel.Frequency = NIT.Frequency
+                DVBSChannel.SymbolRate = NIT.Symbolrate
+                DVBSChannel.InnerFecRate = DirectCast(NIT.FECInner, DirectShowLib.BDA.BinaryConvolutionCodeRate)
+                DVBSChannel.IsRadio = SDT.isRadio
+                DVBSChannel.IsTv = SDT.isTV
+                DVBSChannel.FreeToAir = Not SDT.isFTA
+                DBChannel.ChannelNumber = channelnumber
+                DBChannel.SortOrder = channelnumber
+                DVBSChannel.LogicalChannelNumber = channelnumber
+                DBChannel.VisibleInGuide = VisibleInGuide
+                If (NIT.isS2 And UseModNotSetHD) Or (NIT.isS2 = False And UseModNotSetSD) Then
+                    DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotSet
+                Else
+                    Select Case NIT.Modulation
+                        Case 1
+                            If NIT.isS2 Then
+                                DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbcQpsk
+                            Else
+                                DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModQpsk
+                            End If
+                        Case 2
+                            If NIT.isS2 Then
+                                DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbc8Psk
+                            Else
+                                DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
+                            End If
+                        Case Else
+                            DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
+                    End Select
+                End If
+                DVBSChannel.Name = SDT.ChannelName
+                DVBSChannel.NetworkId = ScannedChannel.NID
+                DVBSChannel.Pilot = Pilot.NotSet
+                DVBSChannel.Rolloff = RollOff.NotSet
+                If NIT.isS2 = 1 Then
+                    DVBSChannel.Rolloff = DirectCast(NIT.RollOff, DirectShowLib.BDA.RollOff)
+                End If
+                DVBSChannel.PmtPid = 0
+                DVBSChannel.Polarisation = DirectCast(NIT.Polarisation, DirectShowLib.BDA.Polarisation)
+                DVBSChannel.Provider = SDT.Provider
+                DVBSChannel.ServiceId = ScannedChannel.SID
+                DVBSChannel.TransportId = ScannedChannel.TID
+                DVBSChannel.SwitchingFrequency = SwitchingFrequency ' Option for user to enter
+                DBChannel.IsRadio = SDT.isRadio
+                DBChannel.IsTv = SDT.isTV
+                DBChannel.ExternalId = ScannedChannel.NID & ":" & ScannedChannel.ChannelID.ToString
+                DBChannel.Persist()
+                MapChannelToCards(DBChannel)
+                AddChannelToGroups(DBChannel, SDT, DVBSChannel, UseSkyCategories)
+                _layer.AddTuningDetails(DBChannel, DVBSChannel)
+                
+                DBChannel = currentDetail.ReferencedChannel()
+                If DBChannel Is Nothing Then
+                    currentDetail.Remove()
+                    currentDetail.Persist()
+                    Continue For
+                End If
+                If DBChannel.ExternalId <> ScannedChannel.NID & ":" & ChannelId.ToString Then
+                    'Problem with TVServer so need to add new channel.
+                    GoTo AddNewChannel
+                End If
+                Dim checkDVBSChannel As DVBSChannel = DirectCast(_layer.GetTuningChannel(currentDetail), DVBSChannel)
+                If checkDVBSChannel Is Nothing OrElse DBChannel Is Nothing OrElse SDTInfo.ContainsKey(String.Concat(New String() {Conversions.ToString(ScannedChannel.NID), "-", Conversions.ToString(ScannedChannel.TID), "-", Conversions.ToString(ScannedChannel.SID)})) Then
+                    Continue For
+                End If
+                Dim Checksdt As SDTInfo
+                If SDTInfo.ContainsKey(ScannedChannel.NID & "-" & ScannedChannel.TID & "-" & ScannedChannel.SID) Then
+                    Dim haschanged As Boolean = False
+                    Dim deleteepg As Boolean = False
+                    Checksdt = SDTInfo(ScannedChannel.NID & "-" & ScannedChannel.TID & "-" & ScannedChannel.SID)
+                    If DBChannel.DisplayName <> Checksdt.ChannelName Or currentDetail.Name <> Checksdt.ChannelName Then
+                        RaiseEvent OnMessage("Channel " & DBChannel.DisplayName & " name changed to " & Checksdt.ChannelName, False)
+                        DBChannel.DisplayName = Checksdt.ChannelName
+                        checkDVBSChannel.Name = Checksdt.ChannelName
+                        'Check Channel hasn't become a real channel from a test channel
+                        If ScannedChannel.LCNCount > 0 And DBChannel.VisibleInGuide = False Then
+                            DBChannel.VisibleInGuide = True
+                            RaiseEvent OnMessage("Channel " & DBChannel.DisplayName & " is now part of the EPG making visible " & Checksdt.ChannelName & ".", False)
+                        End If
+                        haschanged = True
+                    End If
+
+                    If checkDVBSChannel.Provider <> Checksdt.Provider Then
+                        RaiseEvent OnMessage("Channel " & DBChannel.DisplayName & " Provider name changed to " & Checksdt.Provider & ".", False)
+                        RaiseEvent OnMessage("", False)
+                        checkDVBSChannel.Provider = Checksdt.Provider
+                        haschanged = True
+                    End If
+
+                    If currentDetail.TransportId <> ScannedChannel.TID Then
+                        'Moved transponder
+                        RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " tuning details changed.", False)
+                        RaiseEvent OnMessage("", False)
+                        If NITInfo.ContainsKey(ScannedChannel.TID) Then
+                            NIT = NITInfo(ScannedChannel.TID)
+                        Else
+                            Continue For
+                        End If
+                        checkDVBSChannel.BandType = 0
+                        checkDVBSChannel.Frequency = NIT.Frequency
+                        checkDVBSChannel.SymbolRate = NIT.Symbolrate
+                        checkDVBSChannel.InnerFecRate = CType(NIT.FECInner, DirectShowLib.BDA.BinaryConvolutionCodeRate)
+                        If (NIT.isS2 And UseModNotSetHD) Or (NIT.isS2 = False And UseModNotSetSD) Then
+                            checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotSet
+                        Else
+                            Select Case NIT.Modulation
+                                Case 1
+                                    If NIT.isS2 Then
+                                        checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbcQpsk
+                                    Else
+                                        checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModQpsk
+                                    End If
+                                Case 2
+                                    If NIT.isS2 Then
+                                        checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbc8Psk
+                                    Else
+                                        checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
+                                    End If
+                                Case Else
+                                    checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
+                            End Select
+
+                        End If
+
+                        checkDVBSChannel.Pilot = Pilot.NotSet
+                        checkDVBSChannel.Rolloff = RollOff.NotSet
+
+                        If NIT.isS2 = 1 Then
+                            checkDVBSChannel.Rolloff = DirectCast(NIT.RollOff, DirectShowLib.BDA.RollOff)
+                        End If
+
+                        checkDVBSChannel.PmtPid = 0
+                        checkDVBSChannel.Polarisation = DirectCast(NIT.Polarisation, DirectShowLib.BDA.Polarisation)
+                        checkDVBSChannel.TransportId = ScannedChannel.TID
+                        checkDVBSChannel.SwitchingFrequency = SwitchingFrequency ' Option for user to enter
+
+                        haschanged = True
+                        deleteepg = True
+                        RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " tuning details changed.", False)
+                        RaiseEvent OnMessage("", False)
+                    End If
+
+                    If currentDetail.ServiceId <> ScannedChannel.SID Then
+                        checkDVBSChannel.ServiceId = ScannedChannel.SID
+                        checkDVBSChannel.PmtPid = 0
+                        RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " serviceID changed.", False)
+                        RaiseEvent OnMessage("", False)
+                        haschanged = True
+                        deleteepg = True
+                    End If
+
+                    If UseSkyRegions = True Then
+                        Dim checkLCN As Integer = 10000
+                        If UseSkyNumbers Then
+                            If ScannedChannel.LCNCount > 0 Then
+                                If ScannedChannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
+                                    Dim LCN As LCNHolder = ScannedChannel.GetLCN(BouquetIDtoUse, RegionIDtoUse)
+                                    checkLCN = LCN.SkyNum
+                                Else
+                                    If ScannedChannel.ContainsLCN(BouquetIDtoUse, 255) Then
+                                        Dim LCN As LCNHolder = ScannedChannel.GetLCN(BouquetIDtoUse, 255)
+                                        checkLCN = LCN.SkyNum
+                                    End If
+                                End If
+
+                                If (currentDetail.ChannelNumber <> checkLCN And checkLCN < 1000) Or (checkLCN = 10000 And DBChannel.SortOrder <> 10000) Then
+
+                                    RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " number has changed from : " & checkDVBSChannel.LogicalChannelNumber & " to : " & checkLCN & ".", False)
+                                    RaiseEvent OnMessage("", False)
+                                    DBChannel.RemoveFromAllGroups()
+                                    currentDetail.ChannelNumber = checkLCN
+                                    checkDVBSChannel.LogicalChannelNumber = checkLCN
+                                    DBChannel.SortOrder = checkLCN
+                                    DBChannel.VisibleInGuide = True
+                                    haschanged = True
+                                    AddChannelToGroups(DBChannel, Checksdt, checkDVBSChannel, UseSkyCategories)
+                                End If
+
+                            End If
+                        End If
+                    End If
+
+                    If haschanged Then
+                        DBChannel.Persist()
+                        Dim tuning As TuningDetail = _layer.UpdateTuningDetails(DBChannel, checkDVBSChannel, currentDetail)
+                        tuning.Persist()
+                        MapChannelToCards(DBChannel)
+                        If deleteepg Then
+                            _layer.RemoveAllPrograms(DBChannel.IdChannel)
+                        End If
+                    End If
+
+                End If
+
 
             Next
         Catch err As Exception
@@ -1587,7 +1531,7 @@ AddNewChannel:
     Private Sub AddChannelToGroups(ByVal DBChannel As Channel, ByVal SDT As SDTInfo, ByVal DVBSChannel As DVBSChannel, ByVal UseSkyCategories As Boolean)
         If DBChannel.IsTv Then
             _layer.AddChannelToGroup(DBChannel, TvConstants.TvGroupNames.AllChannels)
-            If DVBSChannel.LogicalChannelNumber < 1000 Then
+            If DVBSChannel.LogicalChannelNumber < 750 Then 'was 1000
                 If UseSkyCategories = True Then
                     If Settings.GetCategory(SDT.Category) <> SDT.Category.ToString Then
                         _layer.AddChannelToGroup(DBChannel, Settings.GetCategory(SDT.Category))
@@ -1698,7 +1642,7 @@ AddNewChannel:
                 ChanNumber += 1
             Next
         End If
-       
+
 
 
 
@@ -2080,7 +2024,7 @@ nextloop1:
         summariesDecoded += 1
     End Sub
 
-    Private Sub ParseSDT(ByVal Data As Section, ByVal Length As Integer)
+    Private Sub ParseSDT(ByVal Data As Custom_Data_Grabber.Section, ByVal Length As Integer)
 
         Try
 
@@ -2128,7 +2072,7 @@ nextloop1:
                                 RaiseEvent OnMessage("Got All SDT Info, " & SDTInfo.Count & " Channels found", False)
                             End If
                         End If
-     
+
 
                         'add sdt info
                     Else
@@ -2318,7 +2262,7 @@ nextloop1:
         End Try
     End Function
 
-    Private Sub ParseChannels(ByVal Data As Section, ByVal Length As Integer)
+    Private Sub ParseChannels(ByVal Data As Custom_Data_Grabber.Section, ByVal Length As Integer)
         'If all bouquets are already fully populated, return
         Try
 
@@ -2515,7 +2459,7 @@ nextloop1:
         End If
     End Function
 
-    Sub OnSummarySectionReceived(ByVal pid As Integer, ByVal section As Section)
+    Sub OnSummarySectionReceived(ByVal pid As Integer, ByVal section As Custom_Data_Grabber.Section)
         Try
             '	If the summary data carousel is complete for this pid, we can discard the data as we already have it
             If IsSummaryDataCarouselOnPidComplete(pid) Then
