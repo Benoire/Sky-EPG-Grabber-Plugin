@@ -1559,12 +1559,14 @@ AddNewChannel:
         Dim DBUpd As New EpgDBUpdater(TVController1, "Sky TV EPG Updater", False)
         Dim ChannelstoUpdate As New List(Of EpgChannel)
         Dim AddExtraInfo As Boolean = Settings.useExtraInfo
+        Dim now As DateTime = DateTime.Now
         'New method
         If _layer.GetPrograms(Now, Now.AddDays(1)).Count < 1 Then
             Dim listofprogs As New ProgramList
 
-            For Each SkyChannelPair As KeyValuePair(Of Integer, Sky_Channel) In Channels
-                Dim skyChannel As Sky_Channel = SkyChannelPair.Value
+            Dim skychannelpair As KeyValuePair(Of Integer, Sky_Channel)
+            For Each skychannelpair In Channels
+                Dim skyChannel As Sky_Channel = skychannelpair.Value
                 Dim DBChannel As Channel = _layer.GetChannelByTuningDetail(skyChannel.NID, skyChannel.TID, skyChannel.SID)
                 If DBChannel Is Nothing Then
 
@@ -1643,21 +1645,17 @@ AddNewChannel:
             Next
         End If
 
-
-
-
-        TVController1 = Nothing
-        DBUpd = Nothing
+        'TVController1 = Nothing
+        'DBUpd = Nothing
         RaiseEvent OnMessage("EPG Update Complete", False)
     End Sub
 
     Public Event OnActivateControls()
 
-    Sub UpdateDataBase(ByVal err As Boolean, ByVal errormessage As String) Handles Sky.OnComplete
-        If err = False Then
-            If Channels.Count < 100 Then
-                RaiseEvent OnMessage("Error : Less than 100 channels found, Grabber found : " & Channels.Count, False)
-                GoTo exitsub
+    Sub UpdateDataBase(ByVal err As Boolean, ByVal errormessage As String)
+        If Not err Then
+            If Channels.Count < 46 Then
+                RaiseEvent OnMessage("Error : Less than 46 channels found, Grabber found : " & Channels.Count, False)
             End If
             CreateGroups()
             If Settings.UpdateChannels Then
@@ -1670,7 +1668,7 @@ AddNewChannel:
             End If
 
             If Settings.UpdateEPG Then
-                RaiseEvent OnMessage("Updating EPG, please wait ... This can take upto 15 mins", False)
+                RaiseEvent OnMessage("Updating EPG, please wait ... This can take upto 5 mins", False)
                 UpdateEPG()
             End If
             Settings.LastUpdate = Now
@@ -1678,18 +1676,17 @@ AddNewChannel:
         Else
             RaiseEvent OnMessage("Error Occured:- " & errormessage, False)
         End If
-exitsub:
         RaiseEvent OnActivateControls()
         Settings.IsGrabbing = False
-
     End Sub
+
     Private Sub DeleteOldChannels()
         Dim UseRegions As Boolean = Settings.UseSkyRegions
         Dim DeleteOld As Boolean = Settings.DeleteOldChannels
         Dim OldFolder As String = Settings.OldChannelFolder
         RegionIDtoUse = Settings.RegionID
 
-        Dim ChannelstoCheck As List(Of Channel) = _layer.Channels
+        Dim ChannelstoCheck As List(Of Channel) = DirectCast(_layer.Channels, List(Of Channel))
 
         For Each Channelto As Channel In ChannelstoCheck
             If Channelto.ExternalId.Count > 1 Then
@@ -1703,7 +1700,7 @@ exitsub:
                 Catch
                     Continue For
                 End Try
-                If NetworkID <> 2 Then Continue For 'Not a 28e channel
+                If NetworkID <> &HA9 Then Continue For 'Not a Sky NZ channel
                 If Channels.ContainsKey(ChannelID) = False Then
                     removechannel(Channelto, DeleteOld, OldFolder)
                     Continue For
@@ -1712,10 +1709,7 @@ exitsub:
                 If UseRegions Then
                     'Move Channels that are not in this Bouquet
                     Dim ScannedChannel As Sky_Channel = Channels(ChannelID)
-                    If ScannedChannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Or ScannedChannel.ContainsLCN(BouquetIDtoUse, 255) Then
-                        Continue For
-                    End If
-                    If (Channelto.IsTv And Channelto.VisibleInGuide = True) Then
+                    If Not ScannedChannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Or ScannedChannel.ContainsLCN(BouquetIDtoUse, 255) AndAlso (Channelto.IsTv And Channelto.VisibleInGuide) Then
                         Channelto.RemoveFromAllGroups()
                         Channelto.VisibleInGuide = False
                         Channelto.Persist()
@@ -1739,14 +1733,13 @@ exitsub:
             _layer.AddChannelToGroup(DBchannel, OldChannelFolder)
             RaiseEvent OnMessage("Channel " & DBchannel.DisplayName & " no longer exists in the EPG, moved to " & OldChannelFolder & ".", False)
         End If
-
     End Sub
 
     Private Sub Grabit()
         Sky = New CustomDataGRabber
         MapCards = Settings.CardMap
         If MapCards Is Nothing Or MapCards.Count = 0 Then
-            RaiseEvent OnMessage("No cards are selected for use, please correct this before continuing", False)
+            RaiseEvent OnMessage("No cards have been selected for use, please ensure one is selected before continuing", False)
             Settings.IsGrabbing = False
             RaiseEvent OnActivateControls()
             Return
@@ -1773,10 +1766,10 @@ exitsub:
         End If
         GrabEPG = Settings.UpdateEPG
 
-        Dim Channel As TvDatabase.Channel
+        Dim Channel As Channel
         DVBSChannel = New DVBSChannel()
 
-        Dim channelss As List(Of TvDatabase.Channel) = _layer.GetChannelsByName("Sky NZ Grabber")
+        Dim channelss As List(Of Channel) = _layer.GetChannelsByName("Sky NZ Grabber")
         If channelss.Count = 0 Then
             Channel = _layer.AddNewChannel("Sky NZ Grabber", 10000)
             Channel.VisibleInGuide = False
@@ -1784,24 +1777,23 @@ exitsub:
             Channel.IsRadio = True
             Channel.IsTv = False
             DVBSChannel.BandType = 0
-            DVBSChannel.DisEqc = CType(Settings.DiseqC, DisEqcType)
+            DVBSChannel.DisEqc = DirectCast(Settings.DiseqC, DisEqcType)
             DVBSChannel.FreeToAir = True
             DVBSChannel.Frequency = Settings.frequency
             DVBSChannel.SymbolRate = Settings.SymbolRate
-            DVBSChannel.InnerFecRate = -1
+            DVBSChannel.InnerFecRate = BinaryConvolutionCodeRate.RateNotSet
             DVBSChannel.IsRadio = True
             DVBSChannel.IsTv = False
             DVBSChannel.LogicalChannelNumber = 10000
-            DVBSChannel.ModulationType = CType(Settings.modulation - 1, DirectShowLib.BDA.ModulationType)
+            DVBSChannel.ModulationType = DirectCast(Settings.modulation - 1, DirectShowLib.BDA.ModulationType)
             DVBSChannel.Name = "Sky NZ Grabber"
             DVBSChannel.NetworkId = Settings.NID
-            DVBSChannel.Pilot = -1
+            DVBSChannel.Pilot = Pilot.NotSet
             DVBSChannel.PmtPid = 0
-            DVBSChannel.Polarisation = Settings.polarisation - 1
+            DVBSChannel.Polarisation = DirectCast(Settings.polarisation - 1, Polarisation)
             DVBSChannel.Provider = "DJBlu"
-            DVBSChannel.Rolloff = -1
+            DVBSChannel.Rolloff = RollOff.NotSet
             DVBSChannel.ServiceId = Settings.ServiceID
-
             DVBSChannel.TransportId = Settings.TransportID
             DVBSChannel.SatelliteIndex = 16
             DVBSChannel.SwitchingFrequency = Settings.SwitchingFrequency
@@ -1837,9 +1829,9 @@ exitsub:
         If Channel Is Nothing Then
             RaiseEvent OnMessage("Channel was lost somewhere, try clicking on Grab data again", False)
         Else
-            Dim seconds As Integer = Settings.GrabTime
-            RaiseEvent OnMessage("Grabber set to grab " & seconds & " seconds of data", False)
-            Sky.GrabData(Channel.IdChannel, seconds, Pid_List)
+            Dim grabtime As Integer = Settings.GrabTime
+            RaiseEvent OnMessage("Grabber set to grab " & grabtime & " seconds of data", False)
+            Sky.GrabData(Channel.IdChannel, grabtime, Pid_List)
         End If
     End Sub
 
