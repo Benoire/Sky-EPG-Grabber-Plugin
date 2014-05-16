@@ -6,13 +6,12 @@ Imports TvLibrary.Channels
 Imports TvLibrary.Epg
 Imports TvLibrary.Interfaces
 Imports TvEngine
-
 Imports System.Text
 Imports System.Collections.Generic
-Imports System.Collections.Specialized
 Imports SetupTv
 Imports TvControl
 Imports TvLibrary.Log
+
 Public Class Sky_NZGrabber
 
     Implements ITvServerPlugin
@@ -33,31 +32,31 @@ Public Class Sky_NZGrabber
                     If (Now.Hour = settings.UpdateTime.Hour) And settings.LastUpdate.Date <> Now.Date Then
                         If Now.Minute >= settings.UpdateTime.Minute And Now.Minute <= settings.UpdateTime.Minute + 10 Then
                             Select Case Now.DayOfWeek
-                                Case System.DayOfWeek.Monday
+                                Case DayOfWeek.Monday
                                     If settings.Mon = True Then
                                         skygrabber.Grab()
                                     End If
-                                Case System.DayOfWeek.Tuesday
+                                Case DayOfWeek.Tuesday
                                     If settings.Tue = True Then
                                         skygrabber.Grab()
                                     End If
-                                Case System.DayOfWeek.Wednesday
+                                Case DayOfWeek.Wednesday
                                     If settings.Wed = True Then
                                         skygrabber.Grab()
                                     End If
-                                Case System.DayOfWeek.Thursday
+                                Case DayOfWeek.Thursday
                                     If settings.Thu = True Then
                                         skygrabber.Grab()
                                     End If
-                                Case System.DayOfWeek.Friday
+                                Case DayOfWeek.Friday
                                     If settings.Fri = True Then
                                         skygrabber.Grab()
                                     End If
-                                Case System.DayOfWeek.Saturday
+                                Case DayOfWeek.Saturday
                                     If settings.Sat = True Then
                                         skygrabber.Grab()
                                     End If
-                                Case System.DayOfWeek.Sunday
+                                Case DayOfWeek.Sunday
                                     If settings.Sun = True Then
                                         skygrabber.Grab()
                                     End If
@@ -70,31 +69,31 @@ Public Class Sky_NZGrabber
 
     End Sub
 
-    Public ReadOnly Property Author As String Implements TvEngine.ITvServerPlugin.Author
+    Public ReadOnly Property Author As String Implements ITvServerPlugin.Author
         Get
             Return "DJBlu"
         End Get
     End Property
 
-    Public ReadOnly Property MasterOnly As Boolean Implements TvEngine.ITvServerPlugin.MasterOnly
+    Public ReadOnly Property MasterOnly As Boolean Implements ITvServerPlugin.MasterOnly
         Get
             Return True
         End Get
     End Property
 
-    Public ReadOnly Property Name As String Implements TvEngine.ITvServerPlugin.Name
+    Public ReadOnly Property Name As String Implements ITvServerPlugin.Name
         Get
             Return "Sky NZ Grabber"
         End Get
     End Property
 
-    Public ReadOnly Property Setup As SetupTv.SectionSettings Implements TvEngine.ITvServerPlugin.Setup
+    Public ReadOnly Property Setup As SectionSettings Implements ITvServerPlugin.Setup
         Get
             Return New Setup()
         End Get
     End Property
 
-    Public Sub Start(ByVal controller As TvControl.IController) Implements TvEngine.ITvServerPlugin.Start
+    Public Sub Start(ByVal controller As IController) Implements ITvServerPlugin.Start
         skygrabber = New SkyGrabber
         settings = New Settings
         settings.IsGrabbing = False
@@ -105,13 +104,13 @@ Public Class Sky_NZGrabber
 
     End Sub
 
-    Public Sub Stopit() Implements TvEngine.ITvServerPlugin.Stop
+    Public Sub Stopit() Implements ITvServerPlugin.Stop
         timer.Start()
         settings = Nothing
         skygrabber = Nothing
     End Sub
 
-    Public ReadOnly Property Version As String Implements TvEngine.ITvServerPlugin.Version
+    Public ReadOnly Property Version As String Implements ITvServerPlugin.Version
         Get
             Return "1.2.0.27"
         End Get
@@ -1367,7 +1366,7 @@ AddNewChannel:
                 MapChannelToCards(DBChannel)
                 AddChannelToGroups(DBChannel, SDT, DVBSChannel, UseSkyCategories)
                 _layer.AddTuningDetails(DBChannel, DVBSChannel)
-                
+
                 DBChannel = currentDetail.ReferencedChannel()
                 If DBChannel Is Nothing Then
                     currentDetail.Remove()
@@ -1561,7 +1560,7 @@ AddNewChannel:
         Dim AddExtraInfo As Boolean = Settings.useExtraInfo
         Dim now As DateTime = DateTime.Now
         'New method
-        If _layer.GetPrograms(Now, Now.AddDays(1)).Count < 1 Then
+        If _layer.GetPrograms(now, now.AddDays(1)).Count < 1 Then
             Dim listofprogs As New ProgramList
 
             Dim skychannelpair As KeyValuePair(Of Integer, Sky_Channel)
@@ -1836,15 +1835,13 @@ AddNewChannel:
     End Sub
 
     Public Sub Grab()
-
-        RaiseEvent OnMessage("Sky Channel and EPG Grabber initialised", False)
+        RaiseEvent OnMessage("Sky NZ Channel and EPG Grabber initialised", False)
         If Settings.IsGrabbing = False Then
             Settings.IsGrabbing = True
             Reset()
             Dim back As Threading.Thread = New Threading.Thread(AddressOf Grabit)
             back.Start()
         End If
-
     End Sub
 
     Private Sub LoadHuffman(ByVal type As Integer)
@@ -2019,67 +2016,81 @@ nextloop1:
     Private Sub ParseSDT(ByVal Data As Custom_Data_Grabber.Section, ByVal Length As Integer)
 
         Try
-
-            If GotAllSDT = True Then Return
-            Dim Section As Byte() = Data.Data
-            Dim transport_id As Integer = ((Section(3)) * 256) + Section(4)
-            Dim original_network_id As Long = ((Section(8)) * 256) + Section(9)
-            Dim len1 As Integer = Length - 11 - 4
-            Dim descriptors_loop_length As Integer
-            Dim len2 As Integer
-            Dim service_id As Long
-            Dim EIT_schedule_flag As Integer
-            Dim free_CA_mode As Integer
-            Dim running_status As Integer
-            Dim EIT_present_following_flag As Integer
-            Dim pointer As Integer = 11
-            Dim x As Integer = 0
-            Do While (len1 > 0)
-                service_id = (Section(pointer) * 256) + Section(pointer + 1)
-                EIT_schedule_flag = (Section(pointer + 2) >> 1) And 1
-                EIT_present_following_flag = Section(pointer + 2) And 1
-                running_status = (Section(pointer + 3) >> 5) And 7
-                free_CA_mode = (Section(pointer + 3) >> 4) And 1
-                descriptors_loop_length = ((Section(pointer + 3) And &HF) * 256) + Section(pointer + 4)
-                pointer += 5
-                len1 -= 5
-                len2 = descriptors_loop_length
-                Do While (len2 > 0)
-                    Dim indicator As Integer = Section(pointer)
-                    x = 0
-                    x = Section(pointer + 1) + 2
-                    If (indicator = &H48) Then
-                        Dim info As SDTInfo
-                        info = DVB_GetServiceNew(Section, pointer)
-                        info.SID = service_id
-                        info.isFTA = free_CA_mode
-
-                        If SDTInfo.ContainsKey(original_network_id & "-" & transport_id & "-" & service_id) = False Then
+            If Not GotAllSDT Then
+                Dim Section As Byte() = Data.Data
+                Dim transport_id As Integer = ((Section(3)) * 256) + Section(4)
+                Dim original_network_id As Long = ((Section(8)) * 256) + Section(9)
+                Dim len1 As Integer = Length - 11 - 4
+                Dim descriptors_loop_length As Integer
+                Dim len2 As Integer
+                Dim service_id As Long
+                Dim EIT_schedule_flag As Integer
+                Dim free_CA_mode As Integer
+                Dim running_status As Integer
+                Dim EIT_present_following_flag As Integer
+                Dim pointer As Integer = 11
+                Dim x As Integer = 0
+                Do While (len1 > 0)
+                    service_id = (Section(pointer) * 256) + Section(pointer + 1)
+                    EIT_schedule_flag = (Section(pointer + 2) >> 1) And 1
+                    EIT_present_following_flag = Section(pointer + 2) And 1
+                    running_status = (Section(pointer + 3) >> 5) And 7
+                    free_CA_mode = (Section(pointer + 3) >> 4) And 1
+                    descriptors_loop_length = ((Section(pointer + 3) And &HF) * 256) + Section(pointer + 4)
+                    pointer += 5
+                    len1 -= 5
+                    len2 = descriptors_loop_length
+                    Dim info As SDTInfo
+                    Do While (len2 > 0)
+                        Dim indicator As Integer = Section(pointer)
+                        x = 0
+                        x = Section(pointer + 1) + 2
+                        Select indicator
+                            Case &H48
+                                DVB_GetServiceNew(Section, pointer, info)
+                                info.SID = service_id
+                                info.isFTA = (free_CA_mode > 0)
+                                Exit Select
+                            Case &HB2
+                                If Section((pointer + 4) And 1) = 1 Then
+                                    info.Category = Section(pointer + 5)
+                                Else
+                                    info.Category = Section(pointer + 4)
+                                End If
+                                Exit Select
+                        End Select
+                        'If (indicator = &H48) Then
+                        'Dim info As SDTInfo
+                        'info = DVB_GetServiceNew(Section, pointer)
+                        'info.SID = service_id
+                        'info.isFTA = free_CA_mode
+                        len2 -= x
+                        pointer += x
+                        len1 -= x
+                        If Not SDTInfo.ContainsKey(original_network_id & "-" & transport_id & "-" & service_id) Then
                             SDTInfo.Add(original_network_id & "-" & transport_id & "-" & service_id, info)
                             SDTCount += 1
                         End If
-                        If AreAllBouquetsPopulated() And SDTCount = Channels.Count Then
-                            If GotAllSDT = False Then
-                                GotAllSDT = True
+                        If AreAllBouquetsPopulated() And SDTCount = Channels.Count AndAlso Not GotAllSDT Then
+                            GotAllSDT = True
                                 RaiseEvent OnMessage("Got All SDT Info, " & SDTInfo.Count & " Channels found", False)
-                            End If
                         End If
+                    Loop
 
 
-                        'add sdt info
-                    Else
+        'add sdt info
+        'Else
 
 
-                        Dim st As Integer = indicator
-                        If (Not st = &H53 And Not st = &H64) Then
-                            st = 1
-                        End If
-                    End If
-                    len2 -= x
-                    pointer += x
-                    len1 -= x
+        'Dim st As Integer = indicator
+        'If (Not st = &H53 And Not st = &H64) Then
+        'st = 1
+        'End If
+        'End If
+
+
                 Loop
-            Loop
+            End If
         Catch ex As Exception
             RaiseEvent OnMessage("Error Parsing SDT", False)
             Return
@@ -2089,16 +2100,13 @@ nextloop1:
 
     End Sub
 
-    Function DVB_GetServiceNew(ByVal b As Byte(), ByVal x As Integer) As SDTInfo
-        Dim info As New SDTInfo
-        Dim descriptor_tag As Integer
-        Dim descriptor_length As Integer
+    Function DVB_GetServiceNew(ByVal b As Byte(), ByVal x As Integer, ByRef info As SDTInfo)
+        Dim descriptor_tag As Integer = b(x + 0)
+        Dim descriptor_length As Integer = b(x + 1)
         Dim service_provider_name_length As Integer
         Dim service_name_length As Integer
         Dim pointer As Integer = 0
 
-        descriptor_tag = b(x + 0)
-        descriptor_length = b(x + 1)
         If b(x + 2) = &H2 Then
             'Radio Channel
             info.isRadio = True
@@ -2125,60 +2133,59 @@ nextloop1:
         service_name_length = b(x + pointer)
         pointer += 1
         info.ChannelName = GetString(b, pointer + x, service_name_length, False)
-        pointer += service_name_length
-        Select Case b(x + pointer)
+        'pointer += service_name_length
+        'Select Case b(x + pointer)
 
-            Case Is = &H49
-                pointer += b(x + pointer + 1) + 2
-                If (b(x + pointer) = &H5F) Then
-                    pointer += b(x + pointer + 1) + 5
-                    If ((b(x + pointer + 1) And &H1) = 1) Then
-                        info.Category = b(x + pointer + 2)
-                    Else
-                        info.Category = b(x + pointer + 1)
-                    End If
-                End If
+        '    Case Is = &H49
+        '        pointer += b(x + pointer + 1) + 2
+        '        If (b(x + pointer) = &H5F) Then
+        '            pointer += b(x + pointer + 1) + 5
+        '            If ((b(x + pointer + 1) And &H1) = 1) Then
+        '                info.Category = b(x + pointer + 2)
+        '            Else
+        '                info.Category = b(x + pointer + 1)
+        '            End If
+        '        End If
 
-            Case Is = &HB2
-                If ((b(x + pointer + 4) And &H1) = 1) Then
-                    info.Category = b(x + pointer + 5)
-                Else
-                    info.Category = b(x + pointer + 4)
-                End If
-            Case Is = &H5F
-                pointer += b(x + pointer + 1) + 5
-                If ((b(x + pointer + 1) And &H1) = 1) Then
-                    info.Category = b(x + pointer + 2)
-                Else
-                    info.Category = b(x + pointer + 1)
-                End If
-            Case Is = &H4B
-                Dim offset As Integer = x + pointer
-                Dim morechanlen As Integer = b(offset + 1)
-                Dim tt As Integer
-                offset += 2
-                Dim Sid1, Nid1, Tid1 As Integer
-                For tt = 0 To morechanlen Step 6
-                    Tid1 = (b(offset + tt) * 256) Or b(offset + tt + 1)
-                    Nid1 = (b(offset + tt + 2) * 256) Or b(offset + tt + 3)
-                    Sid1 = (b(offset + tt + 4) * 256) Or b(offset + tt + 5)
-                    If SDTInfo.ContainsKey(Nid1 & "-" & Tid1 & "-" & Sid1) = False And info.ChannelName <> "" Then
-                        Dim SDT As New SDTInfo
-                        SDT.ChannelName = info.ChannelName
-                        SDT.Category = 0
-                        SDT.SID = Sid1
-                        SDT.isFTA = info.isFTA
-                        SDT.isHD = info.isHD
-                        SDT.isTV = info.isTV
-                        SDT.isRadio = info.isRadio
-                        SDT.Provider = info.Provider
-                        SDTInfo.Add(Nid1 & "-" & Tid1 & "-" & Sid1, SDT)
-                        SDTCount += 1
-                    End If
-                Next
-        End Select
-        Return info
-
+        '    Case Is = &HB2
+        '        If ((b(x + pointer + 4) And &H1) = 1) Then
+        '            info.Category = b(x + pointer + 5)
+        '        Else
+        '            info.Category = b(x + pointer + 4)
+        '        End If
+        '    Case Is = &H5F
+        '        pointer += b(x + pointer + 1) + 5
+        '        If ((b(x + pointer + 1) And &H1) = 1) Then
+        '            info.Category = b(x + pointer + 2)
+        '        Else
+        '            info.Category = b(x + pointer + 1)
+        '        End If
+        '    Case Is = &H4B
+        '        Dim offset As Integer = x + pointer
+        '        Dim morechanlen As Integer = b(offset + 1)
+        '        Dim tt As Integer
+        '        offset += 2
+        '        Dim Sid1, Nid1, Tid1 As Integer
+        '        For tt = 0 To morechanlen Step 6
+        '            Tid1 = (b(offset + tt) * 256) Or b(offset + tt + 1)
+        '            Nid1 = (b(offset + tt + 2) * 256) Or b(offset + tt + 3)
+        '            Sid1 = (b(offset + tt + 4) * 256) Or b(offset + tt + 5)
+        '            If SDTInfo.ContainsKey(Nid1 & "-" & Tid1 & "-" & Sid1) = False And info.ChannelName <> "" Then
+        '                Dim SDT As New SDTInfo
+        '                SDT.ChannelName = info.ChannelName
+        '                SDT.Category = 0
+        '                SDT.SID = Sid1
+        '                SDT.isFTA = info.isFTA
+        '                SDT.isHD = info.isHD
+        '                SDT.isTV = info.isTV
+        '                SDT.isRadio = info.isRadio
+        '                SDT.Provider = info.Provider
+        '                SDTInfo.Add(Nid1 & "-" & Tid1 & "-" & Sid1, SDT)
+        '                SDTCount += 1
+        '            End If
+        '        Next
+        'End Select
+        'Return info
     End Function
 
     Function GetString(ByVal byteData As Byte(), ByVal offset As Integer, ByVal length As Integer, ByVal replace As Boolean) As String
@@ -2193,8 +2200,7 @@ nextloop1:
             isoTable = "iso-8859-1"
         Else
             Select Case byteData(offset)
-                Case &H1, &H2, &H3, &H4, &H5, &H6, _
-                 &H7, &H8, &H9, &HA, &HB
+                Case &H1, &H2, &H3, &H4, &H5, &H6, &H7, &H8, &H9, &HA, &HB
                     isoTable = "iso-8859-" & (byteData(offset) + 4).ToString()
                     startByte = 1
                     Exit Select
@@ -2257,98 +2263,69 @@ nextloop1:
     Private Sub ParseChannels(ByVal Data As Custom_Data_Grabber.Section, ByVal Length As Integer)
         'If all bouquets are already fully populated, return
         Try
-
             If (Data.table_id) <> &H4A Then
-                If AreAllBouquetsPopulated() Then
-                    If Data.table_id = &H42 Or Data.table_id = &H46 Then
-                        If GotAllSDT Then
-                            Return
-                        Else
-                            ParseSDT(Data, Length)
-                        End If
+                If AreAllBouquetsPopulated() AndAlso Data.table_id = &H42 Or Data.table_id = 70 AndAlso Not GotAllSDT Then
+                    ParseSDT(Data, Length)
+                End If
+            ElseIf Not AreAllBouquetsPopulated() Then
+                Dim buffer() As Byte = Data.Data
+                Dim bouquetId As Integer = (buffer(3) * 256) + buffer(4)
+                Dim bouquetDescriptorLength As Integer = ((buffer(8) And &HF) * 256) + buffer(9)
+                Dim skyBouquet As SkyBouquet = GetBouquet(bouquetId)
+                If Not skyBouquet.isPopulated Then
+                    If Not skyBouquet.isInitialized Then
+                        skyBouquet.firstReceivedSectionNumber = Data.section_number
+                        skyBouquet.isInitialized = True
+                    ElseIf Data.section_number = skyBouquet.firstReceivedSectionNumber Then
+                        skyBouquet.isPopulated = True
+                        NotifyBouquetPopulated()
+                        Return
                     End If
-                    Return
-                Else
-                    Return
-                End If
-            End If
-
-            If AreAllBouquetsPopulated() Then
-                Return
-            End If
-
-            Dim buffer() As Byte = Data.Data
-
-            Dim bouquetId As Integer = (buffer(3) * 256) + buffer(4)
-            Dim bouquetDescriptorLength As Integer = ((buffer(8) And &HF) * 256) + buffer(9)
-
-            Dim skyBouquet As SkyBouquet = GetBouquet(bouquetId)
-            If (skyBouquet.isPopulated) Then
-                Return
-            End If
-            '	//	If the bouquet is not initialized, this is the first time we have seen it
-            If (skyBouquet.isInitialized = False) Then
-                skyBouquet.firstReceivedSectionNumber = Data.section_number
-                skyBouquet.isInitialized = True
-            Else
-                If (Data.section_number = skyBouquet.firstReceivedSectionNumber) Then
-                    skyBouquet.isPopulated = True
-                    NotifyBouquetPopulated()
-                    Return
-                End If
-            End If
-
-            Dim body As Integer = 10 + bouquetDescriptorLength
-            Dim bouquetPayloadLength As Integer = ((buffer(body + 0) And &HF) * 256) + buffer(body + 1)
-            Dim endOfPacket As Integer = body + bouquetPayloadLength + 2
-            Dim currentTransportGroup As Integer = body + 2
-
-            Do While (currentTransportGroup < endOfPacket)
-
-                Dim transportId As Integer = (buffer(currentTransportGroup + 0) * 256) + buffer(currentTransportGroup + 1)
-                Dim networkId = (buffer(currentTransportGroup + 2) * 256) + buffer(currentTransportGroup + 3)
-                Dim transportGroupLength As Integer = ((buffer(currentTransportGroup + 4) And &HF) * 256) + buffer(currentTransportGroup + 5)
-                Dim currentTransportDescriptor As Integer = currentTransportGroup + 6
-                Dim endOfTransportGroupDescriptors As Integer = currentTransportDescriptor + transportGroupLength
-
-                Do While (currentTransportDescriptor < endOfTransportGroupDescriptors)
-
-                    Dim descriptorType As Byte = buffer(currentTransportDescriptor)
-
-                    Dim descriptorLength As Integer = buffer(currentTransportDescriptor + 1)
-                    Dim currentServiceDescriptor As Integer = currentTransportDescriptor + 2
-                    Dim endOfServiceDescriptors As Integer = currentServiceDescriptor + descriptorLength - 2
-
-                    If (descriptorType = &HB1) Then
-                        Dim RegionID As Integer = buffer(currentTransportDescriptor + 3)
-                        Do While (currentServiceDescriptor < endOfServiceDescriptors)
-                            Dim serviceId As Integer = (buffer(currentServiceDescriptor + 2) * 256) + buffer(currentServiceDescriptor + 3)
-                            Dim channelId As Integer = (buffer(currentServiceDescriptor + 5) * 256) + buffer(currentServiceDescriptor + 6)
-                            Dim skyChannelNumber As Integer = (buffer(currentServiceDescriptor + 7) * 256) + buffer(currentServiceDescriptor + 8)
-                            Dim skyChannel As Sky_Channel = GetChannel(channelId)
-                            Dim SkyLCN As New LCNHolder(bouquetId, RegionID, skyChannelNumber)
-
-                            If (skyChannel.isPopulated = False) Then
-                                skyChannel.NID = networkId
-                                skyChannel.TID = transportId
-                                skyChannel.SID = serviceId
-                                skyChannel.ChannelID = channelId
-
-                                If skyChannel.AddSkyLCN(SkyLCN) Then
-                                    skyChannel.isPopulated = True
-                                End If
-                                UpdateChannel(skyChannel.ChannelID, skyChannel)
-                            Else
-                                skyChannel.AddSkyLCN(SkyLCN)
-                                UpdateChannel(skyChannel.ChannelID, skyChannel)
+                    Dim body As Integer = 10 + bouquetDescriptorLength
+                    Dim bouquetPayloadLength As Integer = ((buffer(body + 0) And &HF) * 256) + buffer(body + 1)
+                    Dim endOfPacket As Integer = body + bouquetPayloadLength + 2
+                    Dim currentTransportGroup As Integer = body + 2
+                    Do While (currentTransportGroup < endOfPacket)
+                        Dim transportId As Integer = (buffer(currentTransportGroup + 0) * 256) + buffer(currentTransportGroup + 1)
+                        Dim networkId = (buffer(currentTransportGroup + 2) * 256) + buffer(currentTransportGroup + 3)
+                        Dim transportGroupLength As Integer = ((buffer(currentTransportGroup + 4) And &HF) * 256) + buffer(currentTransportGroup + 5)
+                        Dim currentTransportDescriptor As Integer = currentTransportGroup + 6
+                        Dim endOfTransportGroupDescriptors As Integer = currentTransportDescriptor + transportGroupLength
+                        Do While (currentTransportDescriptor < endOfTransportGroupDescriptors)
+                            Dim descriptorType As Byte = buffer(currentTransportDescriptor)
+                            Dim descriptorLength As Integer = buffer(currentTransportDescriptor + 1)
+                            Dim currentServiceDescriptor As Integer = currentTransportDescriptor + 2
+                            Dim endOfServiceDescriptors As Integer = currentServiceDescriptor + descriptorLength - 2
+                            If (descriptorType = &HB1) Then
+                                Dim RegionID As Integer = buffer(currentTransportDescriptor + 3)
+                                Do While (currentServiceDescriptor < endOfServiceDescriptors)
+                                    Dim serviceId As Integer = (buffer(currentServiceDescriptor + 2) * 256) + buffer(currentServiceDescriptor + 3)
+                                    Dim channelId As Integer = (buffer(currentServiceDescriptor + 5) * 256) + buffer(currentServiceDescriptor + 6)
+                                    Dim skyChannelNumber As Integer = (buffer(currentServiceDescriptor + 7) * 256) + buffer(currentServiceDescriptor + 8)
+                                    Dim skyChannel As Sky_Channel = GetChannel(channelId)
+                                    Dim SkyLCN As New LCNHolder(bouquetId, RegionID, skyChannelNumber)
+                                    If Not skyChannel.isPopulated Then
+                                        skyChannel.NID = networkId
+                                        skyChannel.TID = transportId
+                                        skyChannel.SID = serviceId
+                                        skyChannel.ChannelID = channelId
+                                        If skyChannel.AddSkyLCN(SkyLCN) Then
+                                            skyChannel.isPopulated = True
+                                        End If
+                                        UpdateChannel(skyChannel.ChannelID, skyChannel)
+                                    Else
+                                        skyChannel.AddSkyLCN(SkyLCN)
+                                        UpdateChannel(skyChannel.ChannelID, skyChannel)
+                                    End If
+                                    currentServiceDescriptor += 9
+                                Loop
                             End If
-                            currentServiceDescriptor += 9
+                            currentTransportDescriptor += descriptorLength + 2
                         Loop
-                    End If
-                    currentTransportDescriptor += descriptorLength + 2
-                Loop
-                currentTransportGroup += transportGroupLength + 6
-            Loop
+                        currentTransportGroup += transportGroupLength + 6
+                    Loop
+                End If
+            End If
         Catch ex As Exception
             RaiseEvent OnMessage("Error Parsing BAT", False)
             Return
@@ -2356,30 +2333,42 @@ nextloop1:
     End Sub
 
     Function GetBouquet(ByVal bouquetId As Integer) As SkyBouquet
-        Dim returnBouquet As SkyBouquet
-        If (Bouquets.ContainsKey(bouquetId)) Then
-            returnBouquet = Bouquets(bouquetId)
-        Else
+        If Not Bouquets.ContainsKey(bouquetId) Then
             Bouquets.Add(bouquetId, New SkyBouquet)
-            returnBouquet = Bouquets(bouquetId)
         End If
-        Return returnBouquet
+        return Bouquets.Item(bouquetId)
+
+        'Dim returnBouquet As SkyBouquet
+        'If (Bouquets.ContainsKey(bouquetId)) Then
+        '    returnBouquet = Bouquets(bouquetId)
+        'Else
+        '    Bouquets.Add(bouquetId, New SkyBouquet)
+        '    returnBouquet = Bouquets(bouquetId)
+        'End If
+        'Return returnBouquet
     End Function
 
     Function GetChannel(ByVal ChannelID As Integer) As Sky_Channel
-        Dim returnChannel As Sky_Channel
-        If (Channels.ContainsKey(ChannelID)) Then
-            returnChannel = Channels(ChannelID)
-        Else
-            Channels.Add(ChannelID, New Sky_Channel)
-            returnChannel = Channels(ChannelID)
-            returnChannel.ChannelID = ChannelID
+        If Channels.ContainsKey(ChannelID) Then
+            Return Channels.Item(ChannelID)
         End If
-        Return returnChannel
+        Channels.Add(ChannelID, New Sky_Channel)
+        Dim channel2 As Sky_Channel = Channels.Item(ChannelID)
+        channel2.ChannelID = ChannelID
+        Return channel2
+        'Dim returnChannel As Sky_Channel
+        'If (Channels.ContainsKey(ChannelID)) Then
+        '    returnChannel = Channels(ChannelID)
+        'Else
+        '    Channels.Add(ChannelID, New Sky_Channel)
+        '    returnChannel = Channels(ChannelID)
+        '    returnChannel.ChannelID = ChannelID
+        'End If
+        'Return returnChannel
     End Function
 
     Function GetChannelbySID(ByVal SID As String) As SDTInfo
-        If (SDTInfo.ContainsKey(SID)) Then
+        If SDTInfo.ContainsKey(SID) Then
             Return SDTInfo(SID)
         End If
         Return Nothing
@@ -2391,27 +2380,19 @@ nextloop1:
 
     Function IsEverythingGrabbed() As Boolean
         If GrabEPG Then
-            If (AreAllBouquetsPopulated() And GotAllSDT) Then
-                If AreAllSummariesPopulated() And AreAllTitlesPopulated() And GotAllTID = True Then
-                    RaiseEvent OnMessage("Everything grabbed:- Titles(" & titlesDecoded & ") : Summaries(" & summariesDecoded & ")", False)
-                    Return True
-                Else
-                    Return False
-                End If
-            Else
+            If Not AreAllBouquetsPopulated() And GotAllSDT Then
                 Return False
             End If
-        Else
-            If (Bouquets.Count = numberBouquetsPopulated And GotAllSDT) Then
-                If GotAllTID = True Then
-                    Return True
-                Else
-                    Return False
-                End If
-            Else
+            If Not AreAllSummariesPopulated() And AreAllTitlesPopulated() And GotAllTID Then
                 Return False
             End If
+            RaiseEvent OnMessage("Everything grabbed:- Titles(" & titlesDecoded & ") : Summaries(" & summariesDecoded & ")", False)
+            Return True
         End If
+        If Not Bouquets.Count = numberBouquetsPopulated And GotAllSDT Then
+            Return False
+        End If
+        Return GotAllTID
     End Function
 
     Sub NotifyBouquetPopulated()
@@ -2421,213 +2402,161 @@ nextloop1:
             RaiseEvent OnMessage("Found " & Channels.Count & " channels in " & Bouquets.Count & " bouquets, searching SDT Information", False)
         End If
     End Sub
+
     Private Sub NotifySkyChannelPopulated(ByVal TID As Integer, ByVal NID As Integer, ByVal SID As Integer)
-        If GotAllSDT Then Return
-        If numberSDTPopulated = "" Then
-            numberSDTPopulated = NID.ToString & "-" & TID.ToString & "-" & SID.ToString
-        Else
-            If NID.ToString & "-" & TID.ToString & "-" & SID.ToString = numberSDTPopulated Then
+        If Not GotAllSDT Then
+            If numberSDTPopulated = "" Then
+                numberSDTPopulated = NID.ToString & "-" & TID.ToString & "-" & SID.ToString
+            ElseIf NID.ToString & "-" & TID.ToString & "-" & SID.ToString = numberSDTPopulated Then
                 GotAllSDT = True
                 RaiseEvent OnMessage("Got all SDT Info, count: " & SDTInfo.Count, False)
             End If
         End If
     End Sub
+
     Private Sub NotifyTIDPopulated(ByVal TID As Integer)
-        If GotAllTID Then Return
-        If numberTIDPopulated = 0 Then
-            numberTIDPopulated = TID
-        Else
-            If TID = numberTIDPopulated Then
+        If Not GotAllTID Then
+            If numberTIDPopulated = 0 Then
+                numberTIDPopulated = TID
+            ElseIf TID = numberTIDPopulated Then
                 GotAllTID = True
                 RaiseEvent OnMessage("Got all Network Information", False)
             End If
         End If
     End Sub
+
     Function DoesTidCarryEpgSummaryData(ByVal TableID As Integer) As Boolean
-        If TableID = &HA8 Or TableID = &HA9 Or TableID = &HAA Or TableID = &HAB Then
-            Return True
-        Else
-            Return False
-        End If
+        Return TableID = &HA8 Or TableID = &HA9 Or TableID = &HAA Or TableID = &HAB
     End Function
 
     Sub OnSummarySectionReceived(ByVal pid As Integer, ByVal section As Custom_Data_Grabber.Section)
         Try
-            '	If the summary data carousel is complete for this pid, we can discard the data as we already have it
-            If IsSummaryDataCarouselOnPidComplete(pid) Then
-                Return
-            End If
-
-            '	Validate table id
-            If Not DoesTidCarryEpgSummaryData(section.table_id) Then
-                Return
-            End If
-
-            Dim buffer As Byte() = section.Data
-
-            '	Total length of summary data (2 less for this length field)
-            Dim totalLength As Integer = (((buffer(1) And &HF) * 256) + buffer(2)) - 2
-
-            '	If this section is a valid length (14 absolute minimum with 1 blank summary)
-            If (section.section_length < 14) Then
-                Return
-            End If
-            '	Get the channel id that this section's summary data relates to
-            Dim channelId As Long = (buffer(3) * 256) + buffer(4)
-            Dim mjdStartDate As Long = (buffer(8) * 256) + buffer(9)
-
-            '	Check channel id and start date are valid
-            If (channelId = 0 Or mjdStartDate = 0) Then
-                Return
-            End If
-
-            '	Always starts at 10th byte
-            Dim currentSummaryItem As Integer = 10
-
-            Dim iterationCounter As Integer = 0
-
-
-            '	Loop while we have more summary data
-            Do While (currentSummaryItem < totalLength)
-                If (iterationCounter > 512) Then
-                    Return
-                End If
-
-                iterationCounter += 1
-
-                '	Extract event id, header type and body length
-                Dim eventId As Integer = (buffer(currentSummaryItem + 0) * 256) Or buffer(currentSummaryItem + 1)
-                Dim headerType As Byte = (buffer(currentSummaryItem + 2) And &HF0) >> 4
-                Dim bodyLength As Integer = ((buffer(currentSummaryItem + 2) And &HF) * 256) Or buffer(currentSummaryItem + 3)
-
-                '	Build the carousel lookup id
-                Dim carouselLookupId As String = channelId.ToString & ":" & eventId.ToString
-
-                '	Notify the parser that a title has been received
-                OnSummaryReceived(pid, carouselLookupId)
-
-                '	If the summary carousel for this pid is now complete, we can return
-                If (IsSummaryDataCarouselOnPidComplete(pid)) Then Return
-
-
-                '	Get the epg event we are to populate from the manager
-                Dim epgEvent As SkyEvent = GetEpgEvent(channelId, eventId)
-
-                '	Check we have the event reference
-                If epgEvent Is Nothing Then
-                    Return
-                End If
-
-                Dim headerLength As Integer
-
-                '	If this is an extended header (&HF) (7 bytes long)
-                If (headerType = &HF) Then
-                    headerLength = 7
-                    '	Else if normal header (&HB) (4 bytes long)
-                ElseIf (headerType = &HB) Then
-                    headerLength = 4
-                    '	Else other unknown header (not worked them out yet, at least 4 more)
-                    '	Think these are only used for box office and adult channels so not really important
-                Else
-                    '	Cannot parse the rest of this packet as we dont know the header lengths/format etc
-                    Return
-                End If
-
-                '	If body length is less than 3, there is no summary data for this event, move to next
-                If (bodyLength < 3) Then
-
-                    currentSummaryItem += (headerLength + bodyLength)
-
-                End If
-
-
-                '	Move to the body of the summary
-                Dim currentSummaryItemBody As Integer = currentSummaryItem + headerLength
-
-                '	Extract summary signature and huffman buffer length
-                Dim summaryDescriptor As Integer = buffer(currentSummaryItemBody + 0)
-                Dim encodedBufferLength As Integer = buffer(currentSummaryItemBody + 1)
-
-                '	If normal summary item (&HB9)
-                If (summaryDescriptor = &HB9) Then
-
-                    If (epgEvent.Summary = "") Then
-
-                        '	Decode the summary
-                        'epgEvent.summary = skyManager.DecodeHuffmanData(&buffer(currentSummaryItemBody + 2), encodedBufferLength)
-                        Dim HuffBuff(&H1000) As Byte
-                        If (currentSummaryItemBody + 2 + encodedBufferLength) > buffer.Length Then
+            'If the summary data carousel is complete for this pid, we can discard the data as we already have it
+            If Not IsSummaryDataCarouselOnPidComplete(pid) AndAlso DoesTidCarryEpgSummaryData(section.table_id) Then
+                Dim buffer As Byte() = section.Data
+                'Total length of summary data (2 less for this length field)
+                Dim totalLength As Integer = (((buffer(1) And &HF) * 256) + buffer(2)) - 2
+                'If this section is a valid length (14 absolute minimum with 1 blank summary)
+                If (section.section_length >= 14) Then
+                    'Get the channel id that this section's summary data relates to
+                    Dim channelId As Long = (buffer(3) * 256) + buffer(4)
+                    Dim mjdStartDate As Long = (buffer(8) * 256) + buffer(9)
+                    'Check channel id and start date are valid
+                    If Not channelId = 0 Or mjdStartDate = 0 Then
+                        'Always starts at 10th byte
+                        Dim currentSummaryItem As Integer = 10
+                        Dim iterationCounter As Integer = 0
+                        'Loop while we have more summary data
+                        Do While (currentSummaryItem < totalLength)
+                            Dim bodylength As Integer
+                            Dim epgevent As SkyEvent
+                            Dim headerlength As Integer
+                            If (iterationCounter <= 512) Then
+                                iterationCounter += 1
+                                'Extract event id, header type and body length
+                                Dim eventId As Integer = (buffer(currentSummaryItem + 0) * 256) Or buffer(currentSummaryItem + 1)
+                                Dim headerType As Byte = (buffer(currentSummaryItem + 2) And &HF0) >> 4
+                                bodylength = ((buffer(currentSummaryItem + 2) And &HF) * 256) Or buffer(currentSummaryItem + 3)
+                                'Build the carousel lookup id
+                                Dim carouselLookupId As String = channelId.ToString & ":" & eventId.ToString
+                                'Notify the parser that a title has been received
+                                OnSummaryReceived(pid, carouselLookupId)
+                                'If the summary carousel for this pid is now complete, we can return
+                                If Not IsSummaryDataCarouselOnPidComplete(pid) Then
+                                    'Get the epg event we are to populate from the manager
+                                    epgevent = GetEpgEvent(channelId, eventId)
+                                    'Check we have the event reference
+                                    If Not epgevent Is Nothing Then
+                                        Select Case headerType
+                                            Case 15
+                                                'If this is an extended header (&HF) (7 bytes long)
+                                                headerlength = 7
+                                                GoTo label_0132
+                                            Case 11
+                                                'Else if normal header (&HB) (4 bytes long)
+                                                headerlength = 4
+                                                GoTo label_0132
+                                                'Else other unknown header (not worked them out yet, at least 4 more)
+                                                'Think these are only used for box office and adult channels so not really important
+                                        End Select
+                                    End If
+                                End If
+                            End If
                             Return
+label_0132:
+                            'If body length is less than 3, there is no summary data for this event, move to next
+                            If (bodylength < 3) Then
+                                currentSummaryItem += (headerlength + bodylength)
+                            End If
+                            'Move to the body of the summary
+                            Dim currentSummaryItemBody As Integer = currentSummaryItem + headerlength
+                            'Extract summary signature and huffman buffer length
+                            Dim summaryDescriptor As Integer = buffer(currentSummaryItemBody + 0)
+                            Dim encodedBufferLength As Integer = buffer(currentSummaryItemBody + 1)
+                            'If normal summary item (&HB9)
+                            If (summaryDescriptor = &HB9) Then
+                                If (epgevent.Summary = "") Then
+                                    'Decode the summary
+                                    'epgEvent.summary = skyManager.DecodeHuffmanData(&buffer(currentSummaryItemBody + 2), encodedBufferLength)
+                                    Dim HuffBuff As Byte() = New Byte(&H1001 - 1) {}
+                                    If (currentSummaryItemBody + 2 + encodedBufferLength) > buffer.Length Then
+                                        Return
+                                    End If
+                                    Array.Copy(buffer, currentSummaryItemBody + 2, HuffBuff, 0, encodedBufferLength)
+                                    epgevent.Summary = NewHuffman(HuffBuff, encodedBufferLength)
+                                    'If failed to decode Notify the manager (for statistics)
+                                    OnSummaryDecoded()
+                                    UpdateEPGEvent(channelId, epgevent.EventID, epgevent)
+                                End If
+                            ElseIf (summaryDescriptor <> &HBB) Then
+                                Return
+                                'Else if (&HBB) - Unknown data item (special box office or adult?)
+                                'Seems very rare (1 in every 2000 or so), so not important really
+                                'Else other unknown data item, there are a few others that are unknown
+                            End If
+                            'skyManager.LogError("CSkyEpgSummaryDecoder::OnSummarySectionReceived() - Error, unrecognised summary descriptor")
+                            'Is there any footer information?
+                            Dim footerLength As Integer = bodylength - encodedBufferLength - 2
+                            If (footerLength >= 4) Then
+                                Dim footerPointer As Integer = currentSummaryItemBody + 2 + encodedBufferLength
+                                'Get the descriptor
+                                Dim footerDescriptor As Integer = buffer(footerPointer + 0)
+                                'If series id information (&HC1)
+                                If (footerDescriptor = &HC1) Then
+                                    epgevent.SeriesID = (buffer(footerPointer + 2) * 256) + (buffer(footerPointer + 3))
+                                End If
+                            End If
+                            'Move to next summary item
+                            currentSummaryItem += (bodylength + headerlength)
+                        Loop
+                        'Check the packet was parsed correctly - seem to get a few of these.  
+                        'Seems to be some extra information tagged onto the end of some summary packets (1 in every 2000 or so)
+                        'Not worked this out - possibly box office information
+                        If (currentSummaryItem <> (totalLength + 1)) Then
+                            'skyManager.LogError("CSkyEpgSummaryDecoder::OnSummarySectionReceived() - Warning, summary packet was not parsed correctly - pointer not in expected place")
                         End If
-                        Array.Copy(buffer, currentSummaryItemBody + 2, HuffBuff, 0, encodedBufferLength)
-                        epgEvent.Summary = NewHuffman(HuffBuff, encodedBufferLength)
-
-                        '	If failed to decode
-
-                        '	Notify the manager (for statistics)
-                        OnSummaryDecoded()
-                        UpdateEPGEvent(channelId, epgEvent.EventID, epgEvent)
-
-                        '	Else if (&HBB) - Unknown data item (special box office or adult?)
-                        '	Seems very rare (1 in every 2000 or so), so not important really
-                    End If
-
-
-                ElseIf (summaryDescriptor = &HBB) Then
-
-                    '	Else other unknown data item, there are a few others that are unknown
-                Else
-
-                    Return
-                    'skyManager.LogError("CSkyEpgSummaryDecoder::OnSummarySectionReceived() - Error, unrecognised summary descriptor")
-                End If
-
-                '	Is there any footer information?
-                Dim footerLength As Integer = bodyLength - encodedBufferLength - 2
-
-                If (footerLength >= 4) Then
-
-                    Dim footerPointer As Integer = currentSummaryItemBody + 2 + encodedBufferLength
-
-                    '	Get the descriptor
-                    Dim footerDescriptor As Integer = buffer(footerPointer + 0)
-
-                    '	If series id information (&HC1)
-                    If (footerDescriptor = &HC1) Then
-                        epgEvent.SeriesID = (buffer(footerPointer + 2) * 256) + (buffer(footerPointer + 3))
                     End If
                 End If
-
-                '	Move to next summary item
-                currentSummaryItem += (bodyLength + headerLength)
-            Loop
-
-            '	Check the packet was parsed correctly - seem to get a few of these.  
-            '	Seems to be some extra information tagged onto the end of some summary packets (1 in every 2000 or so)
-            '	Not worked this out - possibly box office information
-            If (currentSummaryItem <> (totalLength + 1)) Then
-                'skyManager.LogError("CSkyEpgSummaryDecoder::OnSummarySectionReceived() - Warning, summary packet was not parsed correctly - pointer not in expected place")
-
-                Return
             End If
         Catch err As Exception
             RaiseEvent OnMessage("Error decoding Summary, " & err.Message, False)
             Return
         End Try
-
     End Sub
-
 End Class
 
 Public Class LCNHolder
+
     Dim _BID As Integer
     Dim _RID As Integer
     Dim _SkyNum As Integer
+
     Public Sub New(ByVal BID As Integer, ByVal RID As Integer, ByVal SkyLCN As Integer)
         _BID = BID
         _RID = RID
         _SkyNum = SkyLCN
     End Sub
+
     Public Property RID As Integer
         Get
             Return _RID
@@ -2636,6 +2565,7 @@ Public Class LCNHolder
             _RID = value
         End Set
     End Property
+
     Public Property BID As Integer
         Get
             Return _BID
@@ -2644,6 +2574,7 @@ Public Class LCNHolder
             _BID = value
         End Set
     End Property
+
     Public Property SkyNum As Integer
         Get
             Return _SkyNum
@@ -2652,6 +2583,7 @@ Public Class LCNHolder
             _SkyNum = value
         End Set
     End Property
+
 End Class
 
 Public Class Sky_Channel
@@ -2667,30 +2599,38 @@ Public Class Sky_Channel
     Dim _Name As String
     Dim _NewChannelRequired As Boolean
     Dim _HasChanged As Boolean
-
-
+    
     Public ReadOnly Property LCNS
         Get
             Return _epgChannelNumber.Values
         End Get
     End Property
+
     Public ReadOnly Property LCNCount
         Get
             Return _epgChannelNumber.Count
         End Get
     End Property
-    Public Function GetLCN(ByVal BouquetID As Integer, ByVal RegionId As Integer) As LCNHolder
 
+    Public Function GetLCN(ByVal BouquetID As Integer, ByVal RegionId As Integer) As LCNHolder
         If _epgChannelNumber.ContainsKey(BouquetID.ToString & "-" & RegionId.ToString) Then
             Return _epgChannelNumber(BouquetID.ToString & "-" & RegionId.ToString)
-        Else
-            Return Nothing
         End If
-
+        Return Nothing
     End Function
+
     Public Function ContainsLCN(ByVal BouquetID As Integer, ByVal RegionId As Integer) As Boolean
         Return _epgChannelNumber.ContainsKey(BouquetID.ToString & "-" & RegionId.ToString)
     End Function
+
+    Public Function AddSkyLCN(ByVal LCNHold As LCNHolder) As Boolean
+        If Not _epgChannelNumber.ContainsKey(LCNHold.BID & "-" & LCNHold.RID) Then
+            _epgChannelNumber.Add(LCNHold.BID & "-" & LCNHold.RID, LCNHold)
+            Return False
+        End If
+        Return True
+    End Function
+
     Public Property HasChanged As Boolean
         Get
             Return _HasChanged
@@ -2699,6 +2639,7 @@ Public Class Sky_Channel
             _HasChanged = value
         End Set
     End Property
+
     Public Property isPopulated As Boolean
         Get
             Return _isPopulated
@@ -2707,6 +2648,7 @@ Public Class Sky_Channel
             _isPopulated = value
         End Set
     End Property
+
     Public Property AddChannelRequired As Boolean
         Get
             Return _NewChannelRequired
@@ -2715,15 +2657,7 @@ Public Class Sky_Channel
             _NewChannelRequired = value
         End Set
     End Property
-    Public Function AddSkyLCN(ByVal LCNHold As LCNHolder) As Boolean
-        If Not _epgChannelNumber.ContainsKey(LCNHold.BID & "-" & LCNHold.RID) Then
-            _epgChannelNumber.Add(LCNHold.BID & "-" & LCNHold.RID, LCNHold)
-            Return False
-        Else
-            Return True
-        End If
 
-    End Function
     Public Property ChannelID As Integer
         Get
             Return _ChannelId
@@ -2732,6 +2666,7 @@ Public Class Sky_Channel
             _ChannelId = value
         End Set
     End Property
+
     Public Property NID As Integer
         Get
             Return _NID
@@ -2740,6 +2675,7 @@ Public Class Sky_Channel
             _NID = value
         End Set
     End Property
+
     Public Property TID As Integer
         Get
             Return _TID
@@ -2748,6 +2684,7 @@ Public Class Sky_Channel
             _TID = value
         End Set
     End Property
+
     Public Property SID As Integer
         Get
             Return _SID
@@ -2765,32 +2702,32 @@ Public Class Sky_Channel
             _Channel_Name = value
         End Set
     End Property
-    'EventID
 
-    Public Events As New Dictionary(Of Integer, SkyEvent)
+    Public Events As Dictionary(Of Integer, SkyEvent) = New Dictionary(Of Integer, SkyEvent)
 
 End Class
 
 Public Class SkyEvent
 
-    Dim _EventID As Integer
-    Dim _StartTime As Integer
-    Dim _duration As Integer
-    Dim _ChannelID As Integer
-    Dim _Title As String
-    Dim _Summary As String
-    Dim _Category As String
-    Dim _ParentalCategory As String
-    Dim _SeriesID As Integer
-    Dim _mjdStart As Long
-    Dim _seriesTermination As Integer
-    Dim _AD As Boolean
-    Dim _CP As Boolean
-    Dim _HD As Boolean
-    Dim _WS As Boolean
-    Dim _Subs As Boolean
-    Dim _SoundType As Integer
-    Dim Flags As String
+    Dim _EventID As Integer = -1
+    Dim _StartTime As Integer = -1
+    Dim _duration As Integer = -1
+    Dim _ChannelID As Integer = -1
+    Dim _Title As String = ""
+    Dim _Summary As String = ""
+    Dim _Category As String = ""
+    Dim _ParentalCategory As String = ""
+    Dim _SeriesID As Integer = 0
+    Dim _mjdStart As Long = 0
+    Dim _seriesTermination As Integer = 0
+    Dim _AD As Boolean = False
+    Dim _CP As Boolean = False
+    Dim _HD As Boolean = False
+    Dim _WS As Boolean = False
+    Dim _Subs As Boolean = False
+    Dim _SoundType As Integer = -1
+    Dim Flags As String = ""
+
     Public Sub SetFlags(ByVal IntegerNumber As Integer)
         _AD = IntegerNumber And &H1
         _CP = IntegerNumber And &H2
@@ -2799,8 +2736,8 @@ Public Class SkyEvent
         _Subs = IntegerNumber And &H10
         _SoundType = IntegerNumber >> 6
     End Sub
-    Public Sub SetCategory(ByVal Category As Integer)
 
+    Public Sub SetCategory(ByVal Category As Integer)
         Select Case Category And &HF
             Case 5
                 _ParentalCategory = "18"
@@ -2814,16 +2751,14 @@ Public Class SkyEvent
                 _ParentalCategory = "U"
             Case Else
                 _ParentalCategory = ""
-
         End Select
-
     End Sub
+
     Public ReadOnly Property ParentalCategory As String
         Get
             Return _ParentalCategory
         End Get
     End Property
-
 
     Public ReadOnly Property DescriptionFlag As String
         Get
@@ -2871,6 +2806,7 @@ Public Class SkyEvent
             _Summary = value
         End Set
     End Property
+
     Public Property EventID As Integer
         Get
             Return _EventID
@@ -2879,6 +2815,7 @@ Public Class SkyEvent
             _EventID = value
         End Set
     End Property
+
     Public Property StartTime As Integer
         Get
             Return _StartTime
@@ -2887,6 +2824,7 @@ Public Class SkyEvent
             _StartTime = value
         End Set
     End Property
+
     Public Property Duration As Integer
         Get
             Return _duration
@@ -2895,6 +2833,7 @@ Public Class SkyEvent
             _duration = value
         End Set
     End Property
+
     Public Property ChannelID As Integer
         Get
             Return _ChannelID
@@ -2903,6 +2842,7 @@ Public Class SkyEvent
             _ChannelID = value
         End Set
     End Property
+
     Public Property Title As String
         Get
             Return _Title
@@ -2938,6 +2878,7 @@ Public Class SkyEvent
             _mjdStart = value
         End Set
     End Property
+
     Public Property seriesTermination As Integer
         Get
             Return _seriesTermination
@@ -2947,33 +2888,13 @@ Public Class SkyEvent
         End Set
     End Property
 
-    Public Sub New()
-        _EventID = -1
-        _StartTime = -1
-        _duration = -1
-        _ChannelID = -1
-        _Title = ""
-        _Summary = ""
-        _Category = ""
-        _ParentalCategory = ""
-        _SeriesID = Nothing
-        _mjdStart = 0
-        _seriesTermination = Nothing
-        _AD = False
-        _CP = False
-        _HD = False
-        _WS = False
-        _Subs = False
-        _SoundType = -1
-        Flags = ""
-    End Sub
 End Class
 
 Public Class SkyBouquet
 
     Dim _firstReceivedSectionNumber As Byte
-    Dim _isInitialized As Boolean
-    Dim _isPopulated As Boolean
+    Dim _isInitialized As Boolean = False
+    Dim _isPopulated As Boolean = False
 
     Public Property firstReceivedSectionNumber As Byte
         Get
@@ -2983,6 +2904,7 @@ Public Class SkyBouquet
             _firstReceivedSectionNumber = value
         End Set
     End Property
+
     Public Property isInitialized As Boolean
         Get
             Return _isInitialized
@@ -2991,6 +2913,7 @@ Public Class SkyBouquet
             _isInitialized = value
         End Set
     End Property
+
     Public Property isPopulated As Boolean
         Get
             Return _isPopulated
@@ -2999,28 +2922,25 @@ Public Class SkyBouquet
             _isPopulated = value
         End Set
     End Property
-    Public Sub New()
-        _isInitialized = False
-        _isPopulated = False
-    End Sub
 
 End Class
 
 Public Class HuffHolder
 
-    Dim _buff() As Byte
+    Dim _buff As Byte()
     Dim _Length As Integer
     Dim _NextID As String
+
     Public Property NextID() As String
         Get
             Return _NextID
         End Get
         Set(ByVal value As String)
             _NextID = value
-
         End Set
     End Property
-    Public Property Buff() As Byte()
+
+    Public Property Buff As Byte()
         Get
             Return _buff
         End Get
@@ -3028,7 +2948,8 @@ Public Class HuffHolder
             _buff = value
         End Set
     End Property
-    Public Property Length() As Integer
+
+    Public Property Length As Integer
         Get
             Return _Length
         End Get
@@ -3036,14 +2957,15 @@ Public Class HuffHolder
             _Length = value
         End Set
     End Property
+
 End Class
 
 Public Class HuffmanTreeNode
-    Public Sub New()
-    End Sub
+
     Private Shadows Function Equals() As Boolean
         Return False
     End Function
+
     Private Shadows Function ReferenceEquals() As Boolean
         Return False
     End Function
@@ -3053,27 +2975,28 @@ Public Class HuffmanTreeNode
     Public Parent As HuffmanTreeNode 'the parent node.
     Public P1 As HuffmanTreeNode 'the left leaf.
     Public P0 As HuffmanTreeNode 'the right leaf.
+    Public strPath As String
+
     Public Function Clear() As Boolean
-        If P1 Is Nothing Then
-            Return True
-        Else
+        If Not P1 Is Nothing Then
             P1 = Nothing
-            If P0 Is Nothing Then
-            Else
+            If Not P0 Is Nothing Then
                 P0 = Nothing
             End If
         End If
         Return True
     End Function
+
     Public ReadOnly Property Path() As String  'the binary path to the node.
         Get
-            Static strPath As String
-            If strPath Is Nothing Then
-                If Not (Me.Parent Is Nothing) Then
-                    If (Me.Parent.P0 Is Me) Then strPath = "0"
-                    If (Me.Parent.P1 Is Me) Then strPath = "1"
-                    strPath = Parent.Path & strPath
+            If strPath Is Nothing AndAlso Not Parent Is Nothing Then
+                If (Parent.P0 Is Me) Then
+                    strPath = "0"
                 End If
+                If (Parent.P1 Is Me) Then
+                    strPath = "1"
+                End If
+            strPath = Parent.Path & strPath
             End If
             Return strPath
         End Get
@@ -3082,6 +3005,7 @@ Public Class HuffmanTreeNode
 End Class
 
 Public Class SDTInfo
+
     Dim _sid As Integer
     Dim _ChannelName As String
     Dim _Cat As Byte
@@ -3092,8 +3016,6 @@ Public Class SDTInfo
     Dim _isHD As Boolean
     Dim _is3d As Boolean
 
-
-
     Public Property SID As Integer
         Get
             Return _sid
@@ -3102,6 +3024,7 @@ Public Class SDTInfo
             _sid = value
         End Set
     End Property
+
     Public Property ChannelName As String
         Get
             Return _ChannelName
@@ -3110,6 +3033,7 @@ Public Class SDTInfo
             _ChannelName = value
         End Set
     End Property
+
     Public Property Provider As String
         Get
             Return _Provider
@@ -3118,6 +3042,7 @@ Public Class SDTInfo
             _Provider = value
         End Set
     End Property
+
     Public Property Category As Integer
         Get
             Return _Cat
@@ -3126,6 +3051,7 @@ Public Class SDTInfo
             _Cat = value
         End Set
     End Property
+
     Public Property isFTA As Boolean
         Get
             Return _isFTA
@@ -3134,6 +3060,7 @@ Public Class SDTInfo
             _isFTA = value
         End Set
     End Property
+
     Public Property isRadio As Boolean
         Get
             Return _isRadio
@@ -3142,6 +3069,7 @@ Public Class SDTInfo
             _isRadio = value
         End Set
     End Property
+
     Public Property isTV As Boolean
         Get
             Return _isTV
@@ -3150,6 +3078,7 @@ Public Class SDTInfo
             _isTV = value
         End Set
     End Property
+
     Public Property isHD As Boolean
         Get
             Return _isHD
@@ -3158,6 +3087,7 @@ Public Class SDTInfo
             _isHD = value
         End Set
     End Property
+
     Public Property is3D As Boolean
         Get
             Return _is3d
@@ -3166,6 +3096,7 @@ Public Class SDTInfo
             _isHD = value
         End Set
     End Property
+
 End Class
 
 Public Class NITSatDescriptor
@@ -3190,6 +3121,7 @@ Public Class NITSatDescriptor
             _TransportID = value
         End Set
     End Property
+
     Public Property Frequency As Integer
         Get
             Return _Frequency
@@ -3198,6 +3130,7 @@ Public Class NITSatDescriptor
             _Frequency = value
         End Set
     End Property
+
     Public Property OrbitalPosition As Integer
         Get
             Return _OrbitalPosition
@@ -3206,6 +3139,7 @@ Public Class NITSatDescriptor
             _OrbitalPosition = value
         End Set
     End Property
+
     Public Property WestEastFlag As Integer
         Get
             Return _WestEastFlag
@@ -3214,6 +3148,7 @@ Public Class NITSatDescriptor
             _WestEastFlag = value
         End Set
     End Property
+
     Public Property Polarisation As Integer
         Get
             Return _Polarisation
@@ -3222,6 +3157,7 @@ Public Class NITSatDescriptor
             _Polarisation = value
         End Set
     End Property
+
     Public Property Modulation As Integer
         Get
             Return _Modulation
@@ -3230,6 +3166,7 @@ Public Class NITSatDescriptor
             _Modulation = value
         End Set
     End Property
+
     Public Property Symbolrate As Integer
         Get
             Return _Symbolrate
@@ -3238,6 +3175,7 @@ Public Class NITSatDescriptor
             _Symbolrate = value
         End Set
     End Property
+
     Public Property FECInner As Integer
         Get
             Return _FECInner
@@ -3246,6 +3184,7 @@ Public Class NITSatDescriptor
             _FECInner = value
         End Set
     End Property
+
     Public Property RollOff As Integer
         Get
             Return _RollOff
@@ -3254,6 +3193,7 @@ Public Class NITSatDescriptor
             _RollOff = value
         End Set
     End Property
+
     Public Property isS2 As Integer
         Get
             Return _isS2
@@ -3262,6 +3202,7 @@ Public Class NITSatDescriptor
             _isS2 = value
         End Set
     End Property
+
     Public Property NetworkName As String
         Get
             Return _NetworkName
