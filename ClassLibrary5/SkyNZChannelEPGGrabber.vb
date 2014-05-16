@@ -2058,6 +2058,37 @@ nextloop1:
                                     info.Category = Section(pointer + 4)
                                 End If
                                 Exit Select
+                            Case Is = &H5F
+                                If Section((pointer + 5) And 1) Then
+                                    info.Category = Section(pointer + 2)
+                                Else
+                                    info.Category = Section(pointer + 1)
+                                End If
+                                Exit Select
+                            Case Is = &H4B
+                                Dim offset As Integer = x + pointer
+                                Dim morechanlen As Integer = Section(offset + 1)
+                                Dim tt As Integer
+                                offset += 2
+                                Dim Sid1, Nid1, Tid1 As Integer
+                                For tt = 0 To morechanlen Step 6
+                                    Tid1 = (Section(offset + tt) * 256) Or Section(offset + tt + 1)
+                                    Nid1 = (Section(offset + tt + 2) * 256) Or Section(offset + tt + 3)
+                                    Sid1 = (Section(offset + tt + 4) * 256) Or Section(offset + tt + 5)
+                                    If SDTInfo.ContainsKey(Nid1 & "-" & Tid1 & "-" & Sid1) = False And info.ChannelName <> "" Then
+                                        Dim SDT As New SDTInfo
+                                        SDT.ChannelName = info.ChannelName
+                                        SDT.Category = 0
+                                        SDT.SID = Sid1
+                                        SDT.isFTA = info.isFTA
+                                        SDT.isHD = info.isHD
+                                        SDT.isTV = info.isTV
+                                        SDT.isRadio = info.isRadio
+                                        SDT.Provider = info.Provider
+                                        SDTInfo.Add(Nid1 & "-" & Tid1 & "-" & Sid1, SDT)
+                                        SDTCount += 1
+                                    End If
+                                Next
                         End Select
                         'If (indicator = &H48) Then
                         'Dim info As SDTInfo
