@@ -1,4 +1,6 @@
 ﻿Imports DirectShowLib.BDA
+Imports System.Reflection.Emit
+Imports System.Windows.Forms
 Imports Microsoft.VisualBasic.CompilerServices
 Imports Custom_Data_Grabber
 Imports TvDatabase
@@ -200,7 +202,7 @@ Public Class Settings
     End Property
     Public Property ServiceID() As Integer
         Get
-            Return Convert.ToInt32(GetSkySetting("ServiceID", 330))
+            Return Convert.ToInt32(GetSkySetting("ServiceID", 9003))
         End Get
         Set(ByVal value As Integer)
             UpdateSetting("ServiceID", value.ToString)
@@ -797,7 +799,7 @@ Public Class SkyGrabber
 
     ReadOnly Settings As Settings = New Settings()
     Public firstask As Boolean = True
-    Public WithEvents Sky As CustomDataGRabber 'Prviate _Sky as CustomDataGrabber in latst code.
+    Public Sky As CustomDataGRabber 'was withevents & Prviate _Sky as CustomDataGrabber in latst code.
     Public Channels As Dictionary(Of Integer, Sky_Channel) = New Dictionary(Of Integer, Sky_Channel)
     Public Bouquets As Dictionary(Of Integer, SkyBouquet) = New Dictionary(Of Integer, SkyBouquet)
     Public SDTInfo As Dictionary(Of String, SDTInfo) = New Dictionary(Of String, SDTInfo)
@@ -876,7 +878,6 @@ Public Class SkyGrabber
     End Function
 
     Private Sub OnTitleReceived(ByVal pid As Integer, ByVal titleChannelEventUnionId As String)
-
         If titleDataCarouselStartLookup.ContainsKey(pid) Then
             If (titleDataCarouselStartLookup(pid) = titleChannelEventUnionId) Then
                 completedTitleDataCarousels.Add(pid)
@@ -884,7 +885,6 @@ Public Class SkyGrabber
         Else
             titleDataCarouselStartLookup.Add(pid, titleChannelEventUnionId)
         End If
-
     End Sub
 
     Function AreAllSummariesPopulated()
@@ -1249,40 +1249,32 @@ Public Class SkyGrabber
                 ChannelsAdded += 1
                 RaiseEvent OnMessage("(" & ChannelsAdded & "/" & Channels.Count & ") Channels sorted", True)
                 Dim ScannedChannel As Sky_Channel = pair.Value
-                ScannedChannel = Nothing
                 Dim ChannelId As Integer = pair.Key
                 If ChannelId < 1 Then Continue For
                 Dim VisibleInGuide As Boolean
                 Dim DBChannel As Channel
                 Dim channel As New DVBSChannel
-                Dim currentDetail As TuningDetail = Nothing '= nothing has been added.
+                Dim currentDetail As TuningDetail '= nothing has been added.
                 If ScannedChannel.NID = 0 Or ScannedChannel.TID = 0 Or ScannedChannel.SID = 0 Then
                     Continue For
                 End If
                 Dim SDT As SDTInfo = GetChannelbySID(ScannedChannel.NID & "-" & ScannedChannel.TID & "-" & ScannedChannel.SID)
-
-                If SDT Is Nothing Then
+                If SDT Is Nothing OrElse IgnoreScrambled And SDT.isFTA Then
                     Continue For
                 End If
-
-                If IgnoreScrambled And SDT.isFTA Then
-                    Continue For
-                End If
-
                 Dim checker As Channel = _layer.GetChannelbyExternalID(ScannedChannel.NID & ":" & ScannedChannel.ChannelID.ToString)
-
                 If Not checker Is Nothing Then
-                    Dim Channels As List(Of TuningDetail) = checker.ReferringTuningDetail
-                    For Each Chann As TuningDetail In Channels
-                        If Chann.ChannelType = 3 And Chann.NetworkId = nID Then
-                            currentDetail = Chann
+                    Dim Channels As List(Of TuningDetail) = DirectCast(checker.ReferringTuningDetail, List(Of TuningDetail))
+                    Dim currentdetail2 As TuningDetail
+                    For Each currentdetail2 In Channels
+                        If currentdetail2.ChannelType = 3 And currentdetail2.NetworkId = nID Then
+                            currentDetail = currentdetail2
                             Exit For
                         End If
                     Next
                 End If
-                ' 
                 If (Not currentDetail Is Nothing) Then
-                    GoTo AddNewChannel
+                    GoTo label_0062
                 End If
 AddNewChannel:
 
@@ -1331,30 +1323,48 @@ AddNewChannel:
                 Else
                     Select Case NIT.Modulation
                         Case 1
-                            If NIT.isS2 Then
-                                DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbcQpsk
-                            Else
-                                DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModQpsk
+                            If NIT.isS2 <= 0 Then
+                                Exit Select
                             End If
+                            DVBSChannel.ModulationType = ModulationType.ModNbcQpsk
+                            GoTo label_0526
                         Case 2
-                            If NIT.isS2 Then
-                                DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbc8Psk
-                            Else
-                                DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
+                            If NIT.isS2 <= 0 Then
+                                GoTo label_050C
                             End If
+                            DVBSChannel.ModulationType = ModulationType.ModNbc8Psk
+                            GoTo label_0526
                         Case Else
-                            DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
+                            DVBSChannel.ModulationType = ModulationType.ModNotDefined
+                            GoTo Label_0526
                     End Select
+                    DVBSChannel.ModulationType = ModulationType.ModQpsk
                 End If
+                GoTo label_0526
+
+label_050C:
+                DVBSChannel.ModulationType = ModulationType.ModNotDefined
+Label_0526:
+                '            End If
+                '        Case 2
+                '            If NIT.isS2 Then
+                '                DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbc8Psk
+                '            Else
+                '                DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
+                '            End If
+                '        Case Else
+                '            DVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
+                '    End Select
+                'End If
                 DVBSChannel.Name = SDT.ChannelName
                 DVBSChannel.NetworkId = ScannedChannel.NID
                 DVBSChannel.Pilot = Pilot.NotSet
                 DVBSChannel.Rolloff = RollOff.NotSet
                 If NIT.isS2 = 1 Then
-                    DVBSChannel.Rolloff = DirectCast(NIT.RollOff, DirectShowLib.BDA.RollOff)
+                    DVBSChannel.Rolloff = DirectCast(NIT.RollOff, RollOff)
                 End If
                 DVBSChannel.PmtPid = 0
-                DVBSChannel.Polarisation = DirectCast(NIT.Polarisation, DirectShowLib.BDA.Polarisation)
+                DVBSChannel.Polarisation = DirectCast(NIT.Polarisation, Polarisation)
                 DVBSChannel.Provider = SDT.Provider
                 DVBSChannel.ServiceId = ScannedChannel.SID
                 DVBSChannel.TransportId = ScannedChannel.TID
@@ -1367,6 +1377,7 @@ AddNewChannel:
                 AddChannelToGroups(DBChannel, SDT, DVBSChannel, UseSkyCategories)
                 _layer.AddTuningDetails(DBChannel, DVBSChannel)
 
+label_0062:
                 DBChannel = currentDetail.ReferencedChannel()
                 If DBChannel Is Nothing Then
                     currentDetail.Remove()
@@ -1381,145 +1392,128 @@ AddNewChannel:
                 If checkDVBSChannel Is Nothing OrElse DBChannel Is Nothing OrElse SDTInfo.ContainsKey(String.Concat(New String() {Conversions.ToString(ScannedChannel.NID), "-", Conversions.ToString(ScannedChannel.TID), "-", Conversions.ToString(ScannedChannel.SID)})) Then
                     Continue For
                 End If
+                Dim haschanged As Boolean = False
+                Dim deleteepg As Boolean = False
                 Dim Checksdt As SDTInfo
                 If SDTInfo.ContainsKey(ScannedChannel.NID & "-" & ScannedChannel.TID & "-" & ScannedChannel.SID) Then
-                    Dim haschanged As Boolean = False
-                    Dim deleteepg As Boolean = False
                     Checksdt = SDTInfo(ScannedChannel.NID & "-" & ScannedChannel.TID & "-" & ScannedChannel.SID)
                     If DBChannel.DisplayName <> Checksdt.ChannelName Or currentDetail.Name <> Checksdt.ChannelName Then
                         RaiseEvent OnMessage("Channel " & DBChannel.DisplayName & " name changed to " & Checksdt.ChannelName, False)
                         DBChannel.DisplayName = Checksdt.ChannelName
                         checkDVBSChannel.Name = Checksdt.ChannelName
                         'Check Channel hasn't become a real channel from a test channel
-                        If ScannedChannel.LCNCount > 0 And DBChannel.VisibleInGuide = False Then
+                        If ScannedChannel.LCNCount > 0 And Not DBChannel.VisibleInGuide Then
                             DBChannel.VisibleInGuide = True
                             RaiseEvent OnMessage("Channel " & DBChannel.DisplayName & " is now part of the EPG making visible " & Checksdt.ChannelName & ".", False)
                         End If
                         haschanged = True
                     End If
-
                     If checkDVBSChannel.Provider <> Checksdt.Provider Then
                         RaiseEvent OnMessage("Channel " & DBChannel.DisplayName & " Provider name changed to " & Checksdt.Provider & ".", False)
                         RaiseEvent OnMessage("", False)
                         checkDVBSChannel.Provider = Checksdt.Provider
                         haschanged = True
                     End If
-
                     If currentDetail.TransportId <> ScannedChannel.TID Then
                         'Moved transponder
-                        RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " tuning details changed.", False)
-                        RaiseEvent OnMessage("", False)
-                        If NITInfo.ContainsKey(ScannedChannel.TID) Then
-                            NIT = NITInfo(ScannedChannel.TID)
-                        Else
-                            Continue For
-                        End If
-                        checkDVBSChannel.BandType = 0
-                        checkDVBSChannel.Frequency = NIT.Frequency
-                        checkDVBSChannel.SymbolRate = NIT.Symbolrate
-                        checkDVBSChannel.InnerFecRate = CType(NIT.FECInner, DirectShowLib.BDA.BinaryConvolutionCodeRate)
-                        If (NIT.isS2 And UseModNotSetHD) Or (NIT.isS2 = False And UseModNotSetSD) Then
-                            checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotSet
-                        Else
-                            Select Case NIT.Modulation
-                                Case 1
-                                    If NIT.isS2 Then
-                                        checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbcQpsk
-                                    Else
-                                        checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModQpsk
-                                    End If
-                                Case 2
-                                    If NIT.isS2 Then
-                                        checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNbc8Psk
-                                    Else
-                                        checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
-                                    End If
-                                Case Else
-                                    checkDVBSChannel.ModulationType = DirectShowLib.BDA.ModulationType.ModNotDefined
-                            End Select
-
-                        End If
-
-                        checkDVBSChannel.Pilot = Pilot.NotSet
-                        checkDVBSChannel.Rolloff = RollOff.NotSet
-
-                        If NIT.isS2 = 1 Then
-                            checkDVBSChannel.Rolloff = DirectCast(NIT.RollOff, DirectShowLib.BDA.RollOff)
-                        End If
-
-                        checkDVBSChannel.PmtPid = 0
-                        checkDVBSChannel.Polarisation = DirectCast(NIT.Polarisation, DirectShowLib.BDA.Polarisation)
-                        checkDVBSChannel.TransportId = ScannedChannel.TID
-                        checkDVBSChannel.SwitchingFrequency = SwitchingFrequency ' Option for user to enter
-
-                        haschanged = True
-                        deleteepg = True
-                        RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " tuning details changed.", False)
-                        RaiseEvent OnMessage("", False)
+                        GoTo label_0B2C
                     End If
-
-                    If currentDetail.ServiceId <> ScannedChannel.SID Then
-                        checkDVBSChannel.ServiceId = ScannedChannel.SID
-                        checkDVBSChannel.PmtPid = 0
-                        RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " serviceID changed.", False)
-                        RaiseEvent OnMessage("", False)
-                        haschanged = True
-                        deleteepg = True
+                    RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " tuning details changed.", False)
+                    RaiseEvent OnMessage("", False)
+                    If Not NITInfo.ContainsKey(ScannedChannel.TID) Then
+                        Continue For
                     End If
-
-                    If UseSkyRegions = True Then
-                        Dim checkLCN As Integer = 10000
-                        If UseSkyNumbers Then
-                            If ScannedChannel.LCNCount > 0 Then
-                                If ScannedChannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
-                                    Dim LCN As LCNHolder = ScannedChannel.GetLCN(BouquetIDtoUse, RegionIDtoUse)
+                    Dim Nit2 As NITSatDescriptor = NITInfo.Item(ScannedChannel.TID)
+                    checkDVBSChannel.BandType = BandType.Universal
+                    checkDVBSChannel.Frequency = Nit2.Frequency
+                    checkDVBSChannel.SymbolRate = Nit2.Symbolrate
+                    checkDVBSChannel.InnerFecRate = CType(Nit2.FECInner, BinaryConvolutionCodeRate)
+                    If ((Nit2.isS2 And -((UseModNotSetHD > False) Or -((Nit2.isS2 = 0) And UseModNotSetSD) > False)) > 0) Then
+                        checkDVBSChannel.ModulationType = ModulationType.ModNotSet
+                    Else
+                        Select Case Nit2.Modulation
+                            Case 1
+                                If Nit2.isS2 <= 0 Then
+                                    Exit Select
+                                End If
+                                checkDVBSChannel.ModulationType = ModulationType.ModNbcQpsk
+                                GoTo Label_0A8E
+                            Case 2
+                                If Nit2.isS2 <= 0 Then
+                                    GoTo Label_0A7C
+                                End If
+                                checkDVBSChannel.ModulationType = ModulationType.ModNbc8Psk
+                                GoTo Label_0A8E
+                            Case Else
+                                checkDVBSChannel.ModulationType = ModulationType.ModNotDefined
+                                GoTo Label_0A8E
+                        End Select
+                        checkDVBSChannel.ModulationType = ModulationType.ModQpsk
+                    End If
+                    GoTo Label_0A8E
+label_0A7C:
+                    checkDVBSChannel.ModulationType = ModulationType.ModNotDefined
+Label_0A8E:
+                    checkDVBSChannel.Pilot = Pilot.NotSet
+                    checkDVBSChannel.Rolloff = RollOff.NotSet
+                    If Nit2.isS2 = 1 Then
+                        checkDVBSChannel.Rolloff = DirectCast(Nit2.RollOff, RollOff)
+                    End If
+                    checkDVBSChannel.PmtPid = 0
+                    checkDVBSChannel.Polarisation = DirectCast(Nit2.Polarisation, Polarisation)
+                    checkDVBSChannel.TransportId = ScannedChannel.TID
+                    checkDVBSChannel.SwitchingFrequency = SwitchingFrequency ' Option for user to enter
+                    haschanged = True
+                    deleteepg = True
+                    RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " tuning details changed.", False)
+                    RaiseEvent OnMessage("", False)
+                End If
+label_0B2C:
+                If currentDetail.ServiceId <> ScannedChannel.SID Then
+                    checkDVBSChannel.ServiceId = ScannedChannel.SID
+                    checkDVBSChannel.PmtPid = 0
+                    RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " serviceID changed.", False)
+                    RaiseEvent OnMessage("", False)
+                    haschanged = True
+                    deleteepg = True
+                End If
+                If UseSkyRegions = True Then
+                    Dim checkLCN As Integer = 10000
+                    If UseSkyNumbers Then
+                        If ScannedChannel.LCNCount > 0 Then
+                            If ScannedChannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
+                                Dim LCN As LCNHolder = ScannedChannel.GetLCN(BouquetIDtoUse, RegionIDtoUse)
+                                checkLCN = LCN.SkyNum
+                            ElseIf ScannedChannel.ContainsLCN(BouquetIDtoUse, 255) Then
+                                    Dim LCN As LCNHolder = ScannedChannel.GetLCN(BouquetIDtoUse, 255)
                                     checkLCN = LCN.SkyNum
-                                Else
-                                    If ScannedChannel.ContainsLCN(BouquetIDtoUse, 255) Then
-                                        Dim LCN As LCNHolder = ScannedChannel.GetLCN(BouquetIDtoUse, 255)
-                                        checkLCN = LCN.SkyNum
-                                    End If
-                                End If
-
-                                If (currentDetail.ChannelNumber <> checkLCN And checkLCN < 1000) Or (checkLCN = 10000 And DBChannel.SortOrder <> 10000) Then
-
-                                    RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " number has changed from : " & checkDVBSChannel.LogicalChannelNumber & " to : " & checkLCN & ".", False)
-                                    RaiseEvent OnMessage("", False)
-                                    DBChannel.RemoveFromAllGroups()
-                                    currentDetail.ChannelNumber = checkLCN
-                                    checkDVBSChannel.LogicalChannelNumber = checkLCN
-                                    DBChannel.SortOrder = checkLCN
-                                    DBChannel.VisibleInGuide = True
-                                    haschanged = True
-                                    AddChannelToGroups(DBChannel, Checksdt, checkDVBSChannel, UseSkyCategories)
-                                End If
-
+                            End If
+                            If (currentDetail.ChannelNumber <> checkLCN And checkLCN < 1000) Or (checkLCN = 10000 And DBChannel.SortOrder <> 10000) Then
+                                RaiseEvent OnMessage("Channel : " & DBChannel.DisplayName & " number has changed from : " & checkDVBSChannel.LogicalChannelNumber & " to : " & checkLCN & ".", False)
+                                RaiseEvent OnMessage("", False)
+                                DBChannel.RemoveFromAllGroups()
+                                currentDetail.ChannelNumber = checkLCN
+                                checkDVBSChannel.LogicalChannelNumber = checkLCN
+                                DBChannel.SortOrder = checkLCN
+                                DBChannel.VisibleInGuide = True
+                                haschanged = True
+                                AddChannelToGroups(DBChannel, Checksdt, checkDVBSChannel, UseSkyCategories)
                             End If
                         End If
                     End If
-
-                    If haschanged Then
-                        DBChannel.Persist()
-                        Dim tuning As TuningDetail = _layer.UpdateTuningDetails(DBChannel, checkDVBSChannel, currentDetail)
-                        tuning.Persist()
-                        MapChannelToCards(DBChannel)
-                        If deleteepg Then
-                            _layer.RemoveAllPrograms(DBChannel.IdChannel)
-                        End If
-                    End If
-
                 End If
-
-
+                If haschanged Then
+                    DBChannel.Persist()
+                    _layer.UpdateTuningDetails(DBChannel, checkDVBSChannel, currentDetail).Persist()
+                    MapChannelToCards(DBChannel)
+                    If deleteepg Then
+                        _layer.RemoveAllPrograms(DBChannel.IdChannel)
+                    End If
+                End If
             Next
         Catch err As Exception
-
             MsgBox(err.Message)
-
-
         End Try
-
-
     End Sub
     Private Sub MapChannelToCards(ByVal DBChannel As Channel)
         For Each card__1 As Card In CardstoMap
@@ -2014,7 +2008,6 @@ nextloop1:
     End Sub
 
     Private Sub ParseSDT(ByVal Data As Custom_Data_Grabber.Section, ByVal Length As Integer)
-
         Try
             If Not GotAllSDT Then
                 Dim Section As Byte() = Data.Data
@@ -2045,7 +2038,7 @@ nextloop1:
                         Dim indicator As Integer = Section(pointer)
                         x = 0
                         x = Section(pointer + 1) + 2
-                        Select indicator
+                        Select Case indicator
                             Case &H48
                                 DVB_GetServiceNew(Section, pointer, info)
                                 info.SID = service_id
@@ -2065,59 +2058,60 @@ nextloop1:
                                     info.Category = Section(pointer + 1)
                                 End If
                                 Exit Select
-                            Case Is = &H4B
-                                Dim offset As Integer = x + pointer
-                                Dim morechanlen As Integer = Section(offset + 1)
-                                Dim tt As Integer
-                                offset += 2
-                                Dim Sid1, Nid1, Tid1 As Integer
-                                For tt = 0 To morechanlen Step 6
-                                    Tid1 = (Section(offset + tt) * 256) Or Section(offset + tt + 1)
-                                    Nid1 = (Section(offset + tt + 2) * 256) Or Section(offset + tt + 3)
-                                    Sid1 = (Section(offset + tt + 4) * 256) Or Section(offset + tt + 5)
-                                    If SDTInfo.ContainsKey(Nid1 & "-" & Tid1 & "-" & Sid1) = False And info.ChannelName <> "" Then
-                                        Dim SDT As New SDTInfo
-                                        SDT.ChannelName = info.ChannelName
-                                        SDT.Category = 0
-                                        SDT.SID = Sid1
-                                        SDT.isFTA = info.isFTA
-                                        SDT.isHD = info.isHD
-                                        SDT.isTV = info.isTV
-                                        SDT.isRadio = info.isRadio
-                                        SDT.Provider = info.Provider
-                                        SDTInfo.Add(Nid1 & "-" & Tid1 & "-" & Sid1, SDT)
-                                        SDTCount += 1
-                                    End If
-                                Next
                         End Select
-                        'If (indicator = &H48) Then
-                        'Dim info As SDTInfo
-                        'info = DVB_GetServiceNew(Section, pointer)
-                        'info.SID = service_id
-                        'info.isFTA = free_CA_mode
-                        len2 -= x
-                        pointer += x
-                        len1 -= x
+                        '    Case Is = &H4B
+                        '        Dim offset As Integer = x + pointer
+                        '        Dim morechanlen As Integer = Section(offset + 1)
+                        '        Dim tt As Integer
+                        '        offset += 2
+                        '        Dim Sid1, Nid1, Tid1 As Integer
+                        '        For tt = 0 To morechanlen Step 6
+                        '            Tid1 = (Section(offset + tt) * 256) Or Section(offset + tt + 1)
+                        '            Nid1 = (Section(offset + tt + 2) * 256) Or Section(offset + tt + 3)
+                        '            Sid1 = (Section(offset + tt + 4) * 256) Or Section(offset + tt + 5)
+                        '            If SDTInfo.ContainsKey(Nid1 & "-" & Tid1 & "-" & Sid1) = False And info.ChannelName <> "" Then
+                        '                Dim SDT As New SDTInfo
+                        '                SDT.ChannelName = info.ChannelName
+                        '                SDT.Category = 0
+                        '                SDT.SID = Sid1
+                        '                SDT.isFTA = info.isFTA
+                        '                SDT.isHD = info.isHD
+                        '                SDT.isTV = info.isTV
+                        '                SDT.isRadio = info.isRadio
+                        '                SDT.Provider = info.Provider
+                        '                SDTInfo.Add(Nid1 & "-" & Tid1 & "-" & Sid1, SDT)
+                        '                SDTCount += 1
+                        '            End If
+                        '        Next
+                        'End Select
+                        ''If (indicator = &H48) Then
+                        ''Dim info As SDTInfo
+                        ''info = DVB_GetServiceNew(Section, pointer)
+                        ''info.SID = service_id
+                        ''info.isFTA = free_CA_mode
+                        'len2 -= x
+                        'pointer += x
+                        'len1 -= x
                         If Not SDTInfo.ContainsKey(original_network_id & "-" & transport_id & "-" & service_id) Then
                             SDTInfo.Add(original_network_id & "-" & transport_id & "-" & service_id, info)
                             SDTCount += 1
                         End If
                         If AreAllBouquetsPopulated() And SDTCount = Channels.Count AndAlso Not GotAllSDT Then
                             GotAllSDT = True
-                                RaiseEvent OnMessage("Got All SDT Info, " & SDTInfo.Count & " Channels found", False)
+                            RaiseEvent OnMessage("Got All SDT Info, " & SDTInfo.Count & " Channels found", False)
                         End If
                     Loop
 
 
-        'add sdt info
-        'Else
+                    'add sdt info
+                    'Else
 
 
-        'Dim st As Integer = indicator
-        'If (Not st = &H53 And Not st = &H64) Then
-        'st = 1
-        'End If
-        'End If
+                    'Dim st As Integer = indicator
+                    'If (Not st = &H53 And Not st = &H64) Then
+                    'st = 1
+                    'End If
+                    'End If
 
 
                 Loop
@@ -2164,59 +2158,59 @@ nextloop1:
         service_name_length = b(x + pointer)
         pointer += 1
         info.ChannelName = GetString(b, pointer + x, service_name_length, False)
-        'pointer += service_name_length
-        'Select Case b(x + pointer)
+        pointer += service_name_length
+        Select Case b(x + pointer)
 
-        '    Case Is = &H49
-        '        pointer += b(x + pointer + 1) + 2
-        '        If (b(x + pointer) = &H5F) Then
-        '            pointer += b(x + pointer + 1) + 5
-        '            If ((b(x + pointer + 1) And &H1) = 1) Then
-        '                info.Category = b(x + pointer + 2)
-        '            Else
-        '                info.Category = b(x + pointer + 1)
-        '            End If
-        '        End If
+            Case Is = &H49
+                pointer += b(x + pointer + 1) + 2
+                If (b(x + pointer) = &H5F) Then
+                    pointer += b(x + pointer + 1) + 5
+                    If ((b(x + pointer + 1) And &H1) = 1) Then
+                        info.Category = b(x + pointer + 2)
+                    Else
+                        info.Category = b(x + pointer + 1)
+                    End If
+                End If
 
-        '    Case Is = &HB2
-        '        If ((b(x + pointer + 4) And &H1) = 1) Then
-        '            info.Category = b(x + pointer + 5)
-        '        Else
-        '            info.Category = b(x + pointer + 4)
-        '        End If
-        '    Case Is = &H5F
-        '        pointer += b(x + pointer + 1) + 5
-        '        If ((b(x + pointer + 1) And &H1) = 1) Then
-        '            info.Category = b(x + pointer + 2)
-        '        Else
-        '            info.Category = b(x + pointer + 1)
-        '        End If
-        '    Case Is = &H4B
-        '        Dim offset As Integer = x + pointer
-        '        Dim morechanlen As Integer = b(offset + 1)
-        '        Dim tt As Integer
-        '        offset += 2
-        '        Dim Sid1, Nid1, Tid1 As Integer
-        '        For tt = 0 To morechanlen Step 6
-        '            Tid1 = (b(offset + tt) * 256) Or b(offset + tt + 1)
-        '            Nid1 = (b(offset + tt + 2) * 256) Or b(offset + tt + 3)
-        '            Sid1 = (b(offset + tt + 4) * 256) Or b(offset + tt + 5)
-        '            If SDTInfo.ContainsKey(Nid1 & "-" & Tid1 & "-" & Sid1) = False And info.ChannelName <> "" Then
-        '                Dim SDT As New SDTInfo
-        '                SDT.ChannelName = info.ChannelName
-        '                SDT.Category = 0
-        '                SDT.SID = Sid1
-        '                SDT.isFTA = info.isFTA
-        '                SDT.isHD = info.isHD
-        '                SDT.isTV = info.isTV
-        '                SDT.isRadio = info.isRadio
-        '                SDT.Provider = info.Provider
-        '                SDTInfo.Add(Nid1 & "-" & Tid1 & "-" & Sid1, SDT)
-        '                SDTCount += 1
-        '            End If
-        '        Next
-        'End Select
-        'Return info
+            Case Is = &HB2
+                If ((b(x + pointer + 4) And &H1) = 1) Then
+                    info.Category = b(x + pointer + 5)
+                Else
+                    info.Category = b(x + pointer + 4)
+                End If
+            Case Is = &H5F
+                pointer += b(x + pointer + 1) + 5
+                If ((b(x + pointer + 1) And &H1) = 1) Then
+                    info.Category = b(x + pointer + 2)
+                Else
+                    info.Category = b(x + pointer + 1)
+                End If
+            Case Is = &H4B
+                Dim offset As Integer = x + pointer
+                Dim morechanlen As Integer = b(offset + 1)
+                Dim tt As Integer
+                offset += 2
+                Dim Sid1, Nid1, Tid1 As Integer
+                For tt = 0 To morechanlen Step 6
+                    Tid1 = (b(offset + tt) * 256) Or b(offset + tt + 1)
+                    Nid1 = (b(offset + tt + 2) * 256) Or b(offset + tt + 3)
+                    Sid1 = (b(offset + tt + 4) * 256) Or b(offset + tt + 5)
+                    If SDTInfo.ContainsKey(Nid1 & "-" & Tid1 & "-" & Sid1) = False And info.ChannelName <> "" Then
+                        Dim SDT As New SDTInfo
+                        SDT.ChannelName = info.ChannelName
+                        SDT.Category = 0
+                        SDT.SID = Sid1
+                        SDT.isFTA = info.isFTA
+                        SDT.isHD = info.isHD
+                        SDT.isTV = info.isTV
+                        SDT.isRadio = info.isRadio
+                        SDT.Provider = info.Provider
+                        SDTInfo.Add(Nid1 & "-" & Tid1 & "-" & Sid1, SDT)
+                        SDTCount += 1
+                    End If
+                Next
+        End Select
+        Return info
     End Function
 
     Function GetString(ByVal byteData As Byte(), ByVal offset As Integer, ByVal length As Integer, ByVal replace As Boolean) As String
@@ -2367,7 +2361,7 @@ nextloop1:
         If Not Bouquets.ContainsKey(bouquetId) Then
             Bouquets.Add(bouquetId, New SkyBouquet)
         End If
-        return Bouquets.Item(bouquetId)
+        Return Bouquets.Item(bouquetId)
 
         'Dim returnBouquet As SkyBouquet
         'If (Bouquets.ContainsKey(bouquetId)) Then

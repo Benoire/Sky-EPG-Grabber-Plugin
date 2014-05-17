@@ -11,12 +11,12 @@ Public Class Setup
     Dim WithEvents Grabber As SkyGrabber
     Dim Settings As New Settings
 
-    Private WithEvents SkyIT_Tab As System.Windows.Forms.TabControl
+    Private WithEvents SkyNZ As System.Windows.Forms.TabControl
     Private WithEvents tabPage1 As System.Windows.Forms.TabPage
-    Private WithEvents skyUKContainer As System.Windows.Forms.GroupBox
+    Private WithEvents Region_Group_Tab As System.Windows.Forms.GroupBox
     Private WithEvents groupBox3 As System.Windows.Forms.GroupBox
-    Private WithEvents SkyUK_Region As System.Windows.Forms.ComboBox
-    Private WithEvents groupBox1 As System.Windows.Forms.GroupBox
+    Private WithEvents SkyNZ_Region As System.Windows.Forms.ComboBox
+    Private WithEvents SkyNZ_Channel_Groups As System.Windows.Forms.GroupBox
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents CatText20 As System.Windows.Forms.TextBox
     Friend WithEvents CatByte20 As System.Windows.Forms.TextBox
@@ -77,7 +77,7 @@ Public Class Setup
     Friend WithEvents CatByte2 As System.Windows.Forms.TextBox
     Friend WithEvents CatText1 As System.Windows.Forms.TextBox
     Friend WithEvents CatByte1 As System.Windows.Forms.TextBox
-    Friend WithEvents Button4 As System.Windows.Forms.Button
+    Friend WithEvents Save_Changes As System.Windows.Forms.Button
     Public Delegate Sub AddLog1(ByVal Value As String, ByVal UpdateLast As Boolean)
     Public Log1 As New AddLog1(AddressOf AddLog)
 
@@ -97,66 +97,66 @@ Public Class Setup
     Public Bool5 As New SetBool5(AddressOf SetBool55)
     Public Delegate Sub SetBool6(ByVal Value As Boolean)
     Public Bool6 As New SetBool6(AddressOf SetBool66)
-    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
-    Friend WithEvents Sun As System.Windows.Forms.CheckBox
-    Friend WithEvents Sat As System.Windows.Forms.CheckBox
-    Friend WithEvents Fri As System.Windows.Forms.CheckBox
-    Friend WithEvents Thu As System.Windows.Forms.CheckBox
-    Friend WithEvents Wed As System.Windows.Forms.CheckBox
-    Friend WithEvents Tue As System.Windows.Forms.CheckBox
-    Friend WithEvents Mon As System.Windows.Forms.CheckBox
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents CheckBox6 As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox5 As System.Windows.Forms.CheckBox
-    Friend WithEvents CheckBox4 As System.Windows.Forms.CheckBox
+    Friend WithEvents Schedule_Tab As System.Windows.Forms.TabPage
+    Friend WithEvents chk_Sun As System.Windows.Forms.CheckBox
+    Friend WithEvents chk_Sat As System.Windows.Forms.CheckBox
+    Friend WithEvents chk_Fri As System.Windows.Forms.CheckBox
+    Friend WithEvents chk_Thu As System.Windows.Forms.CheckBox
+    Friend WithEvents chk_Wed As System.Windows.Forms.CheckBox
+    Friend WithEvents chk_Tue As System.Windows.Forms.CheckBox
+    Friend WithEvents chk_Mon As System.Windows.Forms.CheckBox
+    Friend WithEvents Schedule_Hours_Label As System.Windows.Forms.Label
+    Friend WithEvents chk_onthesedays As System.Windows.Forms.CheckBox
+    Friend WithEvents chk_every_hours As System.Windows.Forms.CheckBox
+    Friend WithEvents chk_schedule_enabled As System.Windows.Forms.CheckBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
-    Friend WithEvents DateTimePicker1 As System.Windows.Forms.DateTimePicker
-    Friend WithEvents NumericUpDown1 As System.Windows.Forms.NumericUpDown
-    Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
-    Friend WithEvents ChannelMap As System.Windows.Forms.CheckedListBox
-    Private WithEvents MpGroupBox2 As MediaPortal.UserInterface.Controls.MPGroupBox
-    Private WithEvents MpGroupBox1 As MediaPortal.UserInterface.Controls.MPGroupBox
-    Private WithEvents MpLabel1 As MediaPortal.UserInterface.Controls.MPLabel
-    Private WithEvents mpDisEqc1 As MediaPortal.UserInterface.Controls.MPComboBox
-    Private WithEvents MpLabel6 As MediaPortal.UserInterface.Controls.MPLabel
-    Private WithEvents MpComboBox1 As MediaPortal.UserInterface.Controls.MPComboBox
-    Private WithEvents MpLabel8 As MediaPortal.UserInterface.Controls.MPLabel
-    Private WithEvents MpComboBox2 As MediaPortal.UserInterface.Controls.MPComboBox
-    Private WithEvents MpLabel3 As MediaPortal.UserInterface.Controls.MPLabel
-    Private WithEvents TextBox4 As System.Windows.Forms.TextBox
-    Private WithEvents MpLabel4 As MediaPortal.UserInterface.Controls.MPLabel
-    Private WithEvents TextBox5 As System.Windows.Forms.TextBox
-    Private WithEvents TextBox6 As System.Windows.Forms.TextBox
-    Private WithEvents MpLabel5 As MediaPortal.UserInterface.Controls.MPLabel
-    Private WithEvents TextBox10 As System.Windows.Forms.TextBox
-    Private WithEvents MpLabel9 As MediaPortal.UserInterface.Controls.MPLabel
-    Private WithEvents MpLabel10 As MediaPortal.UserInterface.Controls.MPLabel
-    Friend WithEvents Panel3 As System.Windows.Forms.Panel
-    Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
-    Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
+    Friend WithEvents Schedule_scroll_time As System.Windows.Forms.DateTimePicker
+    Friend WithEvents schedule_hours As System.Windows.Forms.NumericUpDown
+    Friend WithEvents Cards_Mapping_Tab As System.Windows.Forms.TabPage
+    Friend WithEvents Cards_For_Grabbing As System.Windows.Forms.CheckedListBox
+    Private WithEvents Card_Map_Box As MediaPortal.UserInterface.Controls.MPGroupBox
+    Private WithEvents Sky_NZ_Channel_Grabber_Settings As MediaPortal.UserInterface.Controls.MPGroupBox
+    Private WithEvents Diseqc_Label As MediaPortal.UserInterface.Controls.MPLabel
+    Private WithEvents MP_Diseqc As MediaPortal.UserInterface.Controls.MPComboBox
+    Private WithEvents Modulation_Label As MediaPortal.UserInterface.Controls.MPLabel
+    Private WithEvents MP_Modulation As MediaPortal.UserInterface.Controls.MPComboBox
+    Private WithEvents Polarisation_Label As MediaPortal.UserInterface.Controls.MPLabel
+    Private WithEvents MP_Polarisation As MediaPortal.UserInterface.Controls.MPComboBox
+    Private WithEvents Serviceid_label As MediaPortal.UserInterface.Controls.MPLabel
+    Private WithEvents txt_serviceid As System.Windows.Forms.TextBox
+    Private WithEvents TransportID_Label As MediaPortal.UserInterface.Controls.MPLabel
+    Private WithEvents txt_transportid As System.Windows.Forms.TextBox
+    Private WithEvents txt_frequency As System.Windows.Forms.TextBox
+    Private WithEvents Fequency_Label As MediaPortal.UserInterface.Controls.MPLabel
+    Private WithEvents txt_symbol_rate As System.Windows.Forms.TextBox
+    Private WithEvents Symbol_rate_Label As MediaPortal.UserInterface.Controls.MPLabel
+    Private WithEvents Frequency_Unit_Label As MediaPortal.UserInterface.Controls.MPLabel
+    Friend WithEvents Schedule_panel As System.Windows.Forms.Panel
+    Friend WithEvents Change_Log_Tab As System.Windows.Forms.TabPage
+    Friend WithEvents txtbox_Change_log As System.Windows.Forms.TextBox
+    Friend WithEvents Settings_Tab As System.Windows.Forms.TabPage
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
-    Private WithEvents CheckBox8 As System.Windows.Forms.CheckBox
-    Private WithEvents CheckBox7 As System.Windows.Forms.CheckBox
-    Private WithEvents CheckBox3 As System.Windows.Forms.CheckBox
-    Private WithEvents label8 As System.Windows.Forms.Label
-    Private WithEvents CheckBox2 As System.Windows.Forms.CheckBox
+    Private WithEvents chk_ignorescrambled As System.Windows.Forms.CheckBox
+    Private WithEvents chk_modnotsetSD As System.Windows.Forms.CheckBox
+    Private WithEvents chk_extrainfo As System.Windows.Forms.CheckBox
+    Private WithEvents Expired_Channels_label As System.Windows.Forms.Label
+    Private WithEvents chk_updateEPG As System.Windows.Forms.CheckBox
     Private WithEvents chk_DeleteOld As System.Windows.Forms.RadioButton
-    Private WithEvents CheckBox1 As System.Windows.Forms.CheckBox
+    Private WithEvents chk_replaceSDwithHD As System.Windows.Forms.CheckBox
     Private WithEvents chk_MoveOld As System.Windows.Forms.RadioButton
     Private WithEvents txt_Move_Old_Group As System.Windows.Forms.TextBox
     Private WithEvents chk_AutoUpdate As System.Windows.Forms.CheckBox
     Private WithEvents chk_SkyCategories As System.Windows.Forms.CheckBox
     Private WithEvents chk_SkyNumbers As System.Windows.Forms.CheckBox
     Private WithEvents chk_SkyRegions As System.Windows.Forms.CheckBox
-    Private WithEvents tabPage3 As System.Windows.Forms.TabPage
-    Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents Label9 As System.Windows.Forms.Label
-    Friend WithEvents NumericUpDown2 As System.Windows.Forms.NumericUpDown
-    Private WithEvents listViewStatus As System.Windows.Forms.ListView
+    Private WithEvents General_Tab As System.Windows.Forms.TabPage
+    Friend WithEvents Grabtime_time_label As System.Windows.Forms.Label
+    Friend WithEvents Grabtime_label As System.Windows.Forms.Label
+    Friend WithEvents Grabtime_grabtime As System.Windows.Forms.NumericUpDown
+    Private WithEvents Output_Window As System.Windows.Forms.ListView
     Private WithEvents columnHeader1 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents Button1 As System.Windows.Forms.Button
-    Private WithEvents CheckBox9 As System.Windows.Forms.CheckBox
+    Friend WithEvents Grab_Now As System.Windows.Forms.Button
+    Private WithEvents chk_modnotsetHD As System.Windows.Forms.CheckBox
     Dim regions As New Dictionary(Of Integer, Region)
 
     Public Sub New()
@@ -171,24 +171,24 @@ Public Class Setup
 
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Setup))
-        Me.SkyIT_Tab = New System.Windows.Forms.TabControl()
-        Me.tabPage3 = New System.Windows.Forms.TabPage()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.NumericUpDown2 = New System.Windows.Forms.NumericUpDown()
-        Me.listViewStatus = New System.Windows.Forms.ListView()
+        Me.SkyNZ = New System.Windows.Forms.TabControl()
+        Me.General_Tab = New System.Windows.Forms.TabPage()
+        Me.Grabtime_time_label = New System.Windows.Forms.Label()
+        Me.Grabtime_label = New System.Windows.Forms.Label()
+        Me.Grabtime_grabtime = New System.Windows.Forms.NumericUpDown()
+        Me.Output_Window = New System.Windows.Forms.ListView()
         Me.columnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.TabPage6 = New System.Windows.Forms.TabPage()
+        Me.Grab_Now = New System.Windows.Forms.Button()
+        Me.Settings_Tab = New System.Windows.Forms.TabPage()
         Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.CheckBox9 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox8 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox7 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox3 = New System.Windows.Forms.CheckBox()
-        Me.label8 = New System.Windows.Forms.Label()
-        Me.CheckBox2 = New System.Windows.Forms.CheckBox()
+        Me.chk_modnotsetHD = New System.Windows.Forms.CheckBox()
+        Me.chk_ignorescrambled = New System.Windows.Forms.CheckBox()
+        Me.chk_modnotsetSD = New System.Windows.Forms.CheckBox()
+        Me.chk_extrainfo = New System.Windows.Forms.CheckBox()
+        Me.Expired_Channels_label = New System.Windows.Forms.Label()
+        Me.chk_updateEPG = New System.Windows.Forms.CheckBox()
         Me.chk_DeleteOld = New System.Windows.Forms.RadioButton()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.chk_replaceSDwithHD = New System.Windows.Forms.CheckBox()
         Me.chk_MoveOld = New System.Windows.Forms.RadioButton()
         Me.txt_Move_Old_Group = New System.Windows.Forms.TextBox()
         Me.chk_AutoUpdate = New System.Windows.Forms.CheckBox()
@@ -196,9 +196,9 @@ Public Class Setup
         Me.chk_SkyNumbers = New System.Windows.Forms.CheckBox()
         Me.chk_SkyRegions = New System.Windows.Forms.CheckBox()
         Me.tabPage1 = New System.Windows.Forms.TabPage()
-        Me.skyUKContainer = New System.Windows.Forms.GroupBox()
-        Me.groupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Button4 = New System.Windows.Forms.Button()
+        Me.Region_Group_Tab = New System.Windows.Forms.GroupBox()
+        Me.SkyNZ_Channel_Groups = New System.Windows.Forms.GroupBox()
+        Me.Save_Changes = New System.Windows.Forms.Button()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.CatText20 = New System.Windows.Forms.TextBox()
         Me.CatByte20 = New System.Windows.Forms.TextBox()
@@ -260,166 +260,166 @@ Public Class Setup
         Me.CatText1 = New System.Windows.Forms.TextBox()
         Me.CatByte1 = New System.Windows.Forms.TextBox()
         Me.groupBox3 = New System.Windows.Forms.GroupBox()
-        Me.SkyUK_Region = New System.Windows.Forms.ComboBox()
-        Me.TabPage4 = New System.Windows.Forms.TabPage()
-        Me.MpGroupBox2 = New MediaPortal.UserInterface.Controls.MPGroupBox()
-        Me.ChannelMap = New System.Windows.Forms.CheckedListBox()
-        Me.MpGroupBox1 = New MediaPortal.UserInterface.Controls.MPGroupBox()
-        Me.MpLabel1 = New MediaPortal.UserInterface.Controls.MPLabel()
-        Me.mpDisEqc1 = New MediaPortal.UserInterface.Controls.MPComboBox()
-        Me.MpLabel6 = New MediaPortal.UserInterface.Controls.MPLabel()
-        Me.MpComboBox1 = New MediaPortal.UserInterface.Controls.MPComboBox()
-        Me.MpLabel8 = New MediaPortal.UserInterface.Controls.MPLabel()
-        Me.MpComboBox2 = New MediaPortal.UserInterface.Controls.MPComboBox()
-        Me.MpLabel3 = New MediaPortal.UserInterface.Controls.MPLabel()
-        Me.TextBox4 = New System.Windows.Forms.TextBox()
-        Me.MpLabel4 = New MediaPortal.UserInterface.Controls.MPLabel()
-        Me.TextBox5 = New System.Windows.Forms.TextBox()
-        Me.TextBox6 = New System.Windows.Forms.TextBox()
-        Me.MpLabel5 = New MediaPortal.UserInterface.Controls.MPLabel()
-        Me.TextBox10 = New System.Windows.Forms.TextBox()
-        Me.MpLabel9 = New MediaPortal.UserInterface.Controls.MPLabel()
-        Me.MpLabel10 = New MediaPortal.UserInterface.Controls.MPLabel()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.SkyNZ_Region = New System.Windows.Forms.ComboBox()
+        Me.Cards_Mapping_Tab = New System.Windows.Forms.TabPage()
+        Me.Card_Map_Box = New MediaPortal.UserInterface.Controls.MPGroupBox()
+        Me.Cards_For_Grabbing = New System.Windows.Forms.CheckedListBox()
+        Me.Sky_NZ_Channel_Grabber_Settings = New MediaPortal.UserInterface.Controls.MPGroupBox()
+        Me.Diseqc_Label = New MediaPortal.UserInterface.Controls.MPLabel()
+        Me.MP_Diseqc = New MediaPortal.UserInterface.Controls.MPComboBox()
+        Me.Modulation_Label = New MediaPortal.UserInterface.Controls.MPLabel()
+        Me.MP_Modulation = New MediaPortal.UserInterface.Controls.MPComboBox()
+        Me.Polarisation_Label = New MediaPortal.UserInterface.Controls.MPLabel()
+        Me.MP_Polarisation = New MediaPortal.UserInterface.Controls.MPComboBox()
+        Me.Serviceid_label = New MediaPortal.UserInterface.Controls.MPLabel()
+        Me.txt_serviceid = New System.Windows.Forms.TextBox()
+        Me.TransportID_Label = New MediaPortal.UserInterface.Controls.MPLabel()
+        Me.txt_transportid = New System.Windows.Forms.TextBox()
+        Me.txt_frequency = New System.Windows.Forms.TextBox()
+        Me.Fequency_Label = New MediaPortal.UserInterface.Controls.MPLabel()
+        Me.txt_symbol_rate = New System.Windows.Forms.TextBox()
+        Me.Symbol_rate_Label = New MediaPortal.UserInterface.Controls.MPLabel()
+        Me.Frequency_Unit_Label = New MediaPortal.UserInterface.Controls.MPLabel()
+        Me.Schedule_Tab = New System.Windows.Forms.TabPage()
+        Me.Schedule_panel = New System.Windows.Forms.Panel()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.NumericUpDown1 = New System.Windows.Forms.NumericUpDown()
-        Me.DateTimePicker1 = New System.Windows.Forms.DateTimePicker()
-        Me.CheckBox5 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox6 = New System.Windows.Forms.CheckBox()
-        Me.Sun = New System.Windows.Forms.CheckBox()
-        Me.Sat = New System.Windows.Forms.CheckBox()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.Fri = New System.Windows.Forms.CheckBox()
-        Me.Mon = New System.Windows.Forms.CheckBox()
-        Me.Thu = New System.Windows.Forms.CheckBox()
-        Me.Tue = New System.Windows.Forms.CheckBox()
-        Me.Wed = New System.Windows.Forms.CheckBox()
-        Me.CheckBox4 = New System.Windows.Forms.CheckBox()
-        Me.TabPage5 = New System.Windows.Forms.TabPage()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.SkyIT_Tab.SuspendLayout()
-        Me.tabPage3.SuspendLayout()
-        CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabPage6.SuspendLayout()
+        Me.schedule_hours = New System.Windows.Forms.NumericUpDown()
+        Me.Schedule_scroll_time = New System.Windows.Forms.DateTimePicker()
+        Me.chk_every_hours = New System.Windows.Forms.CheckBox()
+        Me.chk_onthesedays = New System.Windows.Forms.CheckBox()
+        Me.chk_Sun = New System.Windows.Forms.CheckBox()
+        Me.chk_Sat = New System.Windows.Forms.CheckBox()
+        Me.Schedule_Hours_Label = New System.Windows.Forms.Label()
+        Me.chk_Fri = New System.Windows.Forms.CheckBox()
+        Me.chk_Mon = New System.Windows.Forms.CheckBox()
+        Me.chk_Thu = New System.Windows.Forms.CheckBox()
+        Me.chk_Tue = New System.Windows.Forms.CheckBox()
+        Me.chk_Wed = New System.Windows.Forms.CheckBox()
+        Me.chk_schedule_enabled = New System.Windows.Forms.CheckBox()
+        Me.Change_Log_Tab = New System.Windows.Forms.TabPage()
+        Me.txtbox_Change_log = New System.Windows.Forms.TextBox()
+        Me.SkyNZ.SuspendLayout()
+        Me.General_Tab.SuspendLayout()
+        CType(Me.Grabtime_grabtime, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Settings_Tab.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.tabPage1.SuspendLayout()
-        Me.skyUKContainer.SuspendLayout()
-        Me.groupBox1.SuspendLayout()
+        Me.Region_Group_Tab.SuspendLayout()
+        Me.SkyNZ_Channel_Groups.SuspendLayout()
         Me.groupBox3.SuspendLayout()
-        Me.TabPage4.SuspendLayout()
-        Me.MpGroupBox2.SuspendLayout()
-        Me.MpGroupBox1.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
-        Me.Panel3.SuspendLayout()
+        Me.Cards_Mapping_Tab.SuspendLayout()
+        Me.Card_Map_Box.SuspendLayout()
+        Me.Sky_NZ_Channel_Grabber_Settings.SuspendLayout()
+        Me.Schedule_Tab.SuspendLayout()
+        Me.Schedule_panel.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabPage5.SuspendLayout()
+        CType(Me.schedule_hours, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Change_Log_Tab.SuspendLayout()
         Me.SuspendLayout()
         '
-        'SkyIT_Tab
+        'SkyNZ
         '
-        Me.SkyIT_Tab.Controls.Add(Me.tabPage3)
-        Me.SkyIT_Tab.Controls.Add(Me.TabPage6)
-        Me.SkyIT_Tab.Controls.Add(Me.tabPage1)
-        Me.SkyIT_Tab.Controls.Add(Me.TabPage4)
-        Me.SkyIT_Tab.Controls.Add(Me.TabPage2)
-        Me.SkyIT_Tab.Controls.Add(Me.TabPage5)
-        Me.SkyIT_Tab.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SkyIT_Tab.Location = New System.Drawing.Point(0, 0)
-        Me.SkyIT_Tab.Name = "SkyIT_Tab"
-        Me.SkyIT_Tab.SelectedIndex = 0
-        Me.SkyIT_Tab.Size = New System.Drawing.Size(456, 422)
-        Me.SkyIT_Tab.TabIndex = 3
+        Me.SkyNZ.Controls.Add(Me.General_Tab)
+        Me.SkyNZ.Controls.Add(Me.Settings_Tab)
+        Me.SkyNZ.Controls.Add(Me.tabPage1)
+        Me.SkyNZ.Controls.Add(Me.Cards_Mapping_Tab)
+        Me.SkyNZ.Controls.Add(Me.Schedule_Tab)
+        Me.SkyNZ.Controls.Add(Me.Change_Log_Tab)
+        Me.SkyNZ.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SkyNZ.Location = New System.Drawing.Point(0, 0)
+        Me.SkyNZ.Name = "SkyNZ"
+        Me.SkyNZ.SelectedIndex = 0
+        Me.SkyNZ.Size = New System.Drawing.Size(456, 422)
+        Me.SkyNZ.TabIndex = 3
         '
-        'tabPage3
+        'General_Tab
         '
-        Me.tabPage3.Controls.Add(Me.Label10)
-        Me.tabPage3.Controls.Add(Me.Label9)
-        Me.tabPage3.Controls.Add(Me.NumericUpDown2)
-        Me.tabPage3.Controls.Add(Me.listViewStatus)
-        Me.tabPage3.Controls.Add(Me.Button1)
-        Me.tabPage3.Location = New System.Drawing.Point(4, 22)
-        Me.tabPage3.Name = "tabPage3"
-        Me.tabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabPage3.Size = New System.Drawing.Size(448, 396)
-        Me.tabPage3.TabIndex = 2
-        Me.tabPage3.Text = "General"
-        Me.tabPage3.UseVisualStyleBackColor = True
+        Me.General_Tab.Controls.Add(Me.Grabtime_time_label)
+        Me.General_Tab.Controls.Add(Me.Grabtime_label)
+        Me.General_Tab.Controls.Add(Me.Grabtime_grabtime)
+        Me.General_Tab.Controls.Add(Me.Output_Window)
+        Me.General_Tab.Controls.Add(Me.Grab_Now)
+        Me.General_Tab.Location = New System.Drawing.Point(4, 22)
+        Me.General_Tab.Name = "General_Tab"
+        Me.General_Tab.Padding = New System.Windows.Forms.Padding(3)
+        Me.General_Tab.Size = New System.Drawing.Size(448, 396)
+        Me.General_Tab.TabIndex = 2
+        Me.General_Tab.Text = "General"
+        Me.General_Tab.UseVisualStyleBackColor = True
         '
-        'Label10
+        'Grabtime_time_label
         '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(127, 11)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(49, 13)
-        Me.Label10.TabIndex = 189
-        Me.Label10.Text = "Seconds"
+        Me.Grabtime_time_label.AutoSize = True
+        Me.Grabtime_time_label.Location = New System.Drawing.Point(127, 11)
+        Me.Grabtime_time_label.Name = "Grabtime_time_label"
+        Me.Grabtime_time_label.Size = New System.Drawing.Size(49, 13)
+        Me.Grabtime_time_label.TabIndex = 189
+        Me.Grabtime_time_label.Text = "Seconds"
         '
-        'Label9
+        'Grabtime_label
         '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(6, 12)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(56, 13)
-        Me.Label9.TabIndex = 188
-        Me.Label9.Text = "Grab Time"
+        Me.Grabtime_label.AutoSize = True
+        Me.Grabtime_label.Location = New System.Drawing.Point(6, 12)
+        Me.Grabtime_label.Name = "Grabtime_label"
+        Me.Grabtime_label.Size = New System.Drawing.Size(56, 13)
+        Me.Grabtime_label.TabIndex = 188
+        Me.Grabtime_label.Text = "Grab Time"
         '
-        'NumericUpDown2
+        'Grabtime_grabtime
         '
-        Me.NumericUpDown2.Location = New System.Drawing.Point(68, 9)
-        Me.NumericUpDown2.Name = "NumericUpDown2"
-        Me.NumericUpDown2.Size = New System.Drawing.Size(53, 20)
-        Me.NumericUpDown2.TabIndex = 187
-        Me.NumericUpDown2.Value = New Decimal(New Integer() {60, 0, 0, 0})
+        Me.Grabtime_grabtime.Location = New System.Drawing.Point(68, 9)
+        Me.Grabtime_grabtime.Name = "Grabtime_grabtime"
+        Me.Grabtime_grabtime.Size = New System.Drawing.Size(53, 20)
+        Me.Grabtime_grabtime.TabIndex = 187
+        Me.Grabtime_grabtime.Value = New Decimal(New Integer() {60, 0, 0, 0})
         '
-        'listViewStatus
+        'Output_Window
         '
-        Me.listViewStatus.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.columnHeader1})
-        Me.listViewStatus.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.listViewStatus.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        Me.listViewStatus.Location = New System.Drawing.Point(3, 35)
-        Me.listViewStatus.Name = "listViewStatus"
-        Me.listViewStatus.Size = New System.Drawing.Size(442, 322)
-        Me.listViewStatus.TabIndex = 179
-        Me.listViewStatus.UseCompatibleStateImageBehavior = False
-        Me.listViewStatus.View = System.Windows.Forms.View.Details
+        Me.Output_Window.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.columnHeader1})
+        Me.Output_Window.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.Output_Window.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+        Me.Output_Window.Location = New System.Drawing.Point(3, 35)
+        Me.Output_Window.Name = "Output_Window"
+        Me.Output_Window.Size = New System.Drawing.Size(442, 322)
+        Me.Output_Window.TabIndex = 179
+        Me.Output_Window.UseCompatibleStateImageBehavior = False
+        Me.Output_Window.View = System.Windows.Forms.View.Details
         '
         'columnHeader1
         '
         Me.columnHeader1.Width = 415
         '
-        'Button1
+        'Grab_Now
         '
-        Me.Button1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.Button1.Location = New System.Drawing.Point(3, 357)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(442, 36)
-        Me.Button1.TabIndex = 0
-        Me.Button1.Text = "Grab Now"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.Grab_Now.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.Grab_Now.Location = New System.Drawing.Point(3, 357)
+        Me.Grab_Now.Name = "Grab_Now"
+        Me.Grab_Now.Size = New System.Drawing.Size(442, 36)
+        Me.Grab_Now.TabIndex = 0
+        Me.Grab_Now.Text = "Grab Now"
+        Me.Grab_Now.UseVisualStyleBackColor = True
         '
-        'TabPage6
+        'Settings_Tab
         '
-        Me.TabPage6.Controls.Add(Me.Panel2)
-        Me.TabPage6.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage6.Name = "TabPage6"
-        Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(448, 396)
-        Me.TabPage6.TabIndex = 6
-        Me.TabPage6.Text = "Settings"
-        Me.TabPage6.UseVisualStyleBackColor = True
+        Me.Settings_Tab.Controls.Add(Me.Panel2)
+        Me.Settings_Tab.Location = New System.Drawing.Point(4, 22)
+        Me.Settings_Tab.Name = "Settings_Tab"
+        Me.Settings_Tab.Padding = New System.Windows.Forms.Padding(3)
+        Me.Settings_Tab.Size = New System.Drawing.Size(448, 396)
+        Me.Settings_Tab.TabIndex = 6
+        Me.Settings_Tab.Text = "Settings"
+        Me.Settings_Tab.UseVisualStyleBackColor = True
         '
         'Panel2
         '
-        Me.Panel2.Controls.Add(Me.CheckBox9)
-        Me.Panel2.Controls.Add(Me.CheckBox8)
-        Me.Panel2.Controls.Add(Me.CheckBox7)
-        Me.Panel2.Controls.Add(Me.CheckBox3)
-        Me.Panel2.Controls.Add(Me.label8)
-        Me.Panel2.Controls.Add(Me.CheckBox2)
+        Me.Panel2.Controls.Add(Me.chk_modnotsetHD)
+        Me.Panel2.Controls.Add(Me.chk_ignorescrambled)
+        Me.Panel2.Controls.Add(Me.chk_modnotsetSD)
+        Me.Panel2.Controls.Add(Me.chk_extrainfo)
+        Me.Panel2.Controls.Add(Me.Expired_Channels_label)
+        Me.Panel2.Controls.Add(Me.chk_updateEPG)
         Me.Panel2.Controls.Add(Me.chk_DeleteOld)
-        Me.Panel2.Controls.Add(Me.CheckBox1)
+        Me.Panel2.Controls.Add(Me.chk_replaceSDwithHD)
         Me.Panel2.Controls.Add(Me.chk_MoveOld)
         Me.Panel2.Controls.Add(Me.txt_Move_Old_Group)
         Me.Panel2.Controls.Add(Me.chk_AutoUpdate)
@@ -432,64 +432,64 @@ Public Class Setup
         Me.Panel2.Size = New System.Drawing.Size(442, 390)
         Me.Panel2.TabIndex = 185
         '
-        'CheckBox9
+        'chk_modnotsetHD
         '
-        Me.CheckBox9.AutoSize = True
-        Me.CheckBox9.Location = New System.Drawing.Point(3, 192)
-        Me.CheckBox9.Name = "CheckBox9"
-        Me.CheckBox9.Size = New System.Drawing.Size(239, 17)
-        Me.CheckBox9.TabIndex = 191
-        Me.CheckBox9.Text = "Set Modulation to ""Not Set"" for HD Channels"
-        Me.CheckBox9.UseVisualStyleBackColor = True
+        Me.chk_modnotsetHD.AutoSize = True
+        Me.chk_modnotsetHD.Location = New System.Drawing.Point(3, 192)
+        Me.chk_modnotsetHD.Name = "chk_modnotsetHD"
+        Me.chk_modnotsetHD.Size = New System.Drawing.Size(239, 17)
+        Me.chk_modnotsetHD.TabIndex = 191
+        Me.chk_modnotsetHD.Text = "Set Modulation to ""Not Set"" for HD Channels"
+        Me.chk_modnotsetHD.UseVisualStyleBackColor = True
         '
-        'CheckBox8
+        'chk_ignorescrambled
         '
-        Me.CheckBox8.AutoSize = True
-        Me.CheckBox8.Location = New System.Drawing.Point(3, 215)
-        Me.CheckBox8.Name = "CheckBox8"
-        Me.CheckBox8.Size = New System.Drawing.Size(156, 17)
-        Me.CheckBox8.TabIndex = 190
-        Me.CheckBox8.Text = "Ignore Scrambled Channels"
-        Me.CheckBox8.UseVisualStyleBackColor = True
+        Me.chk_ignorescrambled.AutoSize = True
+        Me.chk_ignorescrambled.Location = New System.Drawing.Point(3, 215)
+        Me.chk_ignorescrambled.Name = "chk_ignorescrambled"
+        Me.chk_ignorescrambled.Size = New System.Drawing.Size(156, 17)
+        Me.chk_ignorescrambled.TabIndex = 190
+        Me.chk_ignorescrambled.Text = "Ignore Scrambled Channels"
+        Me.chk_ignorescrambled.UseVisualStyleBackColor = True
         '
-        'CheckBox7
+        'chk_modnotsetSD
         '
-        Me.CheckBox7.AutoSize = True
-        Me.CheckBox7.Location = New System.Drawing.Point(3, 169)
-        Me.CheckBox7.Name = "CheckBox7"
-        Me.CheckBox7.Size = New System.Drawing.Size(238, 17)
-        Me.CheckBox7.TabIndex = 189
-        Me.CheckBox7.Text = "Set Modulation to ""Not Set"" for SD Channels"
-        Me.CheckBox7.UseVisualStyleBackColor = True
+        Me.chk_modnotsetSD.AutoSize = True
+        Me.chk_modnotsetSD.Location = New System.Drawing.Point(3, 169)
+        Me.chk_modnotsetSD.Name = "chk_modnotsetSD"
+        Me.chk_modnotsetSD.Size = New System.Drawing.Size(238, 17)
+        Me.chk_modnotsetSD.TabIndex = 189
+        Me.chk_modnotsetSD.Text = "Set Modulation to ""Not Set"" for SD Channels"
+        Me.chk_modnotsetSD.UseVisualStyleBackColor = True
         '
-        'CheckBox3
+        'chk_extrainfo
         '
-        Me.CheckBox3.AutoSize = True
-        Me.CheckBox3.Location = New System.Drawing.Point(3, 146)
-        Me.CheckBox3.Name = "CheckBox3"
-        Me.CheckBox3.Size = New System.Drawing.Size(251, 17)
-        Me.CheckBox3.TabIndex = 188
-        Me.CheckBox3.Text = "Include Extra Program Info ([HD],[SUB],[W] etc)"
-        Me.CheckBox3.UseVisualStyleBackColor = True
+        Me.chk_extrainfo.AutoSize = True
+        Me.chk_extrainfo.Location = New System.Drawing.Point(3, 146)
+        Me.chk_extrainfo.Name = "chk_extrainfo"
+        Me.chk_extrainfo.Size = New System.Drawing.Size(251, 17)
+        Me.chk_extrainfo.TabIndex = 188
+        Me.chk_extrainfo.Text = "Include Extra Program Info ([HD],[SUB],[W] etc)"
+        Me.chk_extrainfo.UseVisualStyleBackColor = True
         '
-        'label8
+        'Expired_Channels_label
         '
-        Me.label8.AutoSize = True
-        Me.label8.Location = New System.Drawing.Point(3, 246)
-        Me.label8.Name = "label8"
-        Me.label8.Size = New System.Drawing.Size(89, 13)
-        Me.label8.TabIndex = 172
-        Me.label8.Text = "Expired Channels"
+        Me.Expired_Channels_label.AutoSize = True
+        Me.Expired_Channels_label.Location = New System.Drawing.Point(3, 246)
+        Me.Expired_Channels_label.Name = "Expired_Channels_label"
+        Me.Expired_Channels_label.Size = New System.Drawing.Size(89, 13)
+        Me.Expired_Channels_label.TabIndex = 172
+        Me.Expired_Channels_label.Text = "Expired Channels"
         '
-        'CheckBox2
+        'chk_updateEPG
         '
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Location = New System.Drawing.Point(3, 35)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(86, 17)
-        Me.CheckBox2.TabIndex = 183
-        Me.CheckBox2.Text = "Update EPG"
-        Me.CheckBox2.UseVisualStyleBackColor = True
+        Me.chk_updateEPG.AutoSize = True
+        Me.chk_updateEPG.Location = New System.Drawing.Point(3, 35)
+        Me.chk_updateEPG.Name = "chk_updateEPG"
+        Me.chk_updateEPG.Size = New System.Drawing.Size(86, 17)
+        Me.chk_updateEPG.TabIndex = 183
+        Me.chk_updateEPG.Text = "Update EPG"
+        Me.chk_updateEPG.UseVisualStyleBackColor = True
         '
         'chk_DeleteOld
         '
@@ -502,15 +502,15 @@ Public Class Setup
         Me.chk_DeleteOld.Text = "Delete"
         Me.chk_DeleteOld.UseVisualStyleBackColor = True
         '
-        'CheckBox1
+        'chk_replaceSDwithHD
         '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(3, 123)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(172, 17)
-        Me.CheckBox1.TabIndex = 182
-        Me.CheckBox1.Text = "Replace SD Channels with HD"
-        Me.CheckBox1.UseVisualStyleBackColor = True
+        Me.chk_replaceSDwithHD.AutoSize = True
+        Me.chk_replaceSDwithHD.Location = New System.Drawing.Point(3, 123)
+        Me.chk_replaceSDwithHD.Name = "chk_replaceSDwithHD"
+        Me.chk_replaceSDwithHD.Size = New System.Drawing.Size(172, 17)
+        Me.chk_replaceSDwithHD.TabIndex = 182
+        Me.chk_replaceSDwithHD.Text = "Replace SD Channels with HD"
+        Me.chk_replaceSDwithHD.UseVisualStyleBackColor = True
         '
         'chk_MoveOld
         '
@@ -573,7 +573,7 @@ Public Class Setup
         '
         'tabPage1
         '
-        Me.tabPage1.Controls.Add(Me.skyUKContainer)
+        Me.tabPage1.Controls.Add(Me.Region_Group_Tab)
         Me.tabPage1.Location = New System.Drawing.Point(4, 22)
         Me.tabPage1.Name = "tabPage1"
         Me.tabPage1.Padding = New System.Windows.Forms.Padding(3)
@@ -582,97 +582,97 @@ Public Class Setup
         Me.tabPage1.Text = "Region / Groups"
         Me.tabPage1.UseVisualStyleBackColor = True
         '
-        'skyUKContainer
+        'Region_Group_Tab
         '
-        Me.skyUKContainer.Controls.Add(Me.groupBox1)
-        Me.skyUKContainer.Controls.Add(Me.groupBox3)
-        Me.skyUKContainer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.skyUKContainer.Location = New System.Drawing.Point(3, 3)
-        Me.skyUKContainer.Name = "skyUKContainer"
-        Me.skyUKContainer.Size = New System.Drawing.Size(442, 390)
-        Me.skyUKContainer.TabIndex = 177
-        Me.skyUKContainer.TabStop = False
+        Me.Region_Group_Tab.Controls.Add(Me.SkyNZ_Channel_Groups)
+        Me.Region_Group_Tab.Controls.Add(Me.groupBox3)
+        Me.Region_Group_Tab.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Region_Group_Tab.Location = New System.Drawing.Point(3, 3)
+        Me.Region_Group_Tab.Name = "Region_Group_Tab"
+        Me.Region_Group_Tab.Size = New System.Drawing.Size(442, 390)
+        Me.Region_Group_Tab.TabIndex = 177
+        Me.Region_Group_Tab.TabStop = False
         '
-        'groupBox1
+        'SkyNZ_Channel_Groups
         '
-        Me.groupBox1.Controls.Add(Me.Button4)
-        Me.groupBox1.Controls.Add(Me.Label15)
-        Me.groupBox1.Controls.Add(Me.CatText20)
-        Me.groupBox1.Controls.Add(Me.CatByte20)
-        Me.groupBox1.Controls.Add(Me.Label16)
-        Me.groupBox1.Controls.Add(Me.Label17)
-        Me.groupBox1.Controls.Add(Me.CatText19)
-        Me.groupBox1.Controls.Add(Me.CatByte19)
-        Me.groupBox1.Controls.Add(Me.CatText18)
-        Me.groupBox1.Controls.Add(Me.CatByte18)
-        Me.groupBox1.Controls.Add(Me.Label18)
-        Me.groupBox1.Controls.Add(Me.Label19)
-        Me.groupBox1.Controls.Add(Me.CatText17)
-        Me.groupBox1.Controls.Add(Me.CatByte17)
-        Me.groupBox1.Controls.Add(Me.CatText16)
-        Me.groupBox1.Controls.Add(Me.CatByte16)
-        Me.groupBox1.Controls.Add(Me.Label20)
-        Me.groupBox1.Controls.Add(Me.CatText15)
-        Me.groupBox1.Controls.Add(Me.CatByte15)
-        Me.groupBox1.Controls.Add(Me.Label21)
-        Me.groupBox1.Controls.Add(Me.Label22)
-        Me.groupBox1.Controls.Add(Me.CatText14)
-        Me.groupBox1.Controls.Add(Me.CatByte14)
-        Me.groupBox1.Controls.Add(Me.CatText13)
-        Me.groupBox1.Controls.Add(Me.CatByte13)
-        Me.groupBox1.Controls.Add(Me.Label23)
-        Me.groupBox1.Controls.Add(Me.Label24)
-        Me.groupBox1.Controls.Add(Me.CatText12)
-        Me.groupBox1.Controls.Add(Me.CatByte12)
-        Me.groupBox1.Controls.Add(Me.CatText11)
-        Me.groupBox1.Controls.Add(Me.CatByte11)
-        Me.groupBox1.Controls.Add(Me.Label5)
-        Me.groupBox1.Controls.Add(Me.CatText9)
-        Me.groupBox1.Controls.Add(Me.CatByte9)
-        Me.groupBox1.Controls.Add(Me.Label11)
-        Me.groupBox1.Controls.Add(Me.Label12)
-        Me.groupBox1.Controls.Add(Me.CatText7)
-        Me.groupBox1.Controls.Add(Me.CatByte7)
-        Me.groupBox1.Controls.Add(Me.CatText10)
-        Me.groupBox1.Controls.Add(Me.CatByte10)
-        Me.groupBox1.Controls.Add(Me.Label13)
-        Me.groupBox1.Controls.Add(Me.Label14)
-        Me.groupBox1.Controls.Add(Me.CatText6)
-        Me.groupBox1.Controls.Add(Me.CatByte6)
-        Me.groupBox1.Controls.Add(Me.CatText5)
-        Me.groupBox1.Controls.Add(Me.CatByte5)
-        Me.groupBox1.Controls.Add(Me.Label7)
-        Me.groupBox1.Controls.Add(Me.CatText4)
-        Me.groupBox1.Controls.Add(Me.CatByte4)
-        Me.groupBox1.Controls.Add(Me.Label3)
-        Me.groupBox1.Controls.Add(Me.Label4)
-        Me.groupBox1.Controls.Add(Me.CatText8)
-        Me.groupBox1.Controls.Add(Me.CatByte8)
-        Me.groupBox1.Controls.Add(Me.CatText3)
-        Me.groupBox1.Controls.Add(Me.CatByte3)
-        Me.groupBox1.Controls.Add(Me.Label2)
-        Me.groupBox1.Controls.Add(Me.Label1)
-        Me.groupBox1.Controls.Add(Me.CatText2)
-        Me.groupBox1.Controls.Add(Me.CatByte2)
-        Me.groupBox1.Controls.Add(Me.CatText1)
-        Me.groupBox1.Controls.Add(Me.CatByte1)
-        Me.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.groupBox1.Location = New System.Drawing.Point(3, 65)
-        Me.groupBox1.Name = "groupBox1"
-        Me.groupBox1.Size = New System.Drawing.Size(436, 322)
-        Me.groupBox1.TabIndex = 174
-        Me.groupBox1.TabStop = False
-        Me.groupBox1.Text = "Groups"
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Save_Changes)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label15)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText20)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte20)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label16)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label17)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText19)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte19)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText18)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte18)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label18)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label19)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText17)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte17)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText16)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte16)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label20)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText15)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte15)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label21)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label22)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText14)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte14)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText13)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte13)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label23)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label24)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText12)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte12)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText11)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte11)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label5)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText9)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte9)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label11)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label12)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText7)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte7)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText10)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte10)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label13)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label14)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText6)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte6)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText5)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte5)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label7)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText4)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte4)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label3)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label4)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText8)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte8)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText3)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte3)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label2)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.Label1)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText2)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte2)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatText1)
+        Me.SkyNZ_Channel_Groups.Controls.Add(Me.CatByte1)
+        Me.SkyNZ_Channel_Groups.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SkyNZ_Channel_Groups.Location = New System.Drawing.Point(3, 65)
+        Me.SkyNZ_Channel_Groups.Name = "SkyNZ_Channel_Groups"
+        Me.SkyNZ_Channel_Groups.Size = New System.Drawing.Size(436, 322)
+        Me.SkyNZ_Channel_Groups.TabIndex = 174
+        Me.SkyNZ_Channel_Groups.TabStop = False
+        Me.SkyNZ_Channel_Groups.Text = "Groups"
         '
-        'Button4
+        'Save_Changes
         '
-        Me.Button4.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.Button4.Location = New System.Drawing.Point(3, 285)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(430, 34)
-        Me.Button4.TabIndex = 82
-        Me.Button4.Text = "Save Changes"
-        Me.Button4.UseVisualStyleBackColor = True
+        Me.Save_Changes.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.Save_Changes.Location = New System.Drawing.Point(3, 285)
+        Me.Save_Changes.Name = "Save_Changes"
+        Me.Save_Changes.Size = New System.Drawing.Size(430, 34)
+        Me.Save_Changes.TabIndex = 82
+        Me.Save_Changes.Text = "Save Changes"
+        Me.Save_Changes.UseVisualStyleBackColor = True
         '
         'Label15
         '
@@ -806,7 +806,6 @@ Public Class Setup
         Me.CatText15.Name = "CatText15"
         Me.CatText15.Size = New System.Drawing.Size(133, 20)
         Me.CatText15.TabIndex = 65
-        Me.CatText15.Text = "Sky Help"
         '
         'CatByte15
         '
@@ -814,7 +813,6 @@ Public Class Setup
         Me.CatByte15.Name = "CatByte15"
         Me.CatByte15.Size = New System.Drawing.Size(39, 20)
         Me.CatByte15.TabIndex = 64
-        Me.CatByte15.Text = "16"
         '
         'Label21
         '
@@ -841,7 +839,6 @@ Public Class Setup
         Me.CatText14.Name = "CatText14"
         Me.CatText14.Size = New System.Drawing.Size(133, 20)
         Me.CatText14.TabIndex = 61
-        Me.CatText14.Text = "Adult"
         '
         'CatByte14
         '
@@ -849,7 +846,6 @@ Public Class Setup
         Me.CatByte14.Name = "CatByte14"
         Me.CatByte14.Size = New System.Drawing.Size(39, 20)
         Me.CatByte14.TabIndex = 60
-        Me.CatByte14.Text = "63"
         '
         'CatText13
         '
@@ -857,7 +853,6 @@ Public Class Setup
         Me.CatText13.Name = "CatText13"
         Me.CatText13.Size = New System.Drawing.Size(133, 20)
         Me.CatText13.TabIndex = 59
-        Me.CatText13.Text = "Specialist"
         '
         'CatByte13
         '
@@ -865,7 +860,6 @@ Public Class Setup
         Me.CatByte13.Name = "CatByte13"
         Me.CatByte13.Size = New System.Drawing.Size(39, 20)
         Me.CatByte13.TabIndex = 58
-        Me.CatByte13.Text = "255"
         '
         'Label23
         '
@@ -892,7 +886,6 @@ Public Class Setup
         Me.CatText12.Name = "CatText12"
         Me.CatText12.Size = New System.Drawing.Size(133, 20)
         Me.CatText12.TabIndex = 55
-        Me.CatText12.Text = "Gaming & Dating"
         '
         'CatByte12
         '
@@ -900,7 +893,6 @@ Public Class Setup
         Me.CatByte12.Name = "CatByte12"
         Me.CatByte12.Size = New System.Drawing.Size(39, 20)
         Me.CatByte12.TabIndex = 54
-        Me.CatByte12.Text = "95"
         '
         'CatText11
         '
@@ -908,7 +900,7 @@ Public Class Setup
         Me.CatText11.Name = "CatText11"
         Me.CatText11.Size = New System.Drawing.Size(133, 20)
         Me.CatText11.TabIndex = 53
-        Me.CatText11.Text = "International"
+        Me.CatText11.Text = "Interactive"
         '
         'CatByte11
         '
@@ -916,7 +908,7 @@ Public Class Setup
         Me.CatByte11.Name = "CatByte11"
         Me.CatByte11.Size = New System.Drawing.Size(39, 20)
         Me.CatByte11.TabIndex = 52
-        Me.CatByte11.Text = "223"
+        Me.CatByte11.Text = "15"
         '
         'Label5
         '
@@ -933,7 +925,7 @@ Public Class Setup
         Me.CatText9.Name = "CatText9"
         Me.CatText9.Size = New System.Drawing.Size(133, 20)
         Me.CatText9.TabIndex = 50
-        Me.CatText9.Text = "Shopping"
+        Me.CatText9.Text = "News & Documentaries"
         '
         'CatByte9
         '
@@ -941,7 +933,7 @@ Public Class Setup
         Me.CatByte9.Name = "CatByte9"
         Me.CatByte9.Size = New System.Drawing.Size(39, 20)
         Me.CatByte9.TabIndex = 49
-        Me.CatByte9.Text = "48"
+        Me.CatByte9.Text = "191"
         '
         'Label11
         '
@@ -968,7 +960,7 @@ Public Class Setup
         Me.CatText7.Name = "CatText7"
         Me.CatText7.Size = New System.Drawing.Size(133, 20)
         Me.CatText7.TabIndex = 46
-        Me.CatText7.Text = "Kids"
+        Me.CatText7.Text = "News & Documentaries"
         '
         'CatByte7
         '
@@ -976,7 +968,7 @@ Public Class Setup
         Me.CatByte7.Name = "CatByte7"
         Me.CatByte7.Size = New System.Drawing.Size(39, 20)
         Me.CatByte7.TabIndex = 45
-        Me.CatByte7.Text = "80"
+        Me.CatByte7.Text = "47"
         '
         'CatText10
         '
@@ -984,7 +976,7 @@ Public Class Setup
         Me.CatText10.Name = "CatText10"
         Me.CatText10.Size = New System.Drawing.Size(133, 20)
         Me.CatText10.TabIndex = 44
-        Me.CatText10.Text = "Religion"
+        Me.CatText10.Text = "Adult"
         '
         'CatByte10
         '
@@ -992,7 +984,7 @@ Public Class Setup
         Me.CatByte10.Name = "CatByte10"
         Me.CatByte10.Size = New System.Drawing.Size(39, 20)
         Me.CatByte10.TabIndex = 43
-        Me.CatByte10.Text = "191"
+        Me.CatByte10.Text = "255"
         '
         'Label13
         '
@@ -1019,7 +1011,7 @@ Public Class Setup
         Me.CatText6.Name = "CatText6"
         Me.CatText6.Size = New System.Drawing.Size(133, 20)
         Me.CatText6.TabIndex = 40
-        Me.CatText6.Text = "Documentaries"
+        Me.CatText6.Text = "Music Videos"
         '
         'CatByte6
         '
@@ -1027,7 +1019,7 @@ Public Class Setup
         Me.CatByte6.Name = "CatByte6"
         Me.CatByte6.Size = New System.Drawing.Size(39, 20)
         Me.CatByte6.TabIndex = 39
-        Me.CatByte6.Text = "127"
+        Me.CatByte6.Text = "111"
         '
         'CatText5
         '
@@ -1035,7 +1027,7 @@ Public Class Setup
         Me.CatText5.Name = "CatText5"
         Me.CatText5.Size = New System.Drawing.Size(133, 20)
         Me.CatText5.TabIndex = 38
-        Me.CatText5.Text = "News"
+        Me.CatText5.Text = "Sky Sports"
         '
         'CatByte5
         '
@@ -1043,7 +1035,7 @@ Public Class Setup
         Me.CatByte5.Name = "CatByte5"
         Me.CatByte5.Size = New System.Drawing.Size(39, 20)
         Me.CatByte5.TabIndex = 37
-        Me.CatByte5.Text = "176"
+        Me.CatByte5.Text = "79"
         '
         'Label7
         '
@@ -1060,7 +1052,7 @@ Public Class Setup
         Me.CatText4.Name = "CatText4"
         Me.CatText4.Size = New System.Drawing.Size(133, 20)
         Me.CatText4.TabIndex = 33
-        Me.CatText4.Text = "Sports"
+        Me.CatText4.Text = "Sky Movies"
         '
         'CatByte4
         '
@@ -1068,7 +1060,7 @@ Public Class Setup
         Me.CatByte4.Name = "CatByte4"
         Me.CatByte4.Size = New System.Drawing.Size(39, 20)
         Me.CatByte4.TabIndex = 32
-        Me.CatByte4.Text = "240"
+        Me.CatByte4.Text = "31"
         '
         'Label3
         '
@@ -1095,7 +1087,7 @@ Public Class Setup
         Me.CatText8.Name = "CatText8"
         Me.CatText8.Size = New System.Drawing.Size(133, 20)
         Me.CatText8.TabIndex = 29
-        Me.CatText8.Text = "Music"
+        Me.CatText8.Text = "News & Documentaries"
         '
         'CatByte8
         '
@@ -1111,7 +1103,7 @@ Public Class Setup
         Me.CatText3.Name = "CatText3"
         Me.CatText3.Size = New System.Drawing.Size(133, 20)
         Me.CatText3.TabIndex = 27
-        Me.CatText3.Text = "Movies"
+        Me.CatText3.Text = "Entertainment"
         '
         'CatByte3
         '
@@ -1119,7 +1111,7 @@ Public Class Setup
         Me.CatByte3.Name = "CatByte3"
         Me.CatByte3.Size = New System.Drawing.Size(39, 20)
         Me.CatByte3.TabIndex = 26
-        Me.CatByte3.Text = "208"
+        Me.CatByte3.Text = "175"
         '
         'Label2
         '
@@ -1146,7 +1138,7 @@ Public Class Setup
         Me.CatText2.Name = "CatText2"
         Me.CatText2.Size = New System.Drawing.Size(133, 20)
         Me.CatText2.TabIndex = 3
-        Me.CatText2.Text = "Lifestyle & Culture"
+        Me.CatText2.Text = "Entertainment"
         '
         'CatByte2
         '
@@ -1154,7 +1146,7 @@ Public Class Setup
         Me.CatByte2.Name = "CatByte2"
         Me.CatByte2.Size = New System.Drawing.Size(39, 20)
         Me.CatByte2.TabIndex = 2
-        Me.CatByte2.Text = "31"
+        Me.CatByte2.Text = "127"
         '
         'CatText1
         '
@@ -1171,11 +1163,11 @@ Public Class Setup
         Me.CatByte1.Name = "CatByte1"
         Me.CatByte1.Size = New System.Drawing.Size(39, 20)
         Me.CatByte1.TabIndex = 0
-        Me.CatByte1.Text = "112"
+        Me.CatByte1.Text = "63"
         '
         'groupBox3
         '
-        Me.groupBox3.Controls.Add(Me.SkyUK_Region)
+        Me.groupBox3.Controls.Add(Me.SkyNZ_Region)
         Me.groupBox3.Dock = System.Windows.Forms.DockStyle.Top
         Me.groupBox3.Location = New System.Drawing.Point(3, 16)
         Me.groupBox3.Name = "groupBox3"
@@ -1184,444 +1176,444 @@ Public Class Setup
         Me.groupBox3.TabStop = False
         Me.groupBox3.Text = "Region"
         '
-        'SkyUK_Region
+        'SkyNZ_Region
         '
-        Me.SkyUK_Region.DisplayMember = "Sky_UK_Regions.RegionName"
-        Me.SkyUK_Region.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SkyUK_Region.FormattingEnabled = True
-        Me.SkyUK_Region.Location = New System.Drawing.Point(3, 16)
-        Me.SkyUK_Region.Name = "SkyUK_Region"
-        Me.SkyUK_Region.Size = New System.Drawing.Size(430, 21)
-        Me.SkyUK_Region.TabIndex = 148
+        Me.SkyNZ_Region.DisplayMember = "Sky_UK_Regions.RegionName"
+        Me.SkyNZ_Region.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SkyNZ_Region.FormattingEnabled = True
+        Me.SkyNZ_Region.Location = New System.Drawing.Point(3, 16)
+        Me.SkyNZ_Region.Name = "SkyNZ_Region"
+        Me.SkyNZ_Region.Size = New System.Drawing.Size(430, 21)
+        Me.SkyNZ_Region.TabIndex = 148
         '
-        'TabPage4
+        'Cards_Mapping_Tab
         '
-        Me.TabPage4.Controls.Add(Me.MpGroupBox2)
-        Me.TabPage4.Controls.Add(Me.MpGroupBox1)
-        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(448, 396)
-        Me.TabPage4.TabIndex = 4
-        Me.TabPage4.Text = "Cards / Mapping"
-        Me.TabPage4.UseVisualStyleBackColor = True
+        Me.Cards_Mapping_Tab.Controls.Add(Me.Card_Map_Box)
+        Me.Cards_Mapping_Tab.Controls.Add(Me.Sky_NZ_Channel_Grabber_Settings)
+        Me.Cards_Mapping_Tab.Location = New System.Drawing.Point(4, 22)
+        Me.Cards_Mapping_Tab.Name = "Cards_Mapping_Tab"
+        Me.Cards_Mapping_Tab.Padding = New System.Windows.Forms.Padding(3)
+        Me.Cards_Mapping_Tab.Size = New System.Drawing.Size(448, 396)
+        Me.Cards_Mapping_Tab.TabIndex = 4
+        Me.Cards_Mapping_Tab.Text = "Cards / Mapping"
+        Me.Cards_Mapping_Tab.UseVisualStyleBackColor = True
         '
-        'MpGroupBox2
+        'Card_Map_Box
         '
-        Me.MpGroupBox2.Controls.Add(Me.ChannelMap)
-        Me.MpGroupBox2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.MpGroupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.MpGroupBox2.Location = New System.Drawing.Point(3, 118)
-        Me.MpGroupBox2.Name = "MpGroupBox2"
-        Me.MpGroupBox2.Size = New System.Drawing.Size(442, 275)
-        Me.MpGroupBox2.TabIndex = 187
-        Me.MpGroupBox2.TabStop = False
-        Me.MpGroupBox2.Text = "Select Card(s) for grab and Mapping"
+        Me.Card_Map_Box.Controls.Add(Me.Cards_For_Grabbing)
+        Me.Card_Map_Box.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Card_Map_Box.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.Card_Map_Box.Location = New System.Drawing.Point(3, 118)
+        Me.Card_Map_Box.Name = "Card_Map_Box"
+        Me.Card_Map_Box.Size = New System.Drawing.Size(442, 275)
+        Me.Card_Map_Box.TabIndex = 187
+        Me.Card_Map_Box.TabStop = False
+        Me.Card_Map_Box.Text = "Select Card(s) for grab and Mapping"
         '
-        'ChannelMap
+        'Cards_For_Grabbing
         '
-        Me.ChannelMap.AccessibleDescription = "Use this to select the cards you wish to Map your channel searches to."
-        Me.ChannelMap.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.ChannelMap.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.ChannelMap.FormattingEnabled = True
-        Me.ChannelMap.Location = New System.Drawing.Point(3, 16)
-        Me.ChannelMap.Name = "ChannelMap"
-        Me.ChannelMap.Size = New System.Drawing.Size(436, 256)
-        Me.ChannelMap.TabIndex = 0
+        Me.Cards_For_Grabbing.AccessibleDescription = "Use this to select the cards you wish to Map your channel searches to."
+        Me.Cards_For_Grabbing.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Cards_For_Grabbing.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Cards_For_Grabbing.FormattingEnabled = True
+        Me.Cards_For_Grabbing.Location = New System.Drawing.Point(3, 16)
+        Me.Cards_For_Grabbing.Name = "Cards_For_Grabbing"
+        Me.Cards_For_Grabbing.Size = New System.Drawing.Size(436, 256)
+        Me.Cards_For_Grabbing.TabIndex = 0
         '
-        'MpGroupBox1
+        'Sky_NZ_Channel_Grabber_Settings
         '
-        Me.MpGroupBox1.Controls.Add(Me.MpLabel1)
-        Me.MpGroupBox1.Controls.Add(Me.mpDisEqc1)
-        Me.MpGroupBox1.Controls.Add(Me.MpLabel6)
-        Me.MpGroupBox1.Controls.Add(Me.MpComboBox1)
-        Me.MpGroupBox1.Controls.Add(Me.MpLabel8)
-        Me.MpGroupBox1.Controls.Add(Me.MpComboBox2)
-        Me.MpGroupBox1.Controls.Add(Me.MpLabel3)
-        Me.MpGroupBox1.Controls.Add(Me.TextBox4)
-        Me.MpGroupBox1.Controls.Add(Me.MpLabel4)
-        Me.MpGroupBox1.Controls.Add(Me.TextBox5)
-        Me.MpGroupBox1.Controls.Add(Me.TextBox6)
-        Me.MpGroupBox1.Controls.Add(Me.MpLabel5)
-        Me.MpGroupBox1.Controls.Add(Me.TextBox10)
-        Me.MpGroupBox1.Controls.Add(Me.MpLabel9)
-        Me.MpGroupBox1.Controls.Add(Me.MpLabel10)
-        Me.MpGroupBox1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.MpGroupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.MpGroupBox1.Location = New System.Drawing.Point(3, 3)
-        Me.MpGroupBox1.Name = "MpGroupBox1"
-        Me.MpGroupBox1.Size = New System.Drawing.Size(442, 115)
-        Me.MpGroupBox1.TabIndex = 186
-        Me.MpGroupBox1.TabStop = False
-        Me.MpGroupBox1.Text = "Sky Channel Grabber setting"
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.Diseqc_Label)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.MP_Diseqc)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.Modulation_Label)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.MP_Modulation)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.Polarisation_Label)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.MP_Polarisation)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.Serviceid_label)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.txt_serviceid)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.TransportID_Label)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.txt_transportid)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.txt_frequency)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.Fequency_Label)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.txt_symbol_rate)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.Symbol_rate_Label)
+        Me.Sky_NZ_Channel_Grabber_Settings.Controls.Add(Me.Frequency_Unit_Label)
+        Me.Sky_NZ_Channel_Grabber_Settings.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Sky_NZ_Channel_Grabber_Settings.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.Sky_NZ_Channel_Grabber_Settings.Location = New System.Drawing.Point(3, 3)
+        Me.Sky_NZ_Channel_Grabber_Settings.Name = "Sky_NZ_Channel_Grabber_Settings"
+        Me.Sky_NZ_Channel_Grabber_Settings.Size = New System.Drawing.Size(442, 115)
+        Me.Sky_NZ_Channel_Grabber_Settings.TabIndex = 186
+        Me.Sky_NZ_Channel_Grabber_Settings.TabStop = False
+        Me.Sky_NZ_Channel_Grabber_Settings.Text = "Sky Channel Grabber setting"
         '
-        'MpLabel1
+        'Diseqc_Label
         '
-        Me.MpLabel1.AutoSize = True
-        Me.MpLabel1.Location = New System.Drawing.Point(6, 66)
-        Me.MpLabel1.Name = "MpLabel1"
-        Me.MpLabel1.Size = New System.Drawing.Size(40, 13)
-        Me.MpLabel1.TabIndex = 187
-        Me.MpLabel1.Text = "Diseqc"
+        Me.Diseqc_Label.AutoSize = True
+        Me.Diseqc_Label.Location = New System.Drawing.Point(6, 66)
+        Me.Diseqc_Label.Name = "Diseqc_Label"
+        Me.Diseqc_Label.Size = New System.Drawing.Size(40, 13)
+        Me.Diseqc_Label.TabIndex = 187
+        Me.Diseqc_Label.Text = "Diseqc"
         '
-        'mpDisEqc1
+        'MP_Diseqc
         '
-        Me.mpDisEqc1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.mpDisEqc1.FormattingEnabled = True
-        Me.mpDisEqc1.Items.AddRange(New Object() {"None", "SimpleA", "SimpleB", "Level1AA", "Level1AB", "Level1BA", "Level1BB"})
-        Me.mpDisEqc1.Location = New System.Drawing.Point(9, 81)
-        Me.mpDisEqc1.Name = "mpDisEqc1"
-        Me.mpDisEqc1.Size = New System.Drawing.Size(90, 21)
-        Me.mpDisEqc1.TabIndex = 186
+        Me.MP_Diseqc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.MP_Diseqc.FormattingEnabled = True
+        Me.MP_Diseqc.Items.AddRange(New Object() {"None", "SimpleA", "SimpleB", "Level1AA", "Level1AB", "Level1BA", "Level1BB"})
+        Me.MP_Diseqc.Location = New System.Drawing.Point(9, 81)
+        Me.MP_Diseqc.Name = "MP_Diseqc"
+        Me.MP_Diseqc.Size = New System.Drawing.Size(90, 21)
+        Me.MP_Diseqc.TabIndex = 186
         '
-        'MpLabel6
+        'Modulation_Label
         '
-        Me.MpLabel6.AutoSize = True
-        Me.MpLabel6.Location = New System.Drawing.Point(312, 65)
-        Me.MpLabel6.Name = "MpLabel6"
-        Me.MpLabel6.Size = New System.Drawing.Size(62, 13)
-        Me.MpLabel6.TabIndex = 48
-        Me.MpLabel6.Text = "Modulation:"
+        Me.Modulation_Label.AutoSize = True
+        Me.Modulation_Label.Location = New System.Drawing.Point(312, 65)
+        Me.Modulation_Label.Name = "Modulation_Label"
+        Me.Modulation_Label.Size = New System.Drawing.Size(62, 13)
+        Me.Modulation_Label.TabIndex = 48
+        Me.Modulation_Label.Text = "Modulation:"
         '
-        'MpComboBox1
+        'MP_Modulation
         '
-        Me.MpComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.MpComboBox1.FormattingEnabled = True
-        Me.MpComboBox1.Items.AddRange(New Object() {"ModNotSet", "ModNotDefined", "Mod16Qam", "Mod32Qam", "Mod64Qam", "Mod80Qam", "Mod96Qam", "Mod112Qam", "Mod128Qam", "Mod160Qam", "Mod192Qam", "Mod224Qam", "Mod256Qam", "Mod320Qam", "Mod384Qam", "Mod448Qam", "Mod512Qam", "Mod640Qam", "Mod768Qam", "Mod896Qam", "Mod1024Qam", "ModQpsk", "ModBpsk", "ModOqpsk", "Mod8Vsb", "Mod16Vsb", "ModAnalogAmplitude", "ModAnalogFrequency", "Mod8Psk", "ModRF", "Mod16Apsk", "Mod32Apsk", "ModNbcQpsk", "ModNbc8Psk", "ModDirectTv", "ModMax"})
-        Me.MpComboBox1.Location = New System.Drawing.Point(315, 81)
-        Me.MpComboBox1.Name = "MpComboBox1"
-        Me.MpComboBox1.Size = New System.Drawing.Size(92, 21)
-        Me.MpComboBox1.TabIndex = 49
+        Me.MP_Modulation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.MP_Modulation.FormattingEnabled = True
+        Me.MP_Modulation.Items.AddRange(New Object() {"ModNotSet", "ModNotDefined", "Mod16Qam", "Mod32Qam", "Mod64Qam", "Mod80Qam", "Mod96Qam", "Mod112Qam", "Mod128Qam", "Mod160Qam", "Mod192Qam", "Mod224Qam", "Mod256Qam", "Mod320Qam", "Mod384Qam", "Mod448Qam", "Mod512Qam", "Mod640Qam", "Mod768Qam", "Mod896Qam", "Mod1024Qam", "ModQpsk", "ModBpsk", "ModOqpsk", "Mod8Vsb", "Mod16Vsb", "ModAnalogAmplitude", "ModAnalogFrequency", "Mod8Psk", "ModRF", "Mod16Apsk", "Mod32Apsk", "ModNbcQpsk", "ModNbc8Psk", "ModDirectTv", "ModMax"})
+        Me.MP_Modulation.Location = New System.Drawing.Point(315, 81)
+        Me.MP_Modulation.Name = "MP_Modulation"
+        Me.MP_Modulation.Size = New System.Drawing.Size(92, 21)
+        Me.MP_Modulation.TabIndex = 49
         '
-        'MpLabel8
+        'Polarisation_Label
         '
-        Me.MpLabel8.AutoSize = True
-        Me.MpLabel8.Location = New System.Drawing.Point(158, 66)
-        Me.MpLabel8.Name = "MpLabel8"
-        Me.MpLabel8.Size = New System.Drawing.Size(64, 13)
-        Me.MpLabel8.TabIndex = 46
-        Me.MpLabel8.Text = "Polarisation:"
+        Me.Polarisation_Label.AutoSize = True
+        Me.Polarisation_Label.Location = New System.Drawing.Point(158, 66)
+        Me.Polarisation_Label.Name = "Polarisation_Label"
+        Me.Polarisation_Label.Size = New System.Drawing.Size(64, 13)
+        Me.Polarisation_Label.TabIndex = 46
+        Me.Polarisation_Label.Text = "Polarisation:"
         '
-        'MpComboBox2
+        'MP_Polarisation
         '
-        Me.MpComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.MpComboBox2.FormattingEnabled = True
-        Me.MpComboBox2.Items.AddRange(New Object() {"Not Set", "Not Defined", "Horizontal", "Vertical", "Circular Left", "Circular Right"})
-        Me.MpComboBox2.Location = New System.Drawing.Point(161, 81)
-        Me.MpComboBox2.Name = "MpComboBox2"
-        Me.MpComboBox2.Size = New System.Drawing.Size(92, 21)
-        Me.MpComboBox2.TabIndex = 47
+        Me.MP_Polarisation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.MP_Polarisation.FormattingEnabled = True
+        Me.MP_Polarisation.Items.AddRange(New Object() {"Not Set", "Not Defined", "Horizontal", "Vertical", "Circular Left", "Circular Right"})
+        Me.MP_Polarisation.Location = New System.Drawing.Point(161, 81)
+        Me.MP_Polarisation.Name = "MP_Polarisation"
+        Me.MP_Polarisation.Size = New System.Drawing.Size(92, 21)
+        Me.MP_Polarisation.TabIndex = 47
         '
-        'MpLabel3
+        'Serviceid_label
         '
-        Me.MpLabel3.AutoSize = True
-        Me.MpLabel3.Location = New System.Drawing.Point(342, 16)
-        Me.MpLabel3.Name = "MpLabel3"
-        Me.MpLabel3.Size = New System.Drawing.Size(57, 13)
-        Me.MpLabel3.TabIndex = 105
-        Me.MpLabel3.Text = "Service ID"
+        Me.Serviceid_label.AutoSize = True
+        Me.Serviceid_label.Location = New System.Drawing.Point(342, 16)
+        Me.Serviceid_label.Name = "Serviceid_label"
+        Me.Serviceid_label.Size = New System.Drawing.Size(57, 13)
+        Me.Serviceid_label.TabIndex = 105
+        Me.Serviceid_label.Text = "Service ID"
         '
-        'TextBox4
+        'txt_serviceid
         '
-        Me.TextBox4.Location = New System.Drawing.Point(345, 32)
-        Me.TextBox4.MaxLength = 5
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(63, 20)
-        Me.TextBox4.TabIndex = 104
-        Me.TextBox4.Text = "9003"
+        Me.txt_serviceid.Location = New System.Drawing.Point(345, 32)
+        Me.txt_serviceid.MaxLength = 5
+        Me.txt_serviceid.Name = "txt_serviceid"
+        Me.txt_serviceid.Size = New System.Drawing.Size(63, 20)
+        Me.txt_serviceid.TabIndex = 104
+        Me.txt_serviceid.Text = "9003"
         '
-        'MpLabel4
+        'TransportID_Label
         '
-        Me.MpLabel4.AutoSize = True
-        Me.MpLabel4.Location = New System.Drawing.Point(230, 16)
-        Me.MpLabel4.Name = "MpLabel4"
-        Me.MpLabel4.Size = New System.Drawing.Size(66, 13)
-        Me.MpLabel4.TabIndex = 103
-        Me.MpLabel4.Text = "Transport ID"
+        Me.TransportID_Label.AutoSize = True
+        Me.TransportID_Label.Location = New System.Drawing.Point(230, 16)
+        Me.TransportID_Label.Name = "TransportID_Label"
+        Me.TransportID_Label.Size = New System.Drawing.Size(66, 13)
+        Me.TransportID_Label.TabIndex = 103
+        Me.TransportID_Label.Text = "Transport ID"
         '
-        'TextBox5
+        'txt_transportid
         '
-        Me.TextBox5.Location = New System.Drawing.Point(233, 32)
-        Me.TextBox5.MaxLength = 5
-        Me.TextBox5.Name = "TextBox5"
-        Me.TextBox5.Size = New System.Drawing.Size(63, 20)
-        Me.TextBox5.TabIndex = 102
-        Me.TextBox5.Text = "3"
+        Me.txt_transportid.Location = New System.Drawing.Point(233, 32)
+        Me.txt_transportid.MaxLength = 5
+        Me.txt_transportid.Name = "txt_transportid"
+        Me.txt_transportid.Size = New System.Drawing.Size(63, 20)
+        Me.txt_transportid.TabIndex = 102
+        Me.txt_transportid.Text = "3"
         '
-        'TextBox6
+        'txt_frequency
         '
-        Me.TextBox6.Location = New System.Drawing.Point(9, 32)
-        Me.TextBox6.MaxLength = 8
-        Me.TextBox6.Name = "TextBox6"
-        Me.TextBox6.Size = New System.Drawing.Size(63, 20)
-        Me.TextBox6.TabIndex = 40
-        Me.TextBox6.Text = "12519000"
+        Me.txt_frequency.Location = New System.Drawing.Point(9, 32)
+        Me.txt_frequency.MaxLength = 8
+        Me.txt_frequency.Name = "txt_frequency"
+        Me.txt_frequency.Size = New System.Drawing.Size(63, 20)
+        Me.txt_frequency.TabIndex = 40
+        Me.txt_frequency.Text = "12519000"
         '
-        'MpLabel5
+        'Fequency_Label
         '
-        Me.MpLabel5.AutoSize = True
-        Me.MpLabel5.Location = New System.Drawing.Point(6, 16)
-        Me.MpLabel5.Name = "MpLabel5"
-        Me.MpLabel5.Size = New System.Drawing.Size(60, 13)
-        Me.MpLabel5.TabIndex = 39
-        Me.MpLabel5.Text = "Frequency:"
+        Me.Fequency_Label.AutoSize = True
+        Me.Fequency_Label.Location = New System.Drawing.Point(6, 16)
+        Me.Fequency_Label.Name = "Fequency_Label"
+        Me.Fequency_Label.Size = New System.Drawing.Size(60, 13)
+        Me.Fequency_Label.TabIndex = 39
+        Me.Fequency_Label.Text = "Frequency:"
         '
-        'TextBox10
+        'txt_symbol_rate
         '
-        Me.TextBox10.Location = New System.Drawing.Point(121, 32)
-        Me.TextBox10.MaxLength = 5
-        Me.TextBox10.Name = "TextBox10"
-        Me.TextBox10.Size = New System.Drawing.Size(63, 20)
-        Me.TextBox10.TabIndex = 43
-        Me.TextBox10.Text = "22500"
+        Me.txt_symbol_rate.Location = New System.Drawing.Point(121, 32)
+        Me.txt_symbol_rate.MaxLength = 5
+        Me.txt_symbol_rate.Name = "txt_symbol_rate"
+        Me.txt_symbol_rate.Size = New System.Drawing.Size(63, 20)
+        Me.txt_symbol_rate.TabIndex = 43
+        Me.txt_symbol_rate.Text = "22500"
         '
-        'MpLabel9
+        'Symbol_rate_Label
         '
-        Me.MpLabel9.AutoSize = True
-        Me.MpLabel9.Location = New System.Drawing.Point(118, 16)
-        Me.MpLabel9.Name = "MpLabel9"
-        Me.MpLabel9.Size = New System.Drawing.Size(70, 13)
-        Me.MpLabel9.TabIndex = 42
-        Me.MpLabel9.Text = "Symbol Rate:"
+        Me.Symbol_rate_Label.AutoSize = True
+        Me.Symbol_rate_Label.Location = New System.Drawing.Point(118, 16)
+        Me.Symbol_rate_Label.Name = "Symbol_rate_Label"
+        Me.Symbol_rate_Label.Size = New System.Drawing.Size(70, 13)
+        Me.Symbol_rate_Label.TabIndex = 42
+        Me.Symbol_rate_Label.Text = "Symbol Rate:"
         '
-        'MpLabel10
+        'Frequency_Unit_Label
         '
-        Me.MpLabel10.AutoSize = True
-        Me.MpLabel10.Location = New System.Drawing.Point(82, 53)
-        Me.MpLabel10.Name = "MpLabel10"
-        Me.MpLabel10.Size = New System.Drawing.Size(26, 13)
-        Me.MpLabel10.TabIndex = 41
-        Me.MpLabel10.Text = "kHz"
+        Me.Frequency_Unit_Label.AutoSize = True
+        Me.Frequency_Unit_Label.Location = New System.Drawing.Point(78, 35)
+        Me.Frequency_Unit_Label.Name = "Frequency_Unit_Label"
+        Me.Frequency_Unit_Label.Size = New System.Drawing.Size(26, 13)
+        Me.Frequency_Unit_Label.TabIndex = 41
+        Me.Frequency_Unit_Label.Text = "kHz"
         '
-        'TabPage2
+        'Schedule_Tab
         '
-        Me.TabPage2.Controls.Add(Me.Panel3)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(448, 396)
-        Me.TabPage2.TabIndex = 3
-        Me.TabPage2.Text = "Schedule"
-        Me.TabPage2.UseVisualStyleBackColor = True
+        Me.Schedule_Tab.Controls.Add(Me.Schedule_panel)
+        Me.Schedule_Tab.Location = New System.Drawing.Point(4, 22)
+        Me.Schedule_Tab.Name = "Schedule_Tab"
+        Me.Schedule_Tab.Padding = New System.Windows.Forms.Padding(3)
+        Me.Schedule_Tab.Size = New System.Drawing.Size(448, 396)
+        Me.Schedule_Tab.TabIndex = 3
+        Me.Schedule_Tab.Text = "Schedule"
+        Me.Schedule_Tab.UseVisualStyleBackColor = True
         '
-        'Panel3
+        'Schedule_panel
         '
-        Me.Panel3.Controls.Add(Me.Panel1)
-        Me.Panel3.Controls.Add(Me.CheckBox4)
-        Me.Panel3.Location = New System.Drawing.Point(3, 3)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(445, 394)
-        Me.Panel3.TabIndex = 14
+        Me.Schedule_panel.Controls.Add(Me.Panel1)
+        Me.Schedule_panel.Controls.Add(Me.chk_schedule_enabled)
+        Me.Schedule_panel.Location = New System.Drawing.Point(3, 0)
+        Me.Schedule_panel.Name = "Schedule_panel"
+        Me.Schedule_panel.Size = New System.Drawing.Size(445, 397)
+        Me.Schedule_panel.TabIndex = 14
         '
         'Panel1
         '
-        Me.Panel1.Controls.Add(Me.NumericUpDown1)
-        Me.Panel1.Controls.Add(Me.DateTimePicker1)
-        Me.Panel1.Controls.Add(Me.CheckBox5)
-        Me.Panel1.Controls.Add(Me.CheckBox6)
-        Me.Panel1.Controls.Add(Me.Sun)
-        Me.Panel1.Controls.Add(Me.Sat)
-        Me.Panel1.Controls.Add(Me.Label6)
-        Me.Panel1.Controls.Add(Me.Fri)
-        Me.Panel1.Controls.Add(Me.Mon)
-        Me.Panel1.Controls.Add(Me.Thu)
-        Me.Panel1.Controls.Add(Me.Tue)
-        Me.Panel1.Controls.Add(Me.Wed)
+        Me.Panel1.Controls.Add(Me.schedule_hours)
+        Me.Panel1.Controls.Add(Me.Schedule_scroll_time)
+        Me.Panel1.Controls.Add(Me.chk_every_hours)
+        Me.Panel1.Controls.Add(Me.chk_onthesedays)
+        Me.Panel1.Controls.Add(Me.chk_Sun)
+        Me.Panel1.Controls.Add(Me.chk_Sat)
+        Me.Panel1.Controls.Add(Me.Schedule_Hours_Label)
+        Me.Panel1.Controls.Add(Me.chk_Fri)
+        Me.Panel1.Controls.Add(Me.chk_Mon)
+        Me.Panel1.Controls.Add(Me.chk_Thu)
+        Me.Panel1.Controls.Add(Me.chk_Tue)
+        Me.Panel1.Controls.Add(Me.chk_Wed)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel1.Location = New System.Drawing.Point(0, 17)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(445, 377)
+        Me.Panel1.Size = New System.Drawing.Size(445, 380)
         Me.Panel1.TabIndex = 13
         '
-        'NumericUpDown1
+        'schedule_hours
         '
-        Me.NumericUpDown1.Location = New System.Drawing.Point(114, 11)
-        Me.NumericUpDown1.Name = "NumericUpDown1"
-        Me.NumericUpDown1.Size = New System.Drawing.Size(58, 20)
-        Me.NumericUpDown1.TabIndex = 14
+        Me.schedule_hours.Location = New System.Drawing.Point(114, 11)
+        Me.schedule_hours.Name = "schedule_hours"
+        Me.schedule_hours.Size = New System.Drawing.Size(58, 20)
+        Me.schedule_hours.TabIndex = 14
         '
-        'DateTimePicker1
+        'Schedule_scroll_time
         '
-        Me.DateTimePicker1.CustomFormat = "HH:mm"
-        Me.DateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.DateTimePicker1.Location = New System.Drawing.Point(114, 51)
-        Me.DateTimePicker1.Name = "DateTimePicker1"
-        Me.DateTimePicker1.ShowUpDown = True
-        Me.DateTimePicker1.Size = New System.Drawing.Size(58, 20)
-        Me.DateTimePicker1.TabIndex = 13
+        Me.Schedule_scroll_time.CustomFormat = "HH:mm"
+        Me.Schedule_scroll_time.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.Schedule_scroll_time.Location = New System.Drawing.Point(114, 51)
+        Me.Schedule_scroll_time.Name = "Schedule_scroll_time"
+        Me.Schedule_scroll_time.ShowUpDown = True
+        Me.Schedule_scroll_time.Size = New System.Drawing.Size(58, 20)
+        Me.Schedule_scroll_time.TabIndex = 13
         '
-        'CheckBox5
+        'chk_every_hours
         '
-        Me.CheckBox5.AutoSize = True
-        Me.CheckBox5.Location = New System.Drawing.Point(8, 12)
-        Me.CheckBox5.Name = "CheckBox5"
-        Me.CheckBox5.Size = New System.Drawing.Size(53, 17)
-        Me.CheckBox5.TabIndex = 1
-        Me.CheckBox5.Text = "Every"
-        Me.CheckBox5.UseVisualStyleBackColor = True
+        Me.chk_every_hours.AutoSize = True
+        Me.chk_every_hours.Location = New System.Drawing.Point(8, 12)
+        Me.chk_every_hours.Name = "chk_every_hours"
+        Me.chk_every_hours.Size = New System.Drawing.Size(53, 17)
+        Me.chk_every_hours.TabIndex = 1
+        Me.chk_every_hours.Text = "Every"
+        Me.chk_every_hours.UseVisualStyleBackColor = True
         '
-        'CheckBox6
+        'chk_onthesedays
         '
-        Me.CheckBox6.AutoSize = True
-        Me.CheckBox6.Location = New System.Drawing.Point(8, 54)
-        Me.CheckBox6.Name = "CheckBox6"
-        Me.CheckBox6.Size = New System.Drawing.Size(108, 17)
-        Me.CheckBox6.TabIndex = 2
-        Me.CheckBox6.Text = "On these days @"
-        Me.CheckBox6.UseVisualStyleBackColor = True
+        Me.chk_onthesedays.AutoSize = True
+        Me.chk_onthesedays.Location = New System.Drawing.Point(8, 54)
+        Me.chk_onthesedays.Name = "chk_onthesedays"
+        Me.chk_onthesedays.Size = New System.Drawing.Size(108, 17)
+        Me.chk_onthesedays.TabIndex = 2
+        Me.chk_onthesedays.Text = "On these days @"
+        Me.chk_onthesedays.UseVisualStyleBackColor = True
         '
-        'Sun
+        'chk_Sun
         '
-        Me.Sun.AutoSize = True
-        Me.Sun.Location = New System.Drawing.Point(116, 109)
-        Me.Sun.Name = "Sun"
-        Me.Sun.Size = New System.Drawing.Size(45, 17)
-        Me.Sun.TabIndex = 11
-        Me.Sun.Text = "Sun"
-        Me.Sun.UseVisualStyleBackColor = True
+        Me.chk_Sun.AutoSize = True
+        Me.chk_Sun.Location = New System.Drawing.Point(116, 109)
+        Me.chk_Sun.Name = "chk_Sun"
+        Me.chk_Sun.Size = New System.Drawing.Size(45, 17)
+        Me.chk_Sun.TabIndex = 11
+        Me.chk_Sun.Text = "Sun"
+        Me.chk_Sun.UseVisualStyleBackColor = True
         '
-        'Sat
+        'chk_Sat
         '
-        Me.Sat.AutoSize = True
-        Me.Sat.Location = New System.Drawing.Point(63, 109)
-        Me.Sat.Name = "Sat"
-        Me.Sat.Size = New System.Drawing.Size(42, 17)
-        Me.Sat.TabIndex = 10
-        Me.Sat.Text = "Sat"
-        Me.Sat.UseVisualStyleBackColor = True
+        Me.chk_Sat.AutoSize = True
+        Me.chk_Sat.Location = New System.Drawing.Point(63, 109)
+        Me.chk_Sat.Name = "chk_Sat"
+        Me.chk_Sat.Size = New System.Drawing.Size(42, 17)
+        Me.chk_Sat.TabIndex = 10
+        Me.chk_Sat.Text = "Sat"
+        Me.chk_Sat.UseVisualStyleBackColor = True
         '
-        'Label6
+        'Schedule_Hours_Label
         '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(173, 13)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(39, 13)
-        Me.Label6.TabIndex = 4
-        Me.Label6.Text = "hour(s)"
+        Me.Schedule_Hours_Label.AutoSize = True
+        Me.Schedule_Hours_Label.Location = New System.Drawing.Point(173, 13)
+        Me.Schedule_Hours_Label.Name = "Schedule_Hours_Label"
+        Me.Schedule_Hours_Label.Size = New System.Drawing.Size(39, 13)
+        Me.Schedule_Hours_Label.TabIndex = 4
+        Me.Schedule_Hours_Label.Text = "hour(s)"
         '
-        'Fri
+        'chk_Fri
         '
-        Me.Fri.AutoSize = True
-        Me.Fri.Location = New System.Drawing.Point(8, 109)
-        Me.Fri.Name = "Fri"
-        Me.Fri.Size = New System.Drawing.Size(37, 17)
-        Me.Fri.TabIndex = 9
-        Me.Fri.Text = "Fri"
-        Me.Fri.UseVisualStyleBackColor = True
+        Me.chk_Fri.AutoSize = True
+        Me.chk_Fri.Location = New System.Drawing.Point(8, 109)
+        Me.chk_Fri.Name = "chk_Fri"
+        Me.chk_Fri.Size = New System.Drawing.Size(37, 17)
+        Me.chk_Fri.TabIndex = 9
+        Me.chk_Fri.Text = "Fri"
+        Me.chk_Fri.UseVisualStyleBackColor = True
         '
-        'Mon
+        'chk_Mon
         '
-        Me.Mon.AutoSize = True
-        Me.Mon.Location = New System.Drawing.Point(8, 86)
-        Me.Mon.Name = "Mon"
-        Me.Mon.Size = New System.Drawing.Size(47, 17)
-        Me.Mon.TabIndex = 5
-        Me.Mon.Text = "Mon"
-        Me.Mon.UseVisualStyleBackColor = True
+        Me.chk_Mon.AutoSize = True
+        Me.chk_Mon.Location = New System.Drawing.Point(8, 86)
+        Me.chk_Mon.Name = "chk_Mon"
+        Me.chk_Mon.Size = New System.Drawing.Size(47, 17)
+        Me.chk_Mon.TabIndex = 5
+        Me.chk_Mon.Text = "Mon"
+        Me.chk_Mon.UseVisualStyleBackColor = True
         '
-        'Thu
+        'chk_Thu
         '
-        Me.Thu.AutoSize = True
-        Me.Thu.Location = New System.Drawing.Point(173, 86)
-        Me.Thu.Name = "Thu"
-        Me.Thu.Size = New System.Drawing.Size(45, 17)
-        Me.Thu.TabIndex = 8
-        Me.Thu.Text = "Thu"
-        Me.Thu.UseVisualStyleBackColor = True
+        Me.chk_Thu.AutoSize = True
+        Me.chk_Thu.Location = New System.Drawing.Point(173, 86)
+        Me.chk_Thu.Name = "chk_Thu"
+        Me.chk_Thu.Size = New System.Drawing.Size(45, 17)
+        Me.chk_Thu.TabIndex = 8
+        Me.chk_Thu.Text = "Thu"
+        Me.chk_Thu.UseVisualStyleBackColor = True
         '
-        'Tue
+        'chk_Tue
         '
-        Me.Tue.AutoSize = True
-        Me.Tue.Location = New System.Drawing.Point(63, 86)
-        Me.Tue.Name = "Tue"
-        Me.Tue.Size = New System.Drawing.Size(45, 17)
-        Me.Tue.TabIndex = 6
-        Me.Tue.Text = "Tue"
-        Me.Tue.UseVisualStyleBackColor = True
+        Me.chk_Tue.AutoSize = True
+        Me.chk_Tue.Location = New System.Drawing.Point(63, 86)
+        Me.chk_Tue.Name = "chk_Tue"
+        Me.chk_Tue.Size = New System.Drawing.Size(45, 17)
+        Me.chk_Tue.TabIndex = 6
+        Me.chk_Tue.Text = "Tue"
+        Me.chk_Tue.UseVisualStyleBackColor = True
         '
-        'Wed
+        'chk_Wed
         '
-        Me.Wed.AutoSize = True
-        Me.Wed.Location = New System.Drawing.Point(116, 86)
-        Me.Wed.Name = "Wed"
-        Me.Wed.Size = New System.Drawing.Size(49, 17)
-        Me.Wed.TabIndex = 7
-        Me.Wed.Text = "Wed"
-        Me.Wed.UseVisualStyleBackColor = True
+        Me.chk_Wed.AutoSize = True
+        Me.chk_Wed.Location = New System.Drawing.Point(116, 86)
+        Me.chk_Wed.Name = "chk_Wed"
+        Me.chk_Wed.Size = New System.Drawing.Size(49, 17)
+        Me.chk_Wed.TabIndex = 7
+        Me.chk_Wed.Text = "Wed"
+        Me.chk_Wed.UseVisualStyleBackColor = True
         '
-        'CheckBox4
+        'chk_schedule_enabled
         '
-        Me.CheckBox4.AutoSize = True
-        Me.CheckBox4.Dock = System.Windows.Forms.DockStyle.Top
-        Me.CheckBox4.Location = New System.Drawing.Point(0, 0)
-        Me.CheckBox4.Name = "CheckBox4"
-        Me.CheckBox4.Size = New System.Drawing.Size(445, 17)
-        Me.CheckBox4.TabIndex = 0
-        Me.CheckBox4.Text = "Enabled"
-        Me.CheckBox4.UseVisualStyleBackColor = True
+        Me.chk_schedule_enabled.AutoSize = True
+        Me.chk_schedule_enabled.Dock = System.Windows.Forms.DockStyle.Top
+        Me.chk_schedule_enabled.Location = New System.Drawing.Point(0, 0)
+        Me.chk_schedule_enabled.Name = "chk_schedule_enabled"
+        Me.chk_schedule_enabled.Size = New System.Drawing.Size(445, 17)
+        Me.chk_schedule_enabled.TabIndex = 0
+        Me.chk_schedule_enabled.Text = "Enabled"
+        Me.chk_schedule_enabled.UseVisualStyleBackColor = True
         '
-        'TabPage5
+        'Change_Log_Tab
         '
-        Me.TabPage5.Controls.Add(Me.TextBox1)
-        Me.TabPage5.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage5.Size = New System.Drawing.Size(448, 396)
-        Me.TabPage5.TabIndex = 5
-        Me.TabPage5.Text = "Change Log"
-        Me.TabPage5.UseVisualStyleBackColor = True
+        Me.Change_Log_Tab.Controls.Add(Me.txtbox_Change_log)
+        Me.Change_Log_Tab.Location = New System.Drawing.Point(4, 22)
+        Me.Change_Log_Tab.Name = "Change_Log_Tab"
+        Me.Change_Log_Tab.Padding = New System.Windows.Forms.Padding(3)
+        Me.Change_Log_Tab.Size = New System.Drawing.Size(448, 396)
+        Me.Change_Log_Tab.TabIndex = 5
+        Me.Change_Log_Tab.Text = "Change Log"
+        Me.Change_Log_Tab.UseVisualStyleBackColor = True
         '
-        'TextBox1
+        'txtbox_Change_log
         '
-        Me.TextBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TextBox1.Location = New System.Drawing.Point(3, 3)
-        Me.TextBox1.Multiline = True
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox1.Size = New System.Drawing.Size(442, 390)
-        Me.TextBox1.TabIndex = 0
-        Me.TextBox1.Text = resources.GetString("TextBox1.Text")
+        Me.txtbox_Change_log.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtbox_Change_log.Location = New System.Drawing.Point(3, 3)
+        Me.txtbox_Change_log.Multiline = True
+        Me.txtbox_Change_log.Name = "txtbox_Change_log"
+        Me.txtbox_Change_log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtbox_Change_log.Size = New System.Drawing.Size(442, 390)
+        Me.txtbox_Change_log.TabIndex = 0
+        Me.txtbox_Change_log.Text = resources.GetString("txtbox_Change_log.Text")
         '
         'Setup
         '
-        Me.Controls.Add(Me.SkyIT_Tab)
+        Me.Controls.Add(Me.SkyNZ)
         Me.Name = "Setup"
         Me.Size = New System.Drawing.Size(456, 422)
-        Me.SkyIT_Tab.ResumeLayout(False)
-        Me.tabPage3.ResumeLayout(False)
-        Me.tabPage3.PerformLayout()
-        CType(Me.NumericUpDown2, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabPage6.ResumeLayout(False)
+        Me.SkyNZ.ResumeLayout(False)
+        Me.General_Tab.ResumeLayout(False)
+        Me.General_Tab.PerformLayout()
+        CType(Me.Grabtime_grabtime, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Settings_Tab.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
         Me.tabPage1.ResumeLayout(False)
-        Me.skyUKContainer.ResumeLayout(False)
-        Me.groupBox1.ResumeLayout(False)
-        Me.groupBox1.PerformLayout()
+        Me.Region_Group_Tab.ResumeLayout(False)
+        Me.SkyNZ_Channel_Groups.ResumeLayout(False)
+        Me.SkyNZ_Channel_Groups.PerformLayout()
         Me.groupBox3.ResumeLayout(False)
-        Me.TabPage4.ResumeLayout(False)
-        Me.MpGroupBox2.ResumeLayout(False)
-        Me.MpGroupBox1.ResumeLayout(False)
-        Me.MpGroupBox1.PerformLayout()
-        Me.TabPage2.ResumeLayout(False)
-        Me.Panel3.ResumeLayout(False)
-        Me.Panel3.PerformLayout()
+        Me.Cards_Mapping_Tab.ResumeLayout(False)
+        Me.Card_Map_Box.ResumeLayout(False)
+        Me.Sky_NZ_Channel_Grabber_Settings.ResumeLayout(False)
+        Me.Sky_NZ_Channel_Grabber_Settings.PerformLayout()
+        Me.Schedule_Tab.ResumeLayout(False)
+        Me.Schedule_panel.ResumeLayout(False)
+        Me.Schedule_panel.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        CType(Me.NumericUpDown1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabPage5.ResumeLayout(False)
-        Me.TabPage5.PerformLayout()
+        CType(Me.schedule_hours, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Change_Log_Tab.ResumeLayout(False)
+        Me.Change_Log_Tab.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
 
     Private Sub AddLog(ByVal Value As String, ByVal UpdateLast As Boolean)
         If UpdateLast = True Then
-            listViewStatus.Items(listViewStatus.Items.Count - 1).Text = Value
+            Output_Window.Items(Output_Window.Items.Count - 1).Text = Value
         Else
-            listViewStatus.Items.Add(Value)
+            Output_Window.Items.Add(Value)
         End If
-        listViewStatus.Items(listViewStatus.Items.Count - 1).EnsureVisible()
+        Output_Window.Items(Output_Window.Items.Count - 1).EnsureVisible()
     End Sub
 
     Private Sub SetBool(ByVal value As Boolean)
@@ -1629,23 +1621,23 @@ Public Class Setup
     End Sub
 
     Private Sub SetBool22(ByVal value As Boolean)
-        skyUKContainer.Enabled = value
+        Region_Group_Tab.Enabled = value
     End Sub
 
     Private Sub SetBool33(ByVal value As Boolean)
-        MpGroupBox1.Enabled = value
+        Sky_NZ_Channel_Grabber_Settings.Enabled = value
     End Sub
 
     Private Sub SetBool44(ByVal value As Boolean)
-        MpGroupBox2.Enabled = value
+        Card_Map_Box.Enabled = value
     End Sub
 
     Private Sub SetBool55(ByVal value As Boolean)
-        Panel3.Enabled = value
+        Schedule_panel.Enabled = value
     End Sub
 
     Private Sub SetBool66(ByVal value As Boolean)
-        Button1.Enabled = value
+        Grab_Now.Enabled = value
     End Sub
 
     Sub active() Handles Grabber.OnActivateControls
@@ -1653,28 +1645,28 @@ Public Class Setup
         param(0) = True
         Try
             Panel2.Invoke(Bool1, param(0))
-            skyUKContainer.Invoke(Bool2, param(0))
-            MpGroupBox1.Invoke(Bool3, param(0))
-            MpGroupBox2.Invoke(Bool4, param(0))
-            Panel3.Invoke(Bool5, param(0))
-            Button1.Invoke(Bool6, param(0))
+            Region_Group_Tab.Invoke(Bool2, param(0))
+            Sky_NZ_Channel_Grabber_Settings.Invoke(Bool3, param(0))
+            Card_Map_Box.Invoke(Bool4, param(0))
+            Schedule_panel.Invoke(Bool5, param(0))
+            Grab_Now.Invoke(Bool6, param(0))
         Catch
 
         End Try
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Grab_Now.Click
         If Settings.IsGrabbing = False Then
-            listViewStatus.Items.Clear()
+            Output_Window.Items.Clear()
             Dim param(0) As Boolean
             param(0) = False
             Try
                 Panel2.Invoke(Bool1, param(0))
-                skyUKContainer.Invoke(Bool2, param(0))
-                MpGroupBox1.Invoke(Bool3, param(0))
-                MpGroupBox2.Invoke(Bool4, param(0))
-                Panel3.Invoke(Bool5, param(0))
-                Button1.Invoke(Bool6, param(0))
+                Region_Group_Tab.Invoke(Bool2, param(0))
+                Sky_NZ_Channel_Grabber_Settings.Invoke(Bool3, param(0))
+                Card_Map_Box.Invoke(Bool4, param(0))
+                Schedule_panel.Invoke(Bool5, param(0))
+                Grab_Now.Invoke(Bool6, param(0))
             Catch
 
             End Try
@@ -1686,7 +1678,7 @@ Public Class Setup
     Private Sub OnMessage(ByVal Message As String, ByVal UpdateLast As Boolean) Handles Grabber.OnMessage
         Dim param() As Object = {Message, UpdateLast}
         Try
-            listViewStatus.Invoke(Log1, param)
+            Output_Window.Invoke(Log1, param)
             If UpdateLast = False Then
                 Log.Write("Sky Plugin : " & Message)
             End If
@@ -1697,7 +1689,7 @@ Public Class Setup
 
     End Sub
 
-    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Save_Changes.Click
 
         Try
             If CatByte1.Text <> "" And CatByte1.Text <> "0" Then Settings.SetCategory(Convert.ToInt32(CatByte1.Text), CatText1.Text)
@@ -1810,15 +1802,15 @@ Public Class Setup
         Dim checker As Integer = 0
         For Each card_1 As Card In Card.ListAll()
             If RemoteControl.Instance.Type(card_1.IdCard) = CardType.DvbS Then
-                ChannelMap.Items.Add(card_1.Name)
+                Cards_For_Grabbing.Items.Add(card_1.Name)
             End If
         Next
         Settings.IsLoading = True
         Dim listofmap As List(Of Integer) = Settings.CardMap
-        If listofmap.Count > 0 And ChannelMap.Items.Count > 0 Then
+        If listofmap.Count > 0 And Cards_For_Grabbing.Items.Count > 0 Then
             For Each num In listofmap
                 Try
-                    ChannelMap.SetItemChecked(num, True)
+                    Cards_For_Grabbing.SetItemChecked(num, True)
                 Catch ex As Exception
 
                 End Try
@@ -1840,7 +1832,7 @@ Public Class Setup
             Dim split(2) As String
             Dim Split2(2) As String
             split = yt.Split("=")
-            SkyUK_Region.Items.Add(split(1))
+            SkyNZ_Region.Items.Add(split(1))
             Split2 = split(0).Split("-")
             Dim bad As New Region
             bad.BouquetID = Val(Split2(0))
@@ -2007,61 +1999,61 @@ Public Class Setup
             CatByte20.Text = Settings.GetSkySetting(CatByte20.Name, "-1")
             CatText20.Text = Settings.GetSkySetting(CatText20.Name, CatText20.Text)
         End If
-        TextBox6.Text = Settings.frequency
+        txt_frequency.Text = Settings.frequency
         chk_AutoUpdate.Checked = Settings.UpdateChannels
         chk_SkyNumbers.Checked = Settings.UseSkyNumbers
         chk_SkyCategories.Checked = Settings.UseSkyCategories
         chk_SkyRegions.Checked = Settings.UseSkyRegions
         chk_DeleteOld.Checked = Settings.DeleteOldChannels
         chk_MoveOld.Checked = Not Settings.DeleteOldChannels
-        CheckBox1.Checked = Settings.ReplaceSDwithHD
-        CheckBox2.Checked = Settings.UpdateEPG
+        chk_replaceSDwithHD.Checked = Settings.ReplaceSDwithHD
+        chk_updateEPG.Checked = Settings.UpdateEPG
         'TextBox1.Text = Settings.SwitchingFrequency
         txt_Move_Old_Group.Text = Settings.OldChannelFolder
-        SkyUK_Region.SelectedIndex = Settings.RegionIndex
-        Settings.RegionIndex = SkyUK_Region.SelectedIndex
-        TextBox10.Text = Settings.SymbolRate
-        TextBox5.Text = Settings.TransportID
-        TextBox4.Text = Settings.ServiceID
-        mpDisEqc1.SelectedIndex = Settings.DiseqC
-        If mpDisEqc1.SelectedIndex = -1 Then
-            mpDisEqc1.SelectedIndex = 0
+        SkyNZ_Region.SelectedIndex = Settings.RegionIndex
+        Settings.RegionIndex = SkyNZ_Region.SelectedIndex
+        txt_symbol_rate.Text = Settings.SymbolRate
+        txt_transportid.Text = Settings.TransportID
+        txt_serviceid.Text = Settings.ServiceID
+        MP_Diseqc.SelectedIndex = Settings.DiseqC
+        If MP_Diseqc.SelectedIndex = -1 Then
+            MP_Diseqc.SelectedIndex = 0
             Settings.DiseqC = 0
         End If
-        MpComboBox2.SelectedIndex = Settings.polarisation
-        If MpComboBox2.SelectedIndex = -1 Then
-            MpComboBox2.SelectedIndex = 0
+        MP_Polarisation.SelectedIndex = Settings.polarisation
+        If MP_Polarisation.SelectedIndex = -1 Then
+            MP_Polarisation.SelectedIndex = 0
             Settings.polarisation = 0
         End If
-        MpComboBox1.SelectedIndex = Settings.modulation
-        If MpComboBox1.SelectedIndex = -1 Then
-            MpComboBox1.SelectedIndex = 0
+        MP_Modulation.SelectedIndex = Settings.modulation
+        If MP_Modulation.SelectedIndex = -1 Then
+            MP_Modulation.SelectedIndex = 0
             Settings.modulation = 0
         End If
-        TextBox6.Text = Settings.frequency
-        CheckBox4.Checked = Settings.AutoUpdate
-        CheckBox5.Checked = Settings.EveryHour
-        CheckBox6.Checked = Settings.OnDaysAt
+        txt_frequency.Text = Settings.frequency
+        chk_schedule_enabled.Checked = Settings.AutoUpdate
+        chk_every_hours.Checked = Settings.EveryHour
+        chk_onthesedays.Checked = Settings.OnDaysAt
         If Settings.UpdateInterval = 0 Then
             Settings.UpdateInterval = 1
         End If
-        CheckBox3.Checked = Settings.useExtraInfo
-        CheckBox7.Checked = Settings.UseNotSetModSD
-        CheckBox9.Checked = Settings.UseNotSetModHD
-        CheckBox8.Checked = Settings.IgnoreScrambled
+        chk_extrainfo.Checked = Settings.useExtraInfo
+        chk_modnotsetSD.Checked = Settings.UseNotSetModSD
+        chk_modnotsetHD.Checked = Settings.UseNotSetModHD
+        chk_ignorescrambled.Checked = Settings.IgnoreScrambled
 
-        NumericUpDown2.Value = Settings.GrabTime
-        NumericUpDown1.Value = Settings.UpdateInterval
+        Grabtime_grabtime.Value = Settings.GrabTime
+        schedule_hours.Value = Settings.UpdateInterval
         Panel1.Visible = Settings.AutoUpdate
-        DateTimePicker1.Value = Settings.UpdateTime
+        Schedule_scroll_time.Value = Settings.UpdateTime
 
-        Mon.Checked = Settings.Mon
-        Tue.Checked = Settings.Tue
-        Wed.Checked = Settings.Wed
-        Thu.Checked = Settings.Thu
-        Fri.Checked = Settings.Fri
-        Sat.Checked = Settings.Sat
-        Sun.Checked = Settings.Sun
+        chk_Mon.Checked = Settings.Mon
+        chk_Tue.Checked = Settings.Tue
+        chk_Wed.Checked = Settings.Wed
+        chk_Thu.Checked = Settings.Thu
+        chk_Fri.Checked = Settings.Fri
+        chk_Sat.Checked = Settings.Sat
+        chk_Sun.Checked = Settings.Sun
 
         If CatByte1.Text <> "" Then Settings.SetCategory(Convert.ToInt32(CatByte1.Text), CatText1.Text)
         If CatByte2.Text <> "" Then Settings.SetCategory(Convert.ToInt32(CatByte2.Text), CatText2.Text)
@@ -2306,118 +2298,118 @@ Public Class Setup
         End If
     End Sub
 
-    Private Sub SkyUK_Region_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SkyUK_Region.SelectedIndexChanged
-        Dim region As Region = regions(SkyUK_Region.SelectedIndex)
+    Private Sub SkyUK_Region_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SkyNZ_Region.SelectedIndexChanged
+        Dim region As Region = regions(SkyNZ_Region.SelectedIndex)
         Settings.RegionID = region.RegionID
         Settings.BouquetID = region.BouquetID
-        Settings.RegionIndex = SkyUK_Region.SelectedIndex
+        Settings.RegionIndex = SkyNZ_Region.SelectedIndex
     End Sub
 
     Private Sub TextBox10_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Settings.SymbolRate = TextBox10.Text
+        Settings.SymbolRate = txt_symbol_rate.Text
     End Sub
 
     Private Sub TextBox5_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Settings.TransportID = TextBox5.Text
+        Settings.TransportID = txt_transportid.Text
 
     End Sub
 
     Private Sub TextBox4_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Settings.ServiceID = TextBox4.Text
+        Settings.ServiceID = txt_serviceid.Text
     End Sub
 
-    Private Sub MpComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MpComboBox1.SelectedIndexChanged
-        Settings.modulation = MpComboBox1.SelectedIndex
+    Private Sub MpComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MP_Modulation.SelectedIndexChanged
+        Settings.modulation = MP_Modulation.SelectedIndex
     End Sub
 
-    Private Sub mpDisEqc1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mpDisEqc1.SelectedIndexChanged
-        Settings.DiseqC = mpDisEqc1.SelectedIndex
+    Private Sub mpDisEqc1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MP_Diseqc.SelectedIndexChanged
+        Settings.DiseqC = MP_Diseqc.SelectedIndex
     End Sub
 
-    Private Sub MpComboBox2_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MpComboBox2.SelectedIndexChanged
-        Settings.polarisation = MpComboBox2.SelectedIndex
+    Private Sub MpComboBox2_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MP_Polarisation.SelectedIndexChanged
+        Settings.polarisation = MP_Polarisation.SelectedIndex
     End Sub
 
     Private Sub TextBox6_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Settings.frequency = TextBox6.Text
+        Settings.frequency = txt_frequency.Text
     End Sub
 
-    Private Sub CheckBox4_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox4.CheckedChanged
-        Settings.AutoUpdate = CheckBox4.Checked
+    Private Sub CheckBox4_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_schedule_enabled.CheckedChanged
+        Settings.AutoUpdate = chk_schedule_enabled.Checked
         Panel1.Visible = Settings.AutoUpdate
     End Sub
 
-    Private Sub CheckBox5_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox5.CheckedChanged
-        Settings.EveryHour = CheckBox5.Checked
-        Settings.OnDaysAt = Not CheckBox5.Checked
-        CheckBox6.Checked = Not CheckBox5.Checked
-        Mon.Enabled = Not CheckBox5.Checked
-        Tue.Enabled = Not CheckBox5.Checked
-        Wed.Enabled = Not CheckBox5.Checked
-        Thu.Enabled = Not CheckBox5.Checked
-        Fri.Enabled = Not CheckBox5.Checked
-        Sat.Enabled = Not CheckBox5.Checked
-        Sun.Enabled = Not CheckBox5.Checked
-        DateTimePicker1.Enabled = Not CheckBox5.Checked
-        NumericUpDown1.Enabled = CheckBox5.Checked
+    Private Sub CheckBox5_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_every_hours.CheckedChanged
+        Settings.EveryHour = chk_every_hours.Checked
+        Settings.OnDaysAt = Not chk_every_hours.Checked
+        chk_onthesedays.Checked = Not chk_every_hours.Checked
+        chk_Mon.Enabled = Not chk_every_hours.Checked
+        chk_Tue.Enabled = Not chk_every_hours.Checked
+        chk_Wed.Enabled = Not chk_every_hours.Checked
+        chk_Thu.Enabled = Not chk_every_hours.Checked
+        chk_Fri.Enabled = Not chk_every_hours.Checked
+        chk_Sat.Enabled = Not chk_every_hours.Checked
+        chk_Sun.Enabled = Not chk_every_hours.Checked
+        Schedule_scroll_time.Enabled = Not chk_every_hours.Checked
+        schedule_hours.Enabled = chk_every_hours.Checked
     End Sub
 
-    Private Sub CheckBox6_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox6.CheckedChanged
-        Settings.OnDaysAt = CheckBox6.Checked
-        Settings.EveryHour = Not CheckBox6.Checked
-        CheckBox5.Checked = Not CheckBox6.Checked
-        Mon.Enabled = Not CheckBox5.Checked
-        Tue.Enabled = Not CheckBox5.Checked
-        Wed.Enabled = Not CheckBox5.Checked
-        Thu.Enabled = Not CheckBox5.Checked
-        Fri.Enabled = Not CheckBox5.Checked
-        Sat.Enabled = Not CheckBox5.Checked
-        Sun.Enabled = Not CheckBox5.Checked
-        DateTimePicker1.Enabled = Not CheckBox5.Checked
-        NumericUpDown1.Enabled = CheckBox5.Checked
+    Private Sub CheckBox6_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_onthesedays.CheckedChanged
+        Settings.OnDaysAt = chk_onthesedays.Checked
+        Settings.EveryHour = Not chk_onthesedays.Checked
+        chk_every_hours.Checked = Not chk_onthesedays.Checked
+        chk_Mon.Enabled = Not chk_every_hours.Checked
+        chk_Tue.Enabled = Not chk_every_hours.Checked
+        chk_Wed.Enabled = Not chk_every_hours.Checked
+        chk_Thu.Enabled = Not chk_every_hours.Checked
+        chk_Fri.Enabled = Not chk_every_hours.Checked
+        chk_Sat.Enabled = Not chk_every_hours.Checked
+        chk_Sun.Enabled = Not chk_every_hours.Checked
+        Schedule_scroll_time.Enabled = Not chk_every_hours.Checked
+        schedule_hours.Enabled = chk_every_hours.Checked
     End Sub
 
-    Private Sub Mon_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Mon.CheckedChanged
-        Settings.Mon = Mon.Checked
+    Private Sub Mon_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_Mon.CheckedChanged
+        Settings.Mon = chk_Mon.Checked
     End Sub
 
-    Private Sub Tue_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Tue.CheckedChanged
-        Settings.Tue = Tue.Checked
+    Private Sub Tue_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_Tue.CheckedChanged
+        Settings.Tue = chk_Tue.Checked
     End Sub
 
-    Private Sub Wed_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Wed.CheckedChanged
-        Settings.Wed = Wed.Checked
+    Private Sub Wed_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_Wed.CheckedChanged
+        Settings.Wed = chk_Wed.Checked
     End Sub
 
-    Private Sub Thu_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Thu.CheckedChanged
-        Settings.Thu = Thu.Checked
+    Private Sub Thu_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_Thu.CheckedChanged
+        Settings.Thu = chk_Thu.Checked
     End Sub
 
-    Private Sub Fri_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Fri.CheckedChanged
-        Settings.Fri = Fri.Checked
+    Private Sub Fri_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_Fri.CheckedChanged
+        Settings.Fri = chk_Fri.Checked
     End Sub
 
-    Private Sub Sat_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Sat.CheckedChanged
-        Settings.Sat = Sat.Checked
+    Private Sub Sat_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_Sat.CheckedChanged
+        Settings.Sat = chk_Sat.Checked
     End Sub
 
-    Private Sub Sun_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Sun.CheckedChanged
-        Settings.Sun = Sun.Checked
+    Private Sub Sun_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_Sun.CheckedChanged
+        Settings.Sun = chk_Sun.Checked
     End Sub
 
-    Private Sub NumericUpDown1_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumericUpDown1.ValueChanged
-        Settings.UpdateInterval = NumericUpDown1.Value
+    Private Sub NumericUpDown1_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles schedule_hours.ValueChanged
+        Settings.UpdateInterval = schedule_hours.Value
     End Sub
 
-    Private Sub DateTimePicker1_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DateTimePicker1.ValueChanged
-        Settings.UpdateTime = DateTimePicker1.Value.ToString
+    Private Sub DateTimePicker1_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Schedule_scroll_time.ValueChanged
+        Settings.UpdateTime = Schedule_scroll_time.Value.ToString
     End Sub
 
-    Private Sub ChannelMap_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ChannelMap.ItemCheck
+    Private Sub ChannelMap_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles Cards_For_Grabbing.ItemCheck
         If Settings.IsLoading = False Then
             Dim listofmap As New List(Of Integer)
-            If ChannelMap.Items.Count > 0 Then
-                For a As Integer = 0 To ChannelMap.Items.Count - 1
+            If Cards_For_Grabbing.Items.Count > 0 Then
+                For a As Integer = 0 To Cards_For_Grabbing.Items.Count - 1
                     Try
                         '   MsgBox(e.Index & " : " & e.NewValue)
                         If e.Index = a Then
@@ -2425,7 +2417,7 @@ Public Class Setup
                                 listofmap.Add(a)
                             End If
                         Else
-                            If ChannelMap.GetItemChecked(a) Then
+                            If Cards_For_Grabbing.GetItemChecked(a) Then
                                 listofmap.Add(a)
                             End If
                         End If
@@ -2440,45 +2432,45 @@ Public Class Setup
     End Sub
 
     Private Sub NumericUpDown2_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Settings.GrabTime = NumericUpDown2.Value
+        Settings.GrabTime = Grabtime_grabtime.Value
     End Sub
 
     Private Sub txt_Move_Old_Group_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txt_Move_Old_Group.TextChanged
         Settings.OldChannelFolder = txt_Move_Old_Group.Text
     End Sub
 
-    Private Sub TextBox6_TextChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox6.TextChanged
-        Settings.frequency = TextBox6.Text
+    Private Sub TextBox6_TextChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txt_frequency.TextChanged
+        Settings.frequency = txt_frequency.Text
     End Sub
 
-    Private Sub TextBox10_TextChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox10.TextChanged
-        Settings.SymbolRate = TextBox10.Text
-
-    End Sub
-
-    Private Sub TextBox5_TextChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox5.TextChanged
-        Settings.TransportID = TextBox5.Text
+    Private Sub TextBox10_TextChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txt_symbol_rate.TextChanged
+        Settings.SymbolRate = txt_symbol_rate.Text
 
     End Sub
 
-    Private Sub TextBox4_TextChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox4.TextChanged
-        Settings.ServiceID = TextBox4.Text
+    Private Sub TextBox5_TextChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txt_transportid.TextChanged
+        Settings.TransportID = txt_transportid.Text
+
     End Sub
 
-    Private Sub CheckBox8_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox8.CheckedChanged
-        Settings.IgnoreScrambled = CheckBox8.Checked
+    Private Sub TextBox4_TextChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txt_serviceid.TextChanged
+        Settings.ServiceID = txt_serviceid.Text
     End Sub
 
-    Private Sub CheckBox7_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox7.CheckedChanged
-        Settings.UseNotSetModSD = CheckBox7.Checked
+    Private Sub CheckBox8_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_ignorescrambled.CheckedChanged
+        Settings.IgnoreScrambled = chk_ignorescrambled.Checked
+    End Sub
+
+    Private Sub CheckBox7_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_modnotsetSD.CheckedChanged
+        Settings.UseNotSetModSD = chk_modnotsetSD.Checked
     End Sub
 
     Private Sub chk_AutoUpdate_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_AutoUpdate.CheckedChanged
         Settings.UpdateChannels = chk_AutoUpdate.Checked
     End Sub
 
-    Private Sub CheckBox2_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox2.CheckedChanged
-        Settings.UpdateEPG = CheckBox2.Checked
+    Private Sub CheckBox2_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_updateEPG.CheckedChanged
+        Settings.UpdateEPG = chk_updateEPG.Checked
     End Sub
 
     Private Sub chk_SkyNumbers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_SkyNumbers.CheckedChanged
@@ -2493,12 +2485,12 @@ Public Class Setup
         Settings.UseSkyRegions = chk_SkyRegions.Checked
     End Sub
 
-    Private Sub CheckBox1_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox1.CheckedChanged
-        Settings.ReplaceSDwithHD = CheckBox1.Checked
+    Private Sub CheckBox1_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_replaceSDwithHD.CheckedChanged
+        Settings.ReplaceSDwithHD = chk_replaceSDwithHD.Checked
     End Sub
 
-    Private Sub CheckBox3_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox3.CheckedChanged
-        Settings.useExtraInfo = CheckBox3.Checked
+    Private Sub CheckBox3_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_extrainfo.CheckedChanged
+        Settings.useExtraInfo = chk_extrainfo.Checked
     End Sub
 
     Private Sub chk_DeleteOld_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_DeleteOld.CheckedChanged
@@ -2515,8 +2507,8 @@ Public Class Setup
         End If
     End Sub
 
-    Private Sub CheckBox9_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox9.CheckedChanged
-        Settings.UseNotSetModHD = CheckBox9.Checked
+    Private Sub CheckBox9_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chk_modnotsetHD.CheckedChanged
+        Settings.UseNotSetModHD = chk_modnotsetHD.Checked
     End Sub
 
 End Class
