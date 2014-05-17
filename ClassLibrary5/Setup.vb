@@ -1,4 +1,5 @@
 ﻿
+Imports Microsoft.VisualBasic.CompilerServices
 Imports SetupTv
 Imports TvDatabase
 Imports TvControl
@@ -135,7 +136,7 @@ Public Class Setup
     Friend WithEvents Change_Log_Tab As System.Windows.Forms.TabPage
     Friend WithEvents txtbox_Change_log As System.Windows.Forms.TextBox
     Friend WithEvents Settings_Tab As System.Windows.Forms.TabPage
-    Friend WithEvents Panel2 As System.Windows.Forms.Panel
+    Friend WithEvents Settings_Panel As System.Windows.Forms.Panel
     Private WithEvents chk_ignorescrambled As System.Windows.Forms.CheckBox
     Private WithEvents chk_modnotsetSD As System.Windows.Forms.CheckBox
     Private WithEvents chk_extrainfo As System.Windows.Forms.CheckBox
@@ -180,7 +181,7 @@ Public Class Setup
         Me.columnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Grab_Now = New System.Windows.Forms.Button()
         Me.Settings_Tab = New System.Windows.Forms.TabPage()
-        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Settings_Panel = New System.Windows.Forms.Panel()
         Me.chk_modnotsetHD = New System.Windows.Forms.CheckBox()
         Me.chk_ignorescrambled = New System.Windows.Forms.CheckBox()
         Me.chk_modnotsetSD = New System.Windows.Forms.CheckBox()
@@ -302,7 +303,7 @@ Public Class Setup
         Me.General_Tab.SuspendLayout()
         CType(Me.Grabtime_grabtime, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Settings_Tab.SuspendLayout()
-        Me.Panel2.SuspendLayout()
+        Me.Settings_Panel.SuspendLayout()
         Me.tabPage1.SuspendLayout()
         Me.Region_Group_Tab.SuspendLayout()
         Me.SkyNZ_Channel_Groups.SuspendLayout()
@@ -401,7 +402,7 @@ Public Class Setup
         '
         'Settings_Tab
         '
-        Me.Settings_Tab.Controls.Add(Me.Panel2)
+        Me.Settings_Tab.Controls.Add(Me.Settings_Panel)
         Me.Settings_Tab.Location = New System.Drawing.Point(4, 22)
         Me.Settings_Tab.Name = "Settings_Tab"
         Me.Settings_Tab.Padding = New System.Windows.Forms.Padding(3)
@@ -410,27 +411,27 @@ Public Class Setup
         Me.Settings_Tab.Text = "Settings"
         Me.Settings_Tab.UseVisualStyleBackColor = True
         '
-        'Panel2
+        'Settings_Panel
         '
-        Me.Panel2.Controls.Add(Me.chk_modnotsetHD)
-        Me.Panel2.Controls.Add(Me.chk_ignorescrambled)
-        Me.Panel2.Controls.Add(Me.chk_modnotsetSD)
-        Me.Panel2.Controls.Add(Me.chk_extrainfo)
-        Me.Panel2.Controls.Add(Me.Expired_Channels_label)
-        Me.Panel2.Controls.Add(Me.chk_updateEPG)
-        Me.Panel2.Controls.Add(Me.chk_DeleteOld)
-        Me.Panel2.Controls.Add(Me.chk_replaceSDwithHD)
-        Me.Panel2.Controls.Add(Me.chk_MoveOld)
-        Me.Panel2.Controls.Add(Me.txt_Move_Old_Group)
-        Me.Panel2.Controls.Add(Me.chk_AutoUpdate)
-        Me.Panel2.Controls.Add(Me.chk_SkyCategories)
-        Me.Panel2.Controls.Add(Me.chk_SkyNumbers)
-        Me.Panel2.Controls.Add(Me.chk_SkyRegions)
-        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel2.Location = New System.Drawing.Point(3, 3)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(442, 390)
-        Me.Panel2.TabIndex = 185
+        Me.Settings_Panel.Controls.Add(Me.chk_modnotsetHD)
+        Me.Settings_Panel.Controls.Add(Me.chk_ignorescrambled)
+        Me.Settings_Panel.Controls.Add(Me.chk_modnotsetSD)
+        Me.Settings_Panel.Controls.Add(Me.chk_extrainfo)
+        Me.Settings_Panel.Controls.Add(Me.Expired_Channels_label)
+        Me.Settings_Panel.Controls.Add(Me.chk_updateEPG)
+        Me.Settings_Panel.Controls.Add(Me.chk_DeleteOld)
+        Me.Settings_Panel.Controls.Add(Me.chk_replaceSDwithHD)
+        Me.Settings_Panel.Controls.Add(Me.chk_MoveOld)
+        Me.Settings_Panel.Controls.Add(Me.txt_Move_Old_Group)
+        Me.Settings_Panel.Controls.Add(Me.chk_AutoUpdate)
+        Me.Settings_Panel.Controls.Add(Me.chk_SkyCategories)
+        Me.Settings_Panel.Controls.Add(Me.chk_SkyNumbers)
+        Me.Settings_Panel.Controls.Add(Me.chk_SkyRegions)
+        Me.Settings_Panel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Settings_Panel.Location = New System.Drawing.Point(3, 3)
+        Me.Settings_Panel.Name = "Settings_Panel"
+        Me.Settings_Panel.Size = New System.Drawing.Size(442, 390)
+        Me.Settings_Panel.TabIndex = 185
         '
         'chk_modnotsetHD
         '
@@ -1584,8 +1585,8 @@ Public Class Setup
         Me.General_Tab.PerformLayout()
         CType(Me.Grabtime_grabtime, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Settings_Tab.ResumeLayout(False)
-        Me.Panel2.ResumeLayout(False)
-        Me.Panel2.PerformLayout()
+        Me.Settings_Panel.ResumeLayout(False)
+        Me.Settings_Panel.PerformLayout()
         Me.tabPage1.ResumeLayout(False)
         Me.Region_Group_Tab.ResumeLayout(False)
         Me.SkyNZ_Channel_Groups.ResumeLayout(False)
@@ -1617,7 +1618,7 @@ Public Class Setup
     End Sub
 
     Private Sub SetBool(ByVal value As Boolean)
-        Panel2.Enabled = value
+        Settings_Panel.Enabled = value
     End Sub
 
     Private Sub SetBool22(ByVal value As Boolean)
@@ -1644,14 +1645,15 @@ Public Class Setup
         Dim param(0) As Boolean
         param(0) = True
         Try
-            Panel2.Invoke(Bool1, param(0))
+            Settings_Panel.Invoke(Bool1, param(0))
             Region_Group_Tab.Invoke(Bool2, param(0))
             Sky_NZ_Channel_Grabber_Settings.Invoke(Bool3, param(0))
             Card_Map_Box.Invoke(Bool4, param(0))
             Schedule_panel.Invoke(Bool5, param(0))
             Grab_Now.Invoke(Bool6, param(0))
-        Catch
-
+        Catch exception1 As Exception
+            ProjectData.SetProjectError(exception1)
+            ProjectData.ClearProjectError()
         End Try
     End Sub
 
@@ -1661,18 +1663,18 @@ Public Class Setup
             Dim param(0) As Boolean
             param(0) = False
             Try
-                Panel2.Invoke(Bool1, param(0))
+                Settings_Panel.Invoke(Bool1, param(0))
                 Region_Group_Tab.Invoke(Bool2, param(0))
                 Sky_NZ_Channel_Grabber_Settings.Invoke(Bool3, param(0))
                 Card_Map_Box.Invoke(Bool4, param(0))
                 Schedule_panel.Invoke(Bool5, param(0))
                 Grab_Now.Invoke(Bool6, param(0))
-            Catch
-
+            Catch exception1 As Exception
+                ProjectData.SetProjectError(exception1)
+                ProjectData.ClearProjectError()
             End Try
             Grabber.Grab()
         End If
-
     End Sub
 
     Private Sub OnMessage(ByVal Message As String, ByVal UpdateLast As Boolean) Handles Grabber.OnMessage

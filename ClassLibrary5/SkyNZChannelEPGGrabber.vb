@@ -800,7 +800,9 @@ Public Class SkyGrabber
     ReadOnly Settings As Settings = New Settings()
     Public firstask As Boolean = True
     Private _Sky As CustomDataGRabber
+
     'Public withevents Sky As CustomDataGRabber 'Prviate _Sky as CustomDataGrabber in latst code.
+
     Public Overridable Property Sky As CustomDataGRabber
         Get
             Return _Sky
@@ -819,6 +821,7 @@ Public Class SkyGrabber
             End If
         End Set
     End Property
+
     Public Channels As Dictionary(Of Integer, Sky_Channel) = New Dictionary(Of Integer, Sky_Channel)
     Public Bouquets As Dictionary(Of Integer, SkyBouquet) = New Dictionary(Of Integer, SkyBouquet)
     Public SDTInfo As Dictionary(Of String, SDTInfo) = New Dictionary(Of String, SDTInfo)
@@ -1609,7 +1612,7 @@ label_0B2C:
                 End If
 
             Next
-            _layer.InsertPrograms(listofprogs, System.Threading.ThreadPriority.Highest)
+            _layer.InsertPrograms(listofprogs, Threading.ThreadPriority.Highest)
         Else
             For Each SkyChannelPair As KeyValuePair(Of Integer, Sky_Channel) In Channels
                 Dim skyChannel As Sky_Channel = SkyChannelPair.Value
