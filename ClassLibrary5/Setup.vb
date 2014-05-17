@@ -1655,7 +1655,7 @@ Public Class Setup
         End Try
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Grab_Now.Click
+    Private Sub Grab_Now_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Grab_Now.Click
         If Settings.IsGrabbing = False Then
             Output_Window.Items.Clear()
             Dim param(0) As Boolean

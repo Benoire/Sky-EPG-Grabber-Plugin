@@ -799,7 +799,26 @@ Public Class SkyGrabber
 
     ReadOnly Settings As Settings = New Settings()
     Public firstask As Boolean = True
-    Public Sky As CustomDataGRabber 'was withevents & Prviate _Sky as CustomDataGrabber in latst code.
+    Private _Sky As CustomDataGRabber
+    'Public withevents Sky As CustomDataGRabber 'Prviate _Sky as CustomDataGrabber in latst code.
+    Public Overridable Property Sky As CustomDataGRabber
+        Get
+            Return _Sky
+        End Get
+        Set(ByVal witheventsvalue As CustomDataGRabber)
+            Dim handler As CustomDataGRabber.OnCompleteEventHandler = New CustomDataGRabber.OnCompleteEventHandler(AddressOf UpdateDataBase)
+            Dim handler2 As CustomDataGRabber.OnPacketEventHandler = New CustomDataGRabber.OnPacketEventHandler(AddressOf OnTSPacket)
+            If Not _Sky Is Nothing Then
+                RemoveHandler _Sky.OnComplete, handler
+                RemoveHandler _Sky.OnPacket, handler2
+            End If
+            _Sky = witheventsvalue
+            If Not _Sky Is Nothing Then
+                AddHandler _Sky.OnComplete, handler
+                AddHandler _Sky.OnPacket, handler2
+            End If
+        End Set
+    End Property
     Public Channels As Dictionary(Of Integer, Sky_Channel) = New Dictionary(Of Integer, Sky_Channel)
     Public Bouquets As Dictionary(Of Integer, SkyBouquet) = New Dictionary(Of Integer, SkyBouquet)
     Public SDTInfo As Dictionary(Of String, SDTInfo) = New Dictionary(Of String, SDTInfo)
@@ -1748,14 +1767,14 @@ label_0B2C:
         Next
         LoadHuffman(0)
         RaiseEvent OnMessage("Huffman Loaded", False)
-        Dim Pid_List As New List(Of Integer)
-        Pid_List.Add(&H10)
-        Pid_List.Add(&H11)
+        Dim pids As New List(Of Integer) From {&H10, &H11}
         If Settings.UpdateEPG Then
-            For i = 0 To 7
-                Pid_List.Add(&H30 + i)
-                Pid_List.Add(&H40 + i)
-            Next
+            Dim i As Integer = 0
+            Do
+                pids.Add(&H30 + i)
+                pids.Add(&H40 + i)
+                i += 1
+            Loop While i <= 7
         End If
         GrabEPG = Settings.UpdateEPG
 
@@ -1766,10 +1785,9 @@ label_0B2C:
         If channelss.Count = 0 Then
             Channel = _layer.AddNewChannel("Sky NZ Grabber", 10000)
             Channel.VisibleInGuide = False
-            Channel.SortOrder = 10000
             Channel.IsRadio = True
             Channel.IsTv = False
-            DVBSChannel.BandType = 0
+            DVBSChannel.BandType = BandType.Universal
             DVBSChannel.DisEqc = DirectCast(Settings.DiseqC, DisEqcType)
             DVBSChannel.FreeToAir = True
             DVBSChannel.Frequency = Settings.frequency
@@ -1793,12 +1811,12 @@ label_0B2C:
             Channel.Persist()
             _layer.AddTuningDetails(Channel, DVBSChannel)
             Dim id As Integer = -1
-            For Each card__1 As Card In Card.ListAll()
-                If RemoteControl.Instance.Type(card__1.IdCard) = CardType.DvbS Then
+            For Each card1 As Card In Card.ListAll()
+                If RemoteControl.Instance.Type(card1.IdCard) = CardType.DvbS Then
                     id += 1
                     If MapCards.Contains(id) Then
-                        CardstoMap.Add(card__1)
-                        _layer.MapChannelToCard(card__1, Channel, False)
+                        CardstoMap.Add(card1)
+                        _layer.MapChannelToCard(card1, Channel, False)
                     End If
                 End If
             Next
@@ -1808,11 +1826,11 @@ label_0B2C:
             Channel = channelss(0)
             '  Dim num As Integer = Settings.CardToUseIndex
             Dim id As Integer = -1
-            For Each card__1 As Card In Card.ListAll()
-                If RemoteControl.Instance.Type(card__1.IdCard) = CardType.DvbS Then
+            For Each card2 As Card In Card.ListAll()
+                If RemoteControl.Instance.Type(card2.IdCard) = CardType.DvbS Then
                     id += 1
                     If MapCards.Contains(id) Then
-                        CardstoMap.Add(card__1)
+                        CardstoMap.Add(card2)
                     End If
                 End If
             Next
@@ -1824,7 +1842,7 @@ label_0B2C:
         Else
             Dim grabtime As Integer = Settings.GrabTime
             RaiseEvent OnMessage("Grabber set to grab " & grabtime & " seconds of data", False)
-            Sky.GrabData(Channel.IdChannel, grabtime, Pid_List)
+            Sky.GrabData(Channel.IdChannel, grabtime, pids)
         End If
     End Sub
 
