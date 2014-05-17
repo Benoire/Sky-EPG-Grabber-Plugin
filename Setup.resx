@@ -117,8 +117,80 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="UKDict" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\UKDict.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="TextBox1.Text" xml:space="preserve">
+    <value>1.2.0.27
+
+Fixed: All Channels not found in SDT.
+
+1.2.0.26
+
+Fixed: Settings not saved causing all sorts of issues.
+
+1.2.0.25
+
+Fixed: Grabber would stop working following an attempt to grab with no Cards selected.
+
+1.2.0.24
+
+Fixed : Diseqc Selection in Card Mapping
+
+1.2.0.23
+
+Fixed : Duplicate Channels being added, Really fixed it this time.
+
+1.2.0.22
+
+Fixed : Duplicate Channels being added
+
+1.2.0.21
+
+New Feature : Added option of setting "Not Set" in modulation for SD and HD Channels
+
+1.2.0.20
+
+Fixed: Names of channels and other details where not being stored in the database correctly.
+Fixed: Channels that were not in the EPG but change status to being in the EPG should now be added correctly.
+
+1.2.0.19
+
+Fixed: Scheduler not updating when set to grab at certain time.
+
+1.2.0.18
+
+Fixed : Settings not being saved.
+
+1.2.0.17
+
+Added: New option to set modulation to ModNotSet.
+Added: New option to ignore Scrambled channels.
+Added: New Settings Page, more space for further improvements.
+Improved: Scan Method, will search the BAT first and ensure it is 
+populated before scanning for SDT.
+Improved: A few visual improvement.
+Fixed: Error when saving Categories.
+
+1.2.0.16
+
+Fixed BAT Parsing Error
+
+1.2.0.15
+
+Fixed compatibility with other Grabbers
+
+1.2.0.14
+
+Fixed SDT/NIT Parser Error
+
+1.2.0.13
+
+Fixed Summary decoder crash on weaker signal.
+
+1.2.0.12
+
+Fixed Day Scheduler, was starting multiple times. Will now run once.
+
+1.2.0.11
+
+Fixed New channels overwriting old channels.</value>
   </data>
 </root>
