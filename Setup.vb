@@ -1333,7 +1333,7 @@ Public Class Setup
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Size = New System.Drawing.Size(63, 20)
         Me.TextBox4.TabIndex = 104
-        Me.TextBox4.Text = "4152"
+        Me.TextBox4.Text = "9003"
         '
         'MpLabel4
         '
@@ -1351,7 +1351,7 @@ Public Class Setup
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Size = New System.Drawing.Size(63, 20)
         Me.TextBox5.TabIndex = 102
-        Me.TextBox5.Text = "2004"
+        Me.TextBox5.Text = "3"
         '
         'TextBox6
         '
@@ -1360,7 +1360,7 @@ Public Class Setup
         Me.TextBox6.Name = "TextBox6"
         Me.TextBox6.Size = New System.Drawing.Size(63, 20)
         Me.TextBox6.TabIndex = 40
-        Me.TextBox6.Text = "11778000"
+        Me.TextBox6.Text = "12519000"
         '
         'MpLabel5
         '
@@ -1378,7 +1378,7 @@ Public Class Setup
         Me.TextBox10.Name = "TextBox10"
         Me.TextBox10.Size = New System.Drawing.Size(63, 20)
         Me.TextBox10.TabIndex = 43
-        Me.TextBox10.Text = "27500"
+        Me.TextBox10.Text = "22500"
         '
         'MpLabel9
         '

@@ -28,7 +28,7 @@ Imports MediaPortal.Common.Utils
 
 <Assembly: CompatibleVersion("1.1.6.27796")> 
 
-Public Class SkyUkEpgAndChannelGrabber
+Public Class SkyNzEpgAndChannelGrabber
 
     Implements ITvServerPlugin
     Dim settings As Settings
@@ -90,7 +90,7 @@ Public Class SkyUkEpgAndChannelGrabber
 
     Private Sub skygrabber_OnMessage(ByVal [Text] As String, ByVal UpdateLast As Boolean) Handles skygrabber.OnMessage
         If Not UpdateLast Then
-            Log.Write("Sky Plugin : " & [Text])
+            Log.Write("Sky NZ Plugin : " & [Text])
         End If
     End Sub
 
@@ -123,7 +123,7 @@ Public Class SkyUkEpgAndChannelGrabber
 
     Public ReadOnly Property Name As String Implements ITvServerPlugin.Name
         Get
-            Return "Sky UK Channel and EPG Grabber"
+            Return "Sky NZ Channel and EPG Grabber"
         End Get
     End Property
 
@@ -230,11 +230,11 @@ Public Class Settings
 
     'Methods
     Public Function GetSkySetting(ByVal _Setting As String, ByVal defaultvalue As Object) As String
-        Return layer.GetSetting(("SKYUKPLUG_" & _Setting), defaultvalue.ToString).Value
+        Return layer.GetSetting(("SKYNZPLUG_" & _Setting), defaultvalue.ToString).Value
     End Function
 
     Public Sub UpdateSetting(ByVal _Setting As String, ByVal value As String)
-        Dim setting As Setting = layer.GetSetting(("SKYUKPLUG_" & _Setting), "0")
+        Dim setting As Setting = layer.GetSetting(("SKYNZPLUG_" & _Setting), "0")
         setting.Value = value.ToString
         setting.Persist()
     End Sub
@@ -1199,27 +1199,27 @@ Label_00B0:
 
     Public Sub New()
         If Not Themes.ContainsKey(0) Then
-            Themes.Add(&H0, "No Category")
-            Themes.Add(&H1, "")
-            Themes.Add(&H2, "")
-            Themes.Add(&H3, "")
-            Themes.Add(&H4, "")
-            Themes.Add(&H5, "")
-            Themes.Add(&H6, "")
-            Themes.Add(&H7, "")
-            Themes.Add(&H8, "")
-            Themes.Add(&H9, "")
-            Themes.Add(&HA, "")
-            Themes.Add(&HB, "")
-            Themes.Add(&HC, "")
-            Themes.Add(&HD, "")
-            Themes.Add(&HE, "")
-            Themes.Add(&HF, "")
+            Themes.Add(0, "No Category")
+            Themes.Add(1, "")
+            Themes.Add(2, "")
+            Themes.Add(3, "")
+            Themes.Add(4, "")
+            Themes.Add(5, "")
+            Themes.Add(6, "")
+            Themes.Add(7, "")
+            Themes.Add(8, "")
+            Themes.Add(9, "")
+            Themes.Add(10, "")
+            Themes.Add(11, "")
+            Themes.Add(12, "")
+            Themes.Add(13, "")
+            Themes.Add(14, "")
+            Themes.Add(15, "")
             Themes.Add(&H10, "")
             Themes.Add(&H11, "")
             Themes.Add(&H12, "")
             Themes.Add(&H13, "")
-            Themes.Add(&H14, "")
+            Themes.Add(20, "")
             Themes.Add(&H15, "")
             Themes.Add(&H16, "")
             Themes.Add(&H17, "")
@@ -1229,27 +1229,27 @@ Label_00B0:
             Themes.Add(&H1B, "")
             Themes.Add(&H1C, "")
             Themes.Add(&H1D, "")
-            Themes.Add(&H1E, "")
+            Themes.Add(30, "")
             Themes.Add(&H1F, "")
-            Themes.Add(&H20, "Specialist - Undefined")
-            Themes.Add(&H21, "Specialist - Adult")
-            Themes.Add(&H22, "Specialist - Events")
-            Themes.Add(&H23, "Specialist - Shopping")
-            Themes.Add(&H24, "Specialist - Gaming")
-            Themes.Add(&H25, "")
-            Themes.Add(&H26, "")
-            Themes.Add(&H27, "")
-            Themes.Add(&H28, "")
-            Themes.Add(&H29, "")
-            Themes.Add(&H2A, "")
-            Themes.Add(&H2B, "")
-            Themes.Add(&H2C, "")
-            Themes.Add(&H2D, "")
-            Themes.Add(&H2E, "")
-            Themes.Add(&H2F, "")
+            Themes.Add(&H20, "Movie")
+            Themes.Add(&H21, "Movie - Thriller")
+            Themes.Add(&H22, "Movie - Action")
+            Themes.Add(&H23, "Movie - Sci Fi")
+            Themes.Add(&H24, "Movie - Comedy")
+            Themes.Add(&H25, "Movie - Family")
+            Themes.Add(&H26, "Movie - Romance")
+            Themes.Add(&H27, "Movie - Historical")
+            Themes.Add(40, "Movie - Factual")
+            Themes.Add(&H29, "Movie - Animation")
+            Themes.Add(&H2A, "Movie - Horror")
+            Themes.Add(&H2B, "Movie - Documentary")
+            Themes.Add(&H2C, "Movie - Documentary")
+            Themes.Add(&H2D, "Movie - Documentary")
+            Themes.Add(&H2E, "Movie - Western")
+            Themes.Add(&H2F, "Movie - Other")
             Themes.Add(&H30, "")
             Themes.Add(&H31, "")
-            Themes.Add(&H32, "")
+            Themes.Add(50, "")
             Themes.Add(&H33, "")
             Themes.Add(&H34, "")
             Themes.Add(&H35, "")
@@ -1259,27 +1259,27 @@ Label_00B0:
             Themes.Add(&H39, "")
             Themes.Add(&H3A, "")
             Themes.Add(&H3B, "")
-            Themes.Add(&H3C, "")
+            Themes.Add(60, "")
             Themes.Add(&H3D, "")
             Themes.Add(&H3E, "")
             Themes.Add(&H3F, "")
-            Themes.Add(&H40, "Children - Undefined")
-            Themes.Add(&H41, "Children - Cartoons")
-            Themes.Add(&H42, "Children - Comedy")
-            Themes.Add(&H43, "Children - Drama")
-            Themes.Add(&H44, "Children - Educational")
-            Themes.Add(&H45, "Children - Under 5")
-            Themes.Add(&H46, "Children - Factual")
-            Themes.Add(&H47, "Children - Magazine")
-            Themes.Add(&H48, "Children - Games Shows")
-            Themes.Add(&H49, "Children - Games")
-            Themes.Add(&H4A, "")
-            Themes.Add(&H4B, "")
-            Themes.Add(&H4C, "")
-            Themes.Add(&H4D, "")
-            Themes.Add(&H4E, "")
-            Themes.Add(&H4F, "")
-            Themes.Add(&H50, "")
+            Themes.Add(&H40, "News & Documentaries")
+            Themes.Add(&H41, "News & Documentaries - News & Weather")
+            Themes.Add(&H42, "News & Documentaries - Magazine")
+            Themes.Add(&H43, "News & Documentaries - Documentary")
+            Themes.Add(&H44, "News & Documentaries - Discussion")
+            Themes.Add(&H45, "News & Documentaries - Educational")
+            Themes.Add(70, "News & Documentaries - Feature")
+            Themes.Add(&H47, "News & Documentaries - Politics")
+            Themes.Add(&H48, "News & Documentaries - News")
+            Themes.Add(&H49, "News & Documentaries - Nature")
+            Themes.Add(&H4A, "News & Documentaries - Religious")
+            Themes.Add(&H4B, "News & Documentaries - Science")
+            Themes.Add(&H4C, "News & Documentaries - Showbiz")
+            Themes.Add(&H4D, "News & Documentaries - War Documentary")
+            Themes.Add(&H4E, "News & Documentaries - Historical")
+            Themes.Add(&H4F, "News & Documentaries - Other")
+            Themes.Add(80, "")
             Themes.Add(&H51, "")
             Themes.Add(&H52, "")
             Themes.Add(&H53, "")
@@ -1289,28 +1289,28 @@ Label_00B0:
             Themes.Add(&H57, "")
             Themes.Add(&H58, "")
             Themes.Add(&H59, "")
-            Themes.Add(&H5A, "")
+            Themes.Add(90, "")
             Themes.Add(&H5B, "")
             Themes.Add(&H5C, "")
             Themes.Add(&H5D, "")
             Themes.Add(&H5E, "")
             Themes.Add(&H5F, "")
-            Themes.Add(&H60, "Entertainment - Undefined")
-            Themes.Add(&H61, "Entertainment - Action")
-            Themes.Add(&H62, "Entertainment - Comedy")
-            Themes.Add(&H63, "Entertainment - Detective")
-            Themes.Add(&H64, "Entertainment - Drama")
-            Themes.Add(&H65, "Entertainment - Game Show")
-            Themes.Add(&H66, "Entertainment - Sci-FI")
-            Themes.Add(&H67, "Entertainment - Soap")
-            Themes.Add(&H68, "Entertainment - Animation")
-            Themes.Add(&H69, "Entertainment - Chat Show")
-            Themes.Add(&H6A, "Entertainment - Cooking")
-            Themes.Add(&H6B, "Entertainment - Factual")
-            Themes.Add(&H6C, "Entertainment - Fashion")
-            Themes.Add(&H6D, "Entertainment - Gardening")
-            Themes.Add(&H6E, "Entertainment - Travel")
-            Themes.Add(&H6F, "Entertainment - Technology")
+            Themes.Add(&H60, "Entertainment")
+            Themes.Add(&H61, "Entertainment - Contests")
+            Themes.Add(&H62, "Entertainment - Magazine")
+            Themes.Add(&H63, "Entertainment - Talk Show")
+            Themes.Add(100, "Entertainment - Reality")
+            Themes.Add(&H65, "Entertainment - Action")
+            Themes.Add(&H66, "Entertainment - Drama")
+            Themes.Add(&H67, "Entertainment - Comedy")
+            Themes.Add(&H68, "Entertainment - Documentary")
+            Themes.Add(&H69, "Entertainment - Soap")
+            Themes.Add(&H6A, "Entertainment - Sci-Fi")
+            Themes.Add(&H6B, "Entertainment - Crime")
+            Themes.Add(&H6C, "Entertainment - Game Show")
+            Themes.Add(&H6D, "Entertainment - Reality")
+            Themes.Add(110, "Entertainment - Talk Show")
+            Themes.Add(&H6F, "Entertainment - Other")
             Themes.Add(&H70, "Entertainment - Arts")
             Themes.Add(&H71, "Entertainment - Lifestyle")
             Themes.Add(&H72, "Entertainment - Home")
@@ -1319,7 +1319,7 @@ Label_00B0:
             Themes.Add(&H75, "Entertainment - Review")
             Themes.Add(&H76, "Entertainment - Antiques")
             Themes.Add(&H77, "Entertainment - Motors")
-            Themes.Add(&H78, "Entertainment - Art&Lit")
+            Themes.Add(120, "Entertainment - Art&Lit")
             Themes.Add(&H79, "Entertainment - Ballet")
             Themes.Add(&H7A, "Entertainment - Opera")
             Themes.Add(&H7B, "")
@@ -1327,90 +1327,90 @@ Label_00B0:
             Themes.Add(&H7D, "")
             Themes.Add(&H7E, "")
             Themes.Add(&H7F, "")
-            Themes.Add(&H80, "Music & Radio - Undefined")
-            Themes.Add(&H81, "Music & Radio - Classical")
-            Themes.Add(&H82, "Music & Radio - Folk and Country")
-            Themes.Add(&H83, "Music & Radio - National Music")
-            Themes.Add(&H84, "Music & Radio - Jazz")
-            Themes.Add(&H85, "Music & Radio - Opera")
-            Themes.Add(&H86, "Music & Radio - Rock&Pop")
-            Themes.Add(&H87, "Music & Radio - Alternative Music")
-            Themes.Add(&H88, "Music & Radio - Events")
-            Themes.Add(&H89, "Music & Radio - Club and Dance")
-            Themes.Add(&H8A, "Music & Radio - Hip Hop")
-            Themes.Add(&H8B, "Music & Radio - Soul/R&B")
-            Themes.Add(&H8C, "Music & Radio - Dance")
-            Themes.Add(&H8D, "Music & Radio - Ballet")
-            Themes.Add(&H8E, "")
-            Themes.Add(&H8F, "Music & Radio - Current Affairs")
-            Themes.Add(&H90, "Music & Radio - Features")
-            Themes.Add(&H91, "Music & Radio - Arts & Lit.")
-            Themes.Add(&H92, "Music & Radio - Factual")
+            Themes.Add(&H80, "Sports")
+            Themes.Add(&H81, "Sports - Special Event")
+            Themes.Add(130, "Sports - Magazine")
+            Themes.Add(&H83, "Sports - Football")
+            Themes.Add(&H84, "Sports - Tennis/Squash")
+            Themes.Add(&H85, "Sports - Team Sports")
+            Themes.Add(&H86, "Sports - Athletics")
+            Themes.Add(&H87, "Sports - MotorSport")
+            Themes.Add(&H88, "Sports - Water Sports")
+            Themes.Add(&H89, "Sports - Winter Sports")
+            Themes.Add(&H8A, "Sports - Equestrian")
+            Themes.Add(&H8B, "Sports - Martial Sports")
+            Themes.Add(140, "Sports - Rugby")
+            Themes.Add(&H8D, "Sports - Cycling")
+            Themes.Add(&H8E, "Sports - Other")
+            Themes.Add(&H8F, "")
+            Themes.Add(&H90, "")
+            Themes.Add(&H91, "")
+            Themes.Add(&H92, "")
             Themes.Add(&H93, "")
             Themes.Add(&H94, "")
-            Themes.Add(&H95, "Music & Radio - Lifestyle")
-            Themes.Add(&H96, "Music & Radio - News and Weather")
-            Themes.Add(&H97, "Music & Radio - Easy Listening")
-            Themes.Add(&H98, "Music & Radio - Discussion")
-            Themes.Add(&H99, "Music & Radio - Entertainment")
-            Themes.Add(&H9A, "Music & Radio - Religious")
+            Themes.Add(&H95, "")
+            Themes.Add(150, "")
+            Themes.Add(&H97, "")
+            Themes.Add(&H98, "")
+            Themes.Add(&H99, "")
+            Themes.Add(&H9A, "")
             Themes.Add(&H9B, "")
             Themes.Add(&H9C, "")
             Themes.Add(&H9D, "")
             Themes.Add(&H9E, "")
             Themes.Add(&H9F, "")
-            Themes.Add(&HA0, "News & Documentaries - Undefined")
-            Themes.Add(&HA1, "News & Documentaries - Business")
-            Themes.Add(&HA2, "News & Documentaries - World Cultures")
-            Themes.Add(&HA3, "News & Documentaries - Adventure")
-            Themes.Add(&HA4, "News & Documentaries - Biography")
-            Themes.Add(&HA5, "News & Documentaries - Educational")
-            Themes.Add(&HA6, "News & Documentaries - Feature")
-            Themes.Add(&HA7, "News & Documentaries - Politics")
-            Themes.Add(&HA8, "News & Documentaries - News")
-            Themes.Add(&HA9, "News & Documentaries - Nature")
-            Themes.Add(&HAA, "News & Documentaries - Religious")
-            Themes.Add(&HAB, "News & Documentaries - Science")
-            Themes.Add(&HAC, "News & Documentaries - Showbiz")
-            Themes.Add(&HAD, "News & Documentaries - War Documentary")
-            Themes.Add(&HAE, "News & Documentaries - Historical")
-            Themes.Add(&HAF, "News & Documentaries - Ancient")
-            Themes.Add(&HB0, "News & Documentaries - Transport")
-            Themes.Add(&HB1, "News & Documentaries - Docudrama")
-            Themes.Add(&HB2, "News & Documentaries - World Affairs")
-            Themes.Add(&HB3, "News & Documentaries - Features")
-            Themes.Add(&HB4, "News & Documentaries - Showbiz")
-            Themes.Add(&HB5, "News & Documentaries - Politics")
-            Themes.Add(&HB6, "News & Documentaries - Transport")
-            Themes.Add(&HB7, "News & Documentaries - World Affairs")
+            Themes.Add(160, "Children")
+            Themes.Add(&HA1, "Children - Pre-School Programmes")
+            Themes.Add(&HA2, "Children - Programmes for 6-14 years")
+            Themes.Add(&HA3, "Children - Programmes for 10-16 years")
+            Themes.Add(&HA4, "Children - Educational")
+            Themes.Add(&HA5, "Children - Cartoons")
+            Themes.Add(&HA6, "")
+            Themes.Add(&HA7, "")
+            Themes.Add(&HA8, "Children - Factual")
+            Themes.Add(&HA9, "Children - Cartoons")
+            Themes.Add(170, "")
+            Themes.Add(&HAB, "")
+            Themes.Add(&HAC, "")
+            Themes.Add(&HAD, "")
+            Themes.Add(&HAE, "")
+            Themes.Add(&HAF, "Children - Other")
+            Themes.Add(&HB0, "")
+            Themes.Add(&HB1, "")
+            Themes.Add(&HB2, "")
+            Themes.Add(&HB3, "")
+            Themes.Add(180, "")
+            Themes.Add(&HB5, "")
+            Themes.Add(&HB6, "")
+            Themes.Add(&HB7, "")
             Themes.Add(&HB8, "")
             Themes.Add(&HB9, "")
             Themes.Add(&HBA, "")
             Themes.Add(&HBB, "")
             Themes.Add(&HBC, "")
             Themes.Add(&HBD, "")
-            Themes.Add(&HBE, "")
+            Themes.Add(190, "")
             Themes.Add(&HBF, "")
-            Themes.Add(&HC0, "Movie")
-            Themes.Add(&HC1, "Movie - Action")
-            Themes.Add(&HC2, "Movie - Animation")
+            Themes.Add(&HC0, "Music")
+            Themes.Add(&HC1, "Music - Rock")
+            Themes.Add(&HC2, "Music - Live")
             Themes.Add(&HC3, "")
-            Themes.Add(&HC4, "Movie - Comedy")
-            Themes.Add(&HC5, "Movie - Family")
-            Themes.Add(&HC6, "Movie - Drama")
+            Themes.Add(&HC4, "")
+            Themes.Add(&HC5, "")
+            Themes.Add(&HC6, "")
             Themes.Add(&HC7, "")
-            Themes.Add(&HC8, "Movie - Sci-Fi")
-            Themes.Add(&HC9, "Movie - Thriller")
-            Themes.Add(&HCA, "Movie - Horror")
-            Themes.Add(&HCB, "Movie - Romance")
-            Themes.Add(&HCC, "Movie - Musical")
-            Themes.Add(&HCD, "Movie - Mystery")
-            Themes.Add(&HCE, "Movie - Western")
-            Themes.Add(&HCF, "Movie - Factual")
-            Themes.Add(&HD0, "Movie - Fantasy")
-            Themes.Add(&HD1, "Movie - Erotic")
-            Themes.Add(&HD2, "Movie - Adventure")
-            Themes.Add(&HD3, "Movies - War")
+            Themes.Add(200, "")
+            Themes.Add(&HC9, "")
+            Themes.Add(&HCA, "")
+            Themes.Add(&HCB, "")
+            Themes.Add(&HCC, "")
+            Themes.Add(&HCD, "")
+            Themes.Add(&HCE, "")
+            Themes.Add(&HCF, "Music - Other")
+            Themes.Add(&HD0, "")
+            Themes.Add(&HD1, "")
+            Themes.Add(210, "")
+            Themes.Add(&HD3, "")
             Themes.Add(&HD4, "")
             Themes.Add(&HD5, "")
             Themes.Add(&HD6, "")
@@ -1419,37 +1419,37 @@ Label_00B0:
             Themes.Add(&HD9, "")
             Themes.Add(&HDA, "")
             Themes.Add(&HDB, "")
-            Themes.Add(&HDC, "")
+            Themes.Add(220, "")
             Themes.Add(&HDD, "")
             Themes.Add(&HDE, "")
             Themes.Add(&HDF, "")
-            Themes.Add(&HE0, "Sports - Undefined")
-            Themes.Add(&HE1, "Sports - American Football")
-            Themes.Add(&HE2, "Sports - Athletics")
-            Themes.Add(&HE3, "Sports - Baseball")
-            Themes.Add(&HE4, "Sports - Basketball")
-            Themes.Add(&HE5, "Sports - Boxing")
-            Themes.Add(&HE6, "Sports - Cricket")
-            Themes.Add(&HE7, "Sports - Fishing")
-            Themes.Add(&HE8, "Sports - Football")
-            Themes.Add(&HE9, "Sports - Golf")
-            Themes.Add(&HEA, "Sports - Ice Hockey")
-            Themes.Add(&HEB, "Sports - Motor Sport")
-            Themes.Add(&HEC, "Sports - Racing")
-            Themes.Add(&HED, "Sports - Rugby")
-            Themes.Add(&HEE, "Sports - Equestrian")
-            Themes.Add(&HEF, "Sports - Winter Sports")
-            Themes.Add(&HF0, "Sports - Snooker / Pool")
-            Themes.Add(&HF1, "Sports - Tennis")
-            Themes.Add(&HF2, "Sports - Wrestling")
-            Themes.Add(&HF3, "Sports - Darts")
-            Themes.Add(&HF4, "Sports - Watersports")
-            Themes.Add(&HF5, "Sports - Extreme")
-            Themes.Add(&HF6, "Sports - Other")
+            Themes.Add(&HE0, "Arts & Culture")
+            Themes.Add(&HE1, "Arts & Culture - Performing Arts")
+            Themes.Add(&HE2, "Arts & Culture - Fine Arts")
+            Themes.Add(&HE3, "Arts & Culture - Religion")
+            Themes.Add(&HE4, "Arts & Culture - Traditional Arts")
+            Themes.Add(&HE5, "")
+            Themes.Add(230, "")
+            Themes.Add(&HE7, "")
+            Themes.Add(&HE8, "")
+            Themes.Add(&HE9, "")
+            Themes.Add(&HEA, "Arts & Culture - Magazine")
+            Themes.Add(&HEB, "Arts & Culture - Fashions")
+            Themes.Add(&HEC, "Arts & Culture - Other")
+            Themes.Add(&HED, "")
+            Themes.Add(&HEE, "")
+            Themes.Add(&HEF, "")
+            Themes.Add(240, "")
+            Themes.Add(&HF1, "")
+            Themes.Add(&HF2, "")
+            Themes.Add(&HF3, "")
+            Themes.Add(&HF4, "")
+            Themes.Add(&HF5, "")
+            Themes.Add(&HF6, "")
             Themes.Add(&HF7, "")
             Themes.Add(&HF8, "")
             Themes.Add(&HF9, "")
-            Themes.Add(&HFA, "")
+            Themes.Add(250, "")
             Themes.Add(&HFB, "")
             Themes.Add(&HFC, "")
             Themes.Add(&HFD, "")
@@ -1467,21 +1467,21 @@ Label_00B0:
             Dim num2 As Double
             _isloading = True
             Dim strArray As String() = New String(&H15 - 1) {}
-            strArray(0) = "112,.,Entertainment"
-            strArray(1) = "31,.,LifeStyle & Culture"
-            strArray(2) = "208,.,Movies"
-            strArray(3) = "240,.,Sports"
-            strArray(4) = "176,.,News"
-            strArray(5) = "127,.,Documents"
-            strArray(6) = "80,.,Kids"
-            strArray(7) = "159,.,Music"
-            strArray(8) = "48,.,Shopping"
-            strArray(9) = "191,.,Religion"
-            strArray(10) = "223,.,International"
-            strArray(11) = "95,.,Gaming & Dating"
-            strArray(12) = "255,.,Specialist"
-            strArray(13) = "63,.,Adult"
-            strArray(14) = "16,.,Sky Help"
+            strArray(0) = "63,.,Entertainment"
+            strArray(1) = "127,.,Entertainment"
+            strArray(2) = "175,.,Entertainment"
+            strArray(3) = "31,.,Sky Movies"
+            strArray(4) = "79,.,Sky Sports"
+            strArray(5) = "111,.,Music Videos"
+            strArray(6) = "47,.,News & Documentaries"
+            strArray(7) = "159,.,News & Documentaries"
+            strArray(8) = "191,.,News & Documentaries"
+            strArray(9) = "255,.,Adult"
+            strArray(10) = "15,.,Interactive"
+            strArray(11) = "-1,., "
+            strArray(12) = "-1,., "
+            strArray(13) = "-1,., "
+            strArray(14) = "-1,., "
             strArray(15) = "-1,., "
             strArray(&H10) = "-1,., "
             strArray(&H11) = "-1,., "
@@ -1514,12 +1514,12 @@ Label_0185:
             End If
             _modulation = Convert.ToInt32(GetSkySetting("modulation", -1))
             _grabtime = Convert.ToInt32(GetSkySetting("GrabTime", 60))
-            _frequency = Convert.ToInt32(GetSkySetting("frequency", &HB3B7D0))
-            _symbolrate = Convert.ToInt32(GetSkySetting("SymbolRate", &H6B6C))
-            _nid = Convert.ToInt32(GetSkySetting("NID", 2))
-            _polarisation = Convert.ToInt32(GetSkySetting("polarisation", 3))
-            _serviceid = Convert.ToInt32(GetSkySetting("ServiceID", &H1038))
-            _transportid = Convert.ToInt32(GetSkySetting("TransportID", &H7D4))
+            _frequency = Convert.ToInt32(GetSkySetting("frequency", 12519000))
+            _symbolrate = Convert.ToInt32(GetSkySetting("SymbolRate", 22500))
+            _nid = Convert.ToInt32(GetSkySetting("NID", 169))
+            _polarisation = Convert.ToInt32(GetSkySetting("polarisation", 2))
+            _serviceid = Convert.ToInt32(GetSkySetting("ServiceID", 3))
+            _transportid = Convert.ToInt32(GetSkySetting("TransportID", 9003))
             _autoupdate = Convert.ToBoolean(GetSkySetting("AutoUpdate", True))
             _useextrainfo = Convert.ToBoolean(GetSkySetting("useExtraInfo", True))
             _updatechannels = Convert.ToBoolean(GetSkySetting("UpdateChannels", True))
@@ -1580,7 +1580,7 @@ Label_0185:
             _regionindex = Convert.ToInt32(GetSkySetting("RegionIndex", 0))
             _cardtouseindex = Convert.ToInt32(GetSkySetting("CardToUseIndex", 0))
             _diseqc = Convert.ToInt32(GetSkySetting("DiseqC", -1))
-            _switchingfrequency = Convert.ToInt32(GetSkySetting("SwitchingFrequency", &HB28720))
+            _switchingfrequency = Convert.ToInt32(GetSkySetting("SwitchingFrequency", 11700000))
             _isgrabbing = Convert.ToBoolean(GetSkySetting("IsGrabbing", False))
             _isloading = False
             _settingsloaded = True
@@ -2193,17 +2193,17 @@ Public Class SkyGrabber
                     channelbySID.ChannelName = channelbySID.SID
                 End If
                 If (channelbySID.Provider = "") Then
-                    channelbySID.Provider = "BSkyB"
+                    channelbySID.Provider = "SkyNZ"
                 End If
                 If (ignoreScrambled And channelbySID.isFTA) Then
                     Continue For
                 End If
-                Dim channelbyExternalID As Channel = _layer.GetChannelbyExternalID(("SKYUK:" & scannedchannel.ChannelID.ToString))
+                Dim channelbyExternalID As Channel = _layer.GetChannelbyExternalID(("SKYNZ:" & scannedchannel.ChannelID.ToString))
                 If (Not channelbyExternalID Is Nothing) Then
                     Dim list As List(Of TuningDetail) = DirectCast(channelbyExternalID.ReferringTuningDetail, List(Of TuningDetail))
                     Dim detail2 As TuningDetail
                     For Each detail2 In list
-                        If ((detail2.ChannelType = 3) And (detail2.NetworkId = 2)) Then
+                        If ((detail2.ChannelType = 3) And (detail2.NetworkId = 169)) Then
                             detail = detail2
                             Exit For
                         End If
@@ -2225,7 +2225,7 @@ Label_0299:
                     End If
                     Continue For
                 End If
-                Dim channelNumber As Integer = &H2710
+                Dim channelNumber As Integer = 10000
                 Dim flag8 As Boolean = True
                 If (useSkyNumbers AndAlso Operators.ConditionalCompareObjectGreater(scannedchannel.LCNCount, 0, False)) Then
                     If scannedchannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
@@ -2233,7 +2233,7 @@ Label_0299:
                     ElseIf scannedchannel.ContainsLCN(BouquetIDtoUse, &HFF) Then
                         channelNumber = scannedchannel.GetLCN(BouquetIDtoUse, &HFF).SkyNum
                     End If
-                    If (channelNumber = &H2710) Then
+                    If (channelNumber = 10000) Then
                         flag8 = False
                     End If
                 End If
@@ -2293,7 +2293,7 @@ Label_0520:
                 DVBSChannel.SwitchingFrequency = switchingFrequency
                 DBChannel.IsRadio = channelbySID.isRadio
                 DBChannel.IsTv = channelbySID.isTV
-                DBChannel.ExternalId = ("SKYUK:" & scannedchannel.ChannelID.ToString)
+                DBChannel.ExternalId = ("SKYNZ:" & scannedchannel.ChannelID.ToString)
                 DBChannel.Persist()
                 _layer.AddTuningDetails(DBChannel, DVBSChannel)
                 MapChannelToCards(DBChannel)
@@ -2306,7 +2306,7 @@ Label_0520:
                 Continue For
 Label_072B:
                 DBChannel = detail.ReferencedChannel
-                If (DBChannel.ExternalId <> ("SKYUK:" & key.ToString)) Then
+                If (DBChannel.ExternalId <> ("SKYNZ:" & key.ToString)) Then
                     GoTo Label_0299
                 End If
                 Dim tuningChannel As DVBSChannel = DirectCast(_layer.GetTuningChannel(detail), DVBSChannel)
@@ -2415,14 +2415,14 @@ Label_0BD2:
                     flag9 = True
                 End If
                 If useSkyRegions Then
-                    Dim skyNum As Integer = &H2710
+                    Dim skyNum As Integer = 10000
                     If (useSkyNumbers AndAlso Operators.ConditionalCompareObjectGreater(scannedchannel.LCNCount, 0, False)) Then
                         If scannedchannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
                             skyNum = scannedchannel.GetLCN(BouquetIDtoUse, RegionIDtoUse).SkyNum
                         ElseIf scannedchannel.ContainsLCN(BouquetIDtoUse, &HFF) Then
                             skyNum = scannedchannel.GetLCN(BouquetIDtoUse, &HFF).SkyNum
                         End If
-                        If (((detail.ChannelNumber <> skyNum) And (skyNum < &H3E8)) Or ((skyNum = &H2710) And (DBChannel.ChannelNumber <> &H2710))) Then
+                        If (((detail.ChannelNumber <> skyNum) And (skyNum < 600)) Or ((skyNum = 10000) And (DBChannel.ChannelNumber <> 10000))) Then
                             If (Not OnMessageEvent Is Nothing) Then
                                 RaiseEvent OnMessage(String.Concat(New String() {"Channel : ", DBChannel.DisplayName, " number has changed from : ", Conversions.ToString(tuningChannel.LogicalChannelNumber), " to : ", Conversions.ToString(skyNum), "."}), False)
                             End If
@@ -2522,8 +2522,8 @@ Label_0BD2:
             enumerator = list.GetEnumerator
             Do While enumerator.MoveNext
                 Dim current As Channel = enumerator.Current
-                If current.ExternalId.StartsWith("SKYUK:") Then
-                    Dim key As Integer = Convert.ToInt32(current.ExternalId.Replace("SKYUK:", ""))
+                If current.ExternalId.StartsWith("SKYNZ:") Then
+                    Dim key As Integer = Convert.ToInt32(current.ExternalId.Replace("SKYNZ:", ""))
                     If ((key <> 0) AndAlso Not dictionary.ContainsKey(key)) Then
                         If (current.ReferringTuningDetail.Count < 1) Then
                             current.Delete()
@@ -2569,7 +2569,7 @@ Label_0BD2:
                 If ((channelbySID Is Nothing) OrElse (ignoreScrambled And channelbySID.isFTA)) Then
                     Continue Do
                 End If
-                Dim channelNumber As Integer = &H2710
+                Dim channelNumber As Integer = 10000
                 Dim flag8 As Boolean = True
                 If (useSkyNumbers AndAlso Operators.ConditionalCompareObjectGreater(channel3.LCNCount, 0, False)) Then
                     If channel3.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
@@ -2577,7 +2577,7 @@ Label_0BD2:
                     ElseIf channel3.ContainsLCN(BouquetIDtoUse, &HFF) Then
                         channelNumber = channel3.GetLCN(BouquetIDtoUse, &HFF).SkyNum
                     End If
-                    If (channelNumber = &H2710) Then
+                    If (channelNumber = 10000) Then
                         flag8 = False
                     End If
                 End If
@@ -2636,7 +2636,7 @@ Label_0470:
                 DVBSChannel.SwitchingFrequency = switchingFrequency
                 channel2.IsRadio = channelbySID.isRadio
                 channel2.IsTv = channelbySID.isTV
-                channel2.ExternalId = ("SKYUK:" & channel3.ChannelID.ToString)
+                channel2.ExternalId = ("SKYNZ:" & channel3.ChannelID.ToString)
                 channel2.Persist()
                 MapChannelToCards(channel2)
                 AddChannelToGroups(channel2, channelbySID, DVBSChannel, useSkyCategories)
@@ -2671,7 +2671,7 @@ Label_059B:
     Private Sub AddChannelToGroups(ByVal DBChannel As Channel, ByVal SDT As SDTInfo, ByVal DVBSChannel As DVBSChannel, ByVal UseSkyCategories As Boolean)
         If DBChannel.IsTv Then
             _layer.AddChannelToGroup(DBChannel, TvGroupNames.AllChannels)
-            If ((DVBSChannel.LogicalChannelNumber < 1000) AndAlso UseSkyCategories) Then
+            If ((DVBSChannel.LogicalChannelNumber < 600) AndAlso UseSkyCategories) Then
                 If (Settings.GetCategory(CByte(SDT.Category)) <> SDT.Category.ToString) Then
                     _layer.AddChannelToGroup(DBChannel, Settings.GetCategory(CByte(SDT.Category)))
                 End If
@@ -2958,7 +2958,7 @@ Label_059B:
         Else
             Dim channel As Channel
             Dim str As String
-            For Each str In My.Settings.UKCats.Split(New Char() {ChrW(13)})
+            For Each str In My.Settings.NZCats.Split(New Char() {ChrW(13)})
                 Dim strArray2 As String() = str.Split(New Char() {"="c})
                 If (Strings.Asc(strArray2(0).Substring(0, 1)) = 10) Then
                     strArray2(0) = strArray2(0).Replace(ChrW(10), "")
@@ -2982,9 +2982,9 @@ Label_059B:
             End If
             GrabEPG = Settings.UpdateEPG
             DVBSChannel = New DVBSChannel
-            Dim channelsByName As List(Of Channel) = DirectCast(_layer.GetChannelsByName("Sky UK Grabber"), List(Of Channel))
+            Dim channelsByName As List(Of Channel) = DirectCast(_layer.GetChannelsByName("Sky NZ Grabber"), List(Of Channel))
             If (channelsByName.Count = 0) Then
-                channel = _layer.AddNewChannel("Sky UK Grabber", &H2710)
+                channel = _layer.AddNewChannel("Sky NZ Grabber", &H2710)
                 channel.VisibleInGuide = False
                 channel.IsRadio = True
                 channel.IsTv = False
@@ -2998,7 +2998,7 @@ Label_059B:
                 DVBSChannel.IsTv = False
                 DVBSChannel.LogicalChannelNumber = &H2710
                 DVBSChannel.ModulationType = DirectCast((Settings.modulation - 1), ModulationType)
-                DVBSChannel.Name = "Sky UK Grabber"
+                DVBSChannel.Name = "Sky NZ Grabber"
                 DVBSChannel.NetworkId = Settings.NID
                 DVBSChannel.Pilot = Pilot.NotSet
                 DVBSChannel.PmtPid = 0
@@ -3024,7 +3024,7 @@ Label_059B:
                 Next
                 _layer.AddChannelToRadioGroup(channel, RadioGroupNames.AllChannels)
                 If (Not OnMessageEvent Is Nothing) Then
-                    RaiseEvent OnMessage("Sky UK Grabber channel added to database", False)
+                    RaiseEvent OnMessage("Sky NZ Grabber channel added to database", False)
                 End If
             Else
                 channel = channelsByName.Item(0)
@@ -3085,12 +3085,12 @@ Label_059B:
     Private Sub LoadHuffman(ByVal type As Integer)
         Dim str2 As String
         Dim str3 As String
-        Dim uKDict As String = My.Resources.UKDict
+        Dim NZDict As String = My.Resources.NZDict
         If (Not nH Is Nothing) Then
             nH.Clear()
             orignH.Clear()
         End If
-        Dim strArray As String() = uKDict.Split(New Char() {ChrW(13)})
+        Dim strArray As String() = NZDict.Split(New Char() {ChrW(13)})
         Dim upperBound As Integer = strArray.GetUpperBound(0)
         Dim i As Integer = 0
         Do While (i <= upperBound)
@@ -3725,7 +3725,6 @@ Label_0132:
         Get
             Return _Sky
         End Get
-        <MethodImpl(MethodImplOptions.Synchronized)> _
         Set(ByVal WithEventsValue As CustomDataGRabber)
             Dim handler As CustomDataGRabber.OnCompleteEventHandler = New CustomDataGRabber.OnCompleteEventHandler(AddressOf UpdateDataBase)
             Dim handler2 As CustomDataGRabber.OnPacketEventHandler = New CustomDataGRabber.OnPacketEventHandler(AddressOf OnTSPacket)

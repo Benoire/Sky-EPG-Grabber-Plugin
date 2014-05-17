@@ -79,9 +79,9 @@ Namespace My.Resources
         '''!!!=101010111000110000101011001
         '''!!!=10101011100011000010 [rest of string was truncated]&quot;;.
         '''</summary>
-        Friend ReadOnly Property UKDict() As String
+        Friend ReadOnly Property NZDict() As String
             Get
-                Return ResourceManager.GetString("UKDict", resourceCulture)
+                Return ResourceManager.GetString("NZDict", resourceCulture)
             End Get
         End Property
     End Module

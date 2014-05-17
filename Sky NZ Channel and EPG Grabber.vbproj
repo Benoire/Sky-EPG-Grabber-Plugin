@@ -6,7 +6,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D64D5F33-4326-43F4-9C0B-A96C7C52DF6B}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <AssemblyName>Sky UK Channel and EPG Grabber</AssemblyName>
+    <AssemblyName>Sky NZ Channel and EPG Grabber</AssemblyName>
     <OutputType>Library</OutputType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
@@ -129,7 +129,7 @@
     <Compile Include="Setup.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SkyUkEpgAndChannelGrabber.vb" />
+    <Compile Include="SkyNZEpgAndChannelGrabber.vb" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
