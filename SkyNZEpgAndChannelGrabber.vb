@@ -2093,7 +2093,7 @@ Public Class SkyGrabber
             Do
                 Dim categoryByTextBoxNum As String = Settings.GetCategoryByTextBoxNum(textBoxNum)
                 If Not categoryByTextBoxNum.StartsWith("-1") Then
-                    Dim strArray2 As String() = New String(3 - 1) {}
+                    Dim strArray2 As String() '= New String(3 - 1) {}
                     strArray2 = categoryByTextBoxNum.Split(separator, StringSplitOptions.None)
                     If Not list.Contains(strArray2(1)) Then
                         list.Add(strArray2(1))
@@ -2203,7 +2203,7 @@ Public Class SkyGrabber
                     Dim list As List(Of TuningDetail) = DirectCast(channelbyExternalID.ReferringTuningDetail, List(Of TuningDetail))
                     Dim detail2 As TuningDetail
                     For Each detail2 In list
-                        If ((detail2.ChannelType = 3) And (detail2.NetworkId = 169)) Then
+                        If ((detail2.ChannelType = 3) And (detail2.NetworkId = &HA9)) Then
                             detail = detail2
                             Exit For
                         End If
@@ -2226,15 +2226,15 @@ Label_0299:
                     Continue For
                 End If
                 Dim channelNumber As Integer = 10000
-                Dim flag8 As Boolean = True
-                If (useSkyNumbers AndAlso Operators.ConditionalCompareObjectGreater(scannedchannel.LCNCount, 0, False)) Then
+                Dim visibleinguide As Boolean = True
+                If useSkyNumbers AndAlso scannedchannel.LCNCount > 0 Then
                     If scannedchannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
                         channelNumber = scannedchannel.GetLCN(BouquetIDtoUse, RegionIDtoUse).SkyNum
-                    ElseIf scannedchannel.ContainsLCN(BouquetIDtoUse, &HFF) Then
-                        channelNumber = scannedchannel.GetLCN(BouquetIDtoUse, &HFF).SkyNum
+                    ElseIf scannedchannel.ContainsLCN(BouquetIDtoUse, 255) Then
+                        channelNumber = scannedchannel.GetLCN(BouquetIDtoUse, 255).SkyNum
                     End If
                     If (channelNumber = 10000) Then
-                        flag8 = False
+                        visibleinguide = False
                     End If
                 End If
                 Dim DBChannel As Channel = _layer.AddNewChannel(channelbySID.ChannelName, channelNumber)
@@ -2251,7 +2251,7 @@ Label_0299:
                 DBChannel.ChannelNumber = channelNumber
                 DBChannel.SortOrder = channelNumber
                 DVBSChannel.LogicalChannelNumber = channelNumber
-                DBChannel.VisibleInGuide = flag8
+                DBChannel.VisibleInGuide = visibleinguide
                 If (((descriptor.isS2 And -(useNotSetModHD > False)) Or -(((descriptor.isS2 = 0) And useNotSetModSD) > False)) > 0) Then
                     DVBSChannel.ModulationType = ModulationType.ModNotSet
                 Else
@@ -2323,17 +2323,18 @@ Label_072B:
                     End If
                     DBChannel.DisplayName = sDT.ChannelName
                     tuningChannel.Name = sDT.ChannelName
-                    If Conversions.ToBoolean(Operators.AndObject(Operators.CompareObjectGreater(scannedchannel.LCNCount, 0, False), Not DBChannel.VisibleInGuide)) Then
+                    If scannedchannel.LCNCount > 0 And Not DBChannel.VisibleInGuide Then
+                        'If Conversions.ToBoolean(Operators.AndObject(Operators.CompareObjectGreater(scannedchannel.LCNCount, 0, False), Not DBChannel.VisibleInGuide)) Then
                         DBChannel.VisibleInGuide = True
                         If (Not OnMessageEvent Is Nothing) Then
-                            RaiseEvent OnMessage(String.Concat(New String() {"Channel ", DBChannel.DisplayName, " is now part of the EPG making visible ", sDT.ChannelName, "."}), False)
+                            RaiseEvent OnMessage("Channel " & DBChannel.DisplayName & " is now part of the EPG making visible " & sDT.ChannelName & ".", False)
                         End If
                     End If
                     flag10 = True
                 End If
                 If (tuningChannel.Provider <> sDT.Provider) Then
                     If (Not OnMessageEvent Is Nothing) Then
-                        RaiseEvent OnMessage(String.Concat(New String() {"Channel ", DBChannel.DisplayName, " Provider name changed to ", sDT.Provider, "."}), False)
+                        RaiseEvent OnMessage("Channel " & DBChannel.DisplayName & " Provider name changed to " & sDT.Provider & ".", False)
                     End If
                     If (Not OnMessageEvent Is Nothing) Then
                         RaiseEvent OnMessage("", False)
@@ -2416,13 +2417,13 @@ Label_0BD2:
                 End If
                 If useSkyRegions Then
                     Dim skyNum As Integer = 10000
-                    If (useSkyNumbers AndAlso Operators.ConditionalCompareObjectGreater(scannedchannel.LCNCount, 0, False)) Then
+                    If useSkyNumbers AndAlso scannedchannel.LCNCount > 0 Then
                         If scannedchannel.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
                             skyNum = scannedchannel.GetLCN(BouquetIDtoUse, RegionIDtoUse).SkyNum
-                        ElseIf scannedchannel.ContainsLCN(BouquetIDtoUse, &HFF) Then
-                            skyNum = scannedchannel.GetLCN(BouquetIDtoUse, &HFF).SkyNum
+                        ElseIf scannedchannel.ContainsLCN(BouquetIDtoUse, 255) Then
+                            skyNum = scannedchannel.GetLCN(BouquetIDtoUse, 255).SkyNum
                         End If
-                        If (((detail.ChannelNumber <> skyNum) And (skyNum < 600)) Or ((skyNum = 10000) And (DBChannel.ChannelNumber <> 10000))) Then
+                        If (((detail.ChannelNumber <> skyNum) And (skyNum < 800)) Or ((skyNum = 10000) And (DBChannel.ChannelNumber <> 10000))) Then
                             If (Not OnMessageEvent Is Nothing) Then
                                 RaiseEvent OnMessage(String.Concat(New String() {"Channel : ", DBChannel.DisplayName, " number has changed from : ", Conversions.ToString(tuningChannel.LogicalChannelNumber), " to : ", Conversions.ToString(skyNum), "."}), False)
                             End If
@@ -2498,161 +2499,161 @@ Label_0BD2:
         End Try
     End Sub
 
-    Public Sub UpdateAddChannelsNew()
-        Dim enumerator As IEnumerator(Of Channel)
-        Dim enumerator2 As Collections.Generic.Dictionary(Of Integer, Sky_Channel).Enumerator
-        enumerator = Nothing
-        enumerator2 = Nothing
-        Dim diseqC As Integer = Settings.DiseqC
-        Dim useSkyNumbers As Boolean = Settings.UseSkyNumbers
-        Dim switchingFrequency As Integer = Settings.SwitchingFrequency
-        Dim useSkyRegions As Boolean = Settings.UseSkyRegions
-        Dim useSkyCategories As Boolean = Settings.UseSkyCategories
-        Dim useNotSetModSD As Boolean = Settings.UseNotSetModSD
-        Dim useNotSetModHD As Boolean = Settings.UseNotSetModHD
-        Dim ignoreScrambled As Boolean = Settings.IgnoreScrambled
-        Dim str As String = (Settings.LogoDirectory & "\")
-        Dim updateLogos As Boolean = Settings.UpdateLogos
-        If (Not OnMessageEvent Is Nothing) Then
-            RaiseEvent OnMessage("", False)
-        End If
-        Dim list As IList(Of Channel) = Channel.ListAll
-        Dim dictionary As New Dictionary(Of Integer, Channel)
-        Try
-            enumerator = list.GetEnumerator
-            Do While enumerator.MoveNext
-                Dim current As Channel = enumerator.Current
-                If current.ExternalId.StartsWith("SKYNZ:") Then
-                    Dim key As Integer = Convert.ToInt32(current.ExternalId.Replace("SKYNZ:", ""))
-                    If ((key <> 0) AndAlso Not dictionary.ContainsKey(key)) Then
-                        If (current.ReferringTuningDetail.Count < 1) Then
-                            current.Delete()
-                            current.Persist()
-                        End If
-                        dictionary.Add(key, current)
-                    End If
-                End If
-            Loop
-        Finally
-            If (Not enumerator Is Nothing) Then
-                enumerator.Dispose()
-            End If
-        End Try
-        Try
-            enumerator2 = Channels.GetEnumerator
-            Do While enumerator2.MoveNext
-                Dim channel2 As Channel
-                Dim pair As KeyValuePair(Of Integer, Sky_Channel) = enumerator2.Current
-                'enumerator2.Current = pair
-                Dim channel3 As Sky_Channel = pair.Value
-                Dim num5 As Integer = pair.Key
-                If (num5 < 1) Then
-                    Continue Do
-                End If
-                If dictionary.ContainsKey(num5) Then
-                    channel2 = dictionary.Item(num5)
-                    GoTo Label_059B
-                End If
-                If Not NITInfo.ContainsKey(channel3.TID) Then
-                    If (Not OnMessageEvent Is Nothing) Then
-                        RaiseEvent OnMessage(("No NIT found for : " & Conversions.ToString(channel3.SID)), False)
-                    End If
-                    If (Not OnMessageEvent Is Nothing) Then
-                        RaiseEvent OnMessage("", False)
-                    End If
-                    Continue Do
-                End If
-                If (((channel3.NID = 0) Or (channel3.TID = 0)) Or (channel3.SID = 0)) Then
-                    Continue Do
-                End If
-                Dim channelbySID As SDTInfo = GetChannelbySID(String.Concat(New String() {Conversions.ToString(channel3.NID), "-", Conversions.ToString(channel3.TID), "-", Conversions.ToString(channel3.SID)}))
-                If ((channelbySID Is Nothing) OrElse (ignoreScrambled And channelbySID.isFTA)) Then
-                    Continue Do
-                End If
-                Dim channelNumber As Integer = 10000
-                Dim flag8 As Boolean = True
-                If (useSkyNumbers AndAlso Operators.ConditionalCompareObjectGreater(channel3.LCNCount, 0, False)) Then
-                    If channel3.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
-                        channelNumber = channel3.GetLCN(BouquetIDtoUse, RegionIDtoUse).SkyNum
-                    ElseIf channel3.ContainsLCN(BouquetIDtoUse, &HFF) Then
-                        channelNumber = channel3.GetLCN(BouquetIDtoUse, &HFF).SkyNum
-                    End If
-                    If (channelNumber = 10000) Then
-                        flag8 = False
-                    End If
-                End If
-                channel2 = _layer.AddNewChannel(channel3.Channel_Name, channelNumber)
-                Dim descriptor As NITSatDescriptor = NITInfo.Item(channel3.TID)
-                DVBSChannel.BandType = BandType.Universal
-                DVBSChannel.DisEqc = DirectCast(diseqC, DisEqcType)
-                DVBSChannel.FreeToAir = True
-                DVBSChannel.Frequency = descriptor.Frequency
-                DVBSChannel.SymbolRate = descriptor.Symbolrate
-                DVBSChannel.InnerFecRate = DirectCast(descriptor.FECInner, BinaryConvolutionCodeRate)
-                DVBSChannel.IsRadio = channelbySID.isRadio
-                DVBSChannel.IsTv = channelbySID.isTV
-                DVBSChannel.FreeToAir = Not channelbySID.isFTA
-                channel2.SortOrder = channelNumber
-                DVBSChannel.LogicalChannelNumber = channelNumber
-                channel2.VisibleInGuide = flag8
-                If (((descriptor.isS2 And -(useNotSetModHD > False)) Or -(((descriptor.isS2 = 0) And useNotSetModSD) > False)) > 0) Then
-                    DVBSChannel.ModulationType = ModulationType.ModNotSet
-                Else
-                    Select Case descriptor.Modulation
-                        Case 1
-                            If (descriptor.isS2 <= 0) Then
-                                Exit Select
-                            End If
-                            DVBSChannel.ModulationType = ModulationType.ModNbcQpsk
-                            GoTo Label_0470
-                        Case 2
-                            If (descriptor.isS2 <= 0) Then
-                                GoTo Label_0456
-                            End If
-                            DVBSChannel.ModulationType = ModulationType.ModNbc8Psk
-                            GoTo Label_0470
-                        Case Else
-                            DVBSChannel.ModulationType = ModulationType.ModNotDefined
-                            GoTo Label_0470
-                    End Select
-                    DVBSChannel.ModulationType = ModulationType.ModQpsk
-                End If
-                GoTo Label_0470
-Label_0456:
-                DVBSChannel.ModulationType = ModulationType.ModNotDefined
-Label_0470:
-                DVBSChannel.Name = channelbySID.ChannelName
-                DVBSChannel.NetworkId = channel3.NID
-                DVBSChannel.Pilot = Pilot.NotSet
-                DVBSChannel.Rolloff = RollOff.NotSet
-                If (descriptor.isS2 = 1) Then
-                    DVBSChannel.Rolloff = DirectCast(descriptor.RollOff, RollOff)
-                End If
-                DVBSChannel.PmtPid = 0
-                DVBSChannel.Polarisation = DirectCast(descriptor.Polarisation, Polarisation)
-                DVBSChannel.Provider = channelbySID.Provider
-                DVBSChannel.ServiceId = channel3.SID
-                DVBSChannel.TransportId = channel3.TID
-                DVBSChannel.SwitchingFrequency = switchingFrequency
-                channel2.IsRadio = channelbySID.isRadio
-                channel2.IsTv = channelbySID.isTV
-                channel2.ExternalId = ("SKYNZ:" & channel3.ChannelID.ToString)
-                channel2.Persist()
-                MapChannelToCards(channel2)
-                AddChannelToGroups(channel2, channelbySID, DVBSChannel, useSkyCategories)
-                _layer.AddTuningDetails(channel2, DVBSChannel)
-Label_059B:
-                If (channel2 Is Nothing) Then
-                    If (OnMessageEvent Is Nothing) Then
-                        Continue Do
-                    End If
-                    RaiseEvent OnMessage("Error Adding Channel to database, continuing", False)
-                End If
-            Loop
-        Finally
-            enumerator2.Dispose()
-        End Try
-    End Sub
+    '    Public Sub UpdateAddChannelsNew()
+    '        Dim enumerator As IEnumerator(Of Channel)
+    '        Dim enumerator2 As Collections.Generic.Dictionary(Of Integer, Sky_Channel).Enumerator
+    '        enumerator = Nothing
+    '        enumerator2 = Nothing
+    '        Dim diseqC As Integer = Settings.DiseqC
+    '        Dim useSkyNumbers As Boolean = Settings.UseSkyNumbers
+    '        Dim switchingFrequency As Integer = Settings.SwitchingFrequency
+    '        Dim useSkyRegions As Boolean = Settings.UseSkyRegions
+    '        Dim useSkyCategories As Boolean = Settings.UseSkyCategories
+    '        Dim useNotSetModSD As Boolean = Settings.UseNotSetModSD
+    '        Dim useNotSetModHD As Boolean = Settings.UseNotSetModHD
+    '        Dim ignoreScrambled As Boolean = Settings.IgnoreScrambled
+    '        Dim str As String = (Settings.LogoDirectory & "\")
+    '        Dim updateLogos As Boolean = Settings.UpdateLogos
+    '        If (Not OnMessageEvent Is Nothing) Then
+    '            RaiseEvent OnMessage("", False)
+    '        End If
+    '        Dim list As IList(Of Channel) = Channel.ListAll
+    '        Dim dictionary As New Dictionary(Of Integer, Channel)
+    '        Try
+    '            enumerator = list.GetEnumerator
+    '            Do While enumerator.MoveNext
+    '                Dim current As Channel = enumerator.Current
+    '                If current.ExternalId.StartsWith("SKYNZ:") Then
+    '                    Dim key As Integer = Convert.ToInt32(current.ExternalId.Replace("SKYNZ:", ""))
+    '                    If ((key <> 0) AndAlso Not dictionary.ContainsKey(key)) Then
+    '                        If (current.ReferringTuningDetail.Count < 1) Then
+    '                            current.Delete()
+    '                            current.Persist()
+    '                        End If
+    '                        dictionary.Add(key, current)
+    '                    End If
+    '                End If
+    '            Loop
+    '        Finally
+    '            If (Not enumerator Is Nothing) Then
+    '                enumerator.Dispose()
+    '            End If
+    '        End Try
+    '        Try
+    '            enumerator2 = Channels.GetEnumerator
+    '            Do While enumerator2.MoveNext
+    '                Dim channel2 As Channel
+    '                Dim pair As KeyValuePair(Of Integer, Sky_Channel) = enumerator2.Current
+    '                'enumerator2.Current = pair
+    '                Dim channel3 As Sky_Channel = pair.Value
+    '                Dim num5 As Integer = pair.Key
+    '                If (num5 < 1) Then
+    '                    Continue Do
+    '                End If
+    '                If dictionary.ContainsKey(num5) Then
+    '                    channel2 = dictionary.Item(num5)
+    '                    GoTo Label_059B
+    '                End If
+    '                If Not NITInfo.ContainsKey(channel3.TID) Then
+    '                    If (Not OnMessageEvent Is Nothing) Then
+    '                        RaiseEvent OnMessage(("No NIT found for : " & Conversions.ToString(channel3.SID)), False)
+    '                    End If
+    '                    If (Not OnMessageEvent Is Nothing) Then
+    '                        RaiseEvent OnMessage("", False)
+    '                    End If
+    '                    Continue Do
+    '                End If
+    '                If (((channel3.NID = 0) Or (channel3.TID = 0)) Or (channel3.SID = 0)) Then
+    '                    Continue Do
+    '                End If
+    '                Dim channelbySID As SDTInfo = GetChannelbySID(String.Concat(New String() {Conversions.ToString(channel3.NID), "-", Conversions.ToString(channel3.TID), "-", Conversions.ToString(channel3.SID)}))
+    '                If ((channelbySID Is Nothing) OrElse (ignoreScrambled And channelbySID.isFTA)) Then
+    '                    Continue Do
+    '                End If
+    '                Dim channelNumber As Integer = 10000
+    '                Dim flag8 As Boolean = True
+    '                If (useSkyNumbers AndAlso Operators.ConditionalCompareObjectGreater(channel3.LCNCount, 0, False)) Then
+    '                    If channel3.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Then
+    '                        channelNumber = channel3.GetLCN(BouquetIDtoUse, RegionIDtoUse).SkyNum
+    '                    ElseIf channel3.ContainsLCN(BouquetIDtoUse, &HFF) Then
+    '                        channelNumber = channel3.GetLCN(BouquetIDtoUse, &HFF).SkyNum
+    '                    End If
+    '                    If (channelNumber = 10000) Then
+    '                        flag8 = False
+    '                    End If
+    '                End If
+    '                channel2 = _layer.AddNewChannel(channel3.Channel_Name, channelNumber)
+    '                Dim descriptor As NITSatDescriptor = NITInfo.Item(channel3.TID)
+    '                DVBSChannel.BandType = BandType.Universal
+    '                DVBSChannel.DisEqc = DirectCast(diseqC, DisEqcType)
+    '                DVBSChannel.FreeToAir = True
+    '                DVBSChannel.Frequency = descriptor.Frequency
+    '                DVBSChannel.SymbolRate = descriptor.Symbolrate
+    '                DVBSChannel.InnerFecRate = DirectCast(descriptor.FECInner, BinaryConvolutionCodeRate)
+    '                DVBSChannel.IsRadio = channelbySID.isRadio
+    '                DVBSChannel.IsTv = channelbySID.isTV
+    '                DVBSChannel.FreeToAir = Not channelbySID.isFTA
+    '                channel2.SortOrder = channelNumber
+    '                DVBSChannel.LogicalChannelNumber = channelNumber
+    '                channel2.VisibleInGuide = flag8
+    '                If (((descriptor.isS2 And -(useNotSetModHD > False)) Or -(((descriptor.isS2 = 0) And useNotSetModSD) > False)) > 0) Then
+    '                    DVBSChannel.ModulationType = ModulationType.ModNotSet
+    '                Else
+    '                    Select Case descriptor.Modulation
+    '                        Case 1
+    '                            If (descriptor.isS2 <= 0) Then
+    '                                Exit Select
+    '                            End If
+    '                            DVBSChannel.ModulationType = ModulationType.ModNbcQpsk
+    '                            GoTo Label_0470
+    '                        Case 2
+    '                            If (descriptor.isS2 <= 0) Then
+    '                                GoTo Label_0456
+    '                            End If
+    '                            DVBSChannel.ModulationType = ModulationType.ModNbc8Psk
+    '                            GoTo Label_0470
+    '                        Case Else
+    '                            DVBSChannel.ModulationType = ModulationType.ModNotDefined
+    '                            GoTo Label_0470
+    '                    End Select
+    '                    DVBSChannel.ModulationType = ModulationType.ModQpsk
+    '                End If
+    '                GoTo Label_0470
+    'Label_0456:
+    '                DVBSChannel.ModulationType = ModulationType.ModNotDefined
+    'Label_0470:
+    '                DVBSChannel.Name = channelbySID.ChannelName
+    '                DVBSChannel.NetworkId = channel3.NID
+    '                DVBSChannel.Pilot = Pilot.NotSet
+    '                DVBSChannel.Rolloff = RollOff.NotSet
+    '                If (descriptor.isS2 = 1) Then
+    '                    DVBSChannel.Rolloff = DirectCast(descriptor.RollOff, RollOff)
+    '                End If
+    '                DVBSChannel.PmtPid = 0
+    '                DVBSChannel.Polarisation = DirectCast(descriptor.Polarisation, Polarisation)
+    '                DVBSChannel.Provider = channelbySID.Provider
+    '                DVBSChannel.ServiceId = channel3.SID
+    '                DVBSChannel.TransportId = channel3.TID
+    '                DVBSChannel.SwitchingFrequency = switchingFrequency
+    '                channel2.IsRadio = channelbySID.isRadio
+    '                channel2.IsTv = channelbySID.isTV
+    '                channel2.ExternalId = ("SKYNZ:" & channel3.ChannelID.ToString)
+    '                channel2.Persist()
+    '                MapChannelToCards(channel2)
+    '                AddChannelToGroups(channel2, channelbySID, DVBSChannel, useSkyCategories)
+    '                _layer.AddTuningDetails(channel2, DVBSChannel)
+    'Label_059B:
+    '                If (channel2 Is Nothing) Then
+    '                    If (OnMessageEvent Is Nothing) Then
+    '                        Continue Do
+    '                    End If
+    '                    RaiseEvent OnMessage("Error Adding Channel to database, continuing", False)
+    '                End If
+    '            Loop
+    '        Finally
+    '            enumerator2.Dispose()
+    '        End Try
+    '    End Sub
 
     Private Sub MapChannelToCards(ByVal DBChannel As Channel)
         Dim enumerator As IEnumerator(Of Card)
@@ -2671,7 +2672,7 @@ Label_059B:
     Private Sub AddChannelToGroups(ByVal DBChannel As Channel, ByVal SDT As SDTInfo, ByVal DVBSChannel As DVBSChannel, ByVal UseSkyCategories As Boolean)
         If DBChannel.IsTv Then
             _layer.AddChannelToGroup(DBChannel, TvGroupNames.AllChannels)
-            If ((DVBSChannel.LogicalChannelNumber < 600) AndAlso UseSkyCategories) Then
+            If ((DVBSChannel.LogicalChannelNumber < 800) AndAlso UseSkyCategories) Then
                 If (Settings.GetCategory(CByte(SDT.Category)) <> SDT.Category.ToString) Then
                     _layer.AddChannelToGroup(DBChannel, Settings.GetCategory(CByte(SDT.Category)))
                 End If
@@ -2763,9 +2764,9 @@ Label_059B:
                         Dim time6 As DateTime = now.AddSeconds((((event3.mjdStart + 2400000.5) - 2440587.5) * 86400)).AddSeconds(CDbl(event3.StartTime)).ToLocalTime
                         Dim time4 As DateTime = time6.AddSeconds(CDbl(event3.Duration))
                         If useExtraInfo Then
-                            [text] = New EpgLanguageText("ALL", event3.Title, (event3.Summary & " " & event3.DescriptionFlag), Settings.GetTheme(Convert.ToInt32(event3.Category)), 0, event3.ParentalCategory, -1)
+                            [text] = New EpgLanguageText("ALL", event3.Title, (event3.Summary & " " & event3.DescriptionFlag), Settings.GetTheme(event3.Category), 0, event3.ParentalCategory, -1)
                         Else
-                            [text] = New EpgLanguageText("ALL", event3.Title, event3.Summary, Settings.GetTheme(Convert.ToInt32(event3.Category)), 0, event3.ParentalCategory, -1)
+                            [text] = New EpgLanguageText("ALL", event3.Title, event3.Summary, Settings.GetTheme(event3.Category), 0, event3.ParentalCategory, -1)
                         End If
                         Dim program2 As New EpgProgram(time6, time4)
                         program2.Text.Add([text])
@@ -2780,7 +2781,7 @@ Label_059B:
                         Thread.Sleep(200)
                     End If
                     If (Not OnMessageEvent Is Nothing) Then
-                        RaiseEvent OnMessage(("(" & Conversions.ToString(num2) & " Channels Updated"), True)
+                        RaiseEvent OnMessage("(" & num2 & " Channels Updated", True)
                     End If
                     num2 += 1
                 End If
@@ -2795,9 +2796,9 @@ Label_059B:
 
     Public Sub UpdateDataBase(ByVal err As Boolean, ByVal errormessage As String)
         If Not err Then
-            If (Channels.Count < 100) Then
+            If (Channels.Count < 46) Then
                 If (Not OnMessageEvent Is Nothing) Then
-                    RaiseEvent OnMessage(("Error : Less than 100 channels found, Grabber found : " & Conversions.ToString(Me.Channels.Count)), False)
+                    RaiseEvent OnMessage("Error : Less than 46 channels found, Grabber found : " & Channels.Count, False)
                 End If
             Else
                 CreateGroups()
@@ -2825,7 +2826,7 @@ Label_059B:
                 End If
                 Settings.LastUpdate = Now
                 If (Not OnMessageEvent Is Nothing) Then
-                    RaiseEvent OnMessage(("Database Update Complete, took " & Conversions.ToString(Conversion.Int(DateAndTime.Now.Subtract(Me.start).TotalSeconds)) & " Seconds"), False)
+                    RaiseEvent OnMessage("Database Update Complete, took " & Now.Subtract(start).TotalSeconds & " Seconds", False)
                 End If
             End If
         Else
@@ -2854,12 +2855,12 @@ Label_059B:
                 Dim NetworkID As Integer
                 Dim ChannelID As Integer
                 Try
-                    NetworkID = Convert.ToInt32(ExternalID(0))
-                    ChannelID = Convert.ToInt32(ExternalID(1))
+                    NetworkID = ExternalID(0)
+                    ChannelID = ExternalID(1)
                 Catch
                     Continue For
                 End Try
-                If NetworkID <> 169 Then Continue For 'Not a Sky NZ channel, original code uses 2 for NetworkID.
+                If NetworkID <> &HA9 Then Continue For 'Not a Sky NZ channel, original code uses 2 for NetworkID.
                 If Channels.ContainsKey(ChannelID) = False Then
                     removechannel(Channelto, DeleteOld, OldFolder)
                     Continue For
@@ -2875,7 +2876,7 @@ Label_059B:
                         Channelto.RemoveFromAllGroups()
                         Channelto.VisibleInGuide = False
                         Channelto.Persist()
-                        _layer.AddChannelToGroup(Channelto, TvConstants.TvGroupNames.AllChannels)
+                        _layer.AddChannelToGroup(Channelto, TvGroupNames.AllChannels)
                         RaiseEvent OnMessage("Channel " & Channelto.DisplayName & " isn't used in this region, moved to all channels.", False)
                     End If
                 End If
@@ -2883,14 +2884,15 @@ Label_059B:
         Next
     End Sub
 
-    'Private Sub DeleteOldChannels() - New style code
-    '    Dim enumerator As Collections.Generic.Dictionary(Of Integer, Channel).Enumerator
+    'Private Sub DeleteOldChannels() '- New style code
+    '    Dim enumerator As IEnumerator(Of Channel)
     '    Dim useSkyRegions As Boolean = Settings.UseSkyRegions
     '    Dim deleteOldChannels As Boolean = Settings.DeleteOldChannels
     '    Dim oldChannelFolder As String = Settings.OldChannelFolder
     '    RegionIDtoUse = Settings.RegionID
+    '    Dim channels As List(Of Channel) = DirectCast(_layer.Channels, List(Of Channel))
     '    Try
-    '        enumerator = Channels.GetEnumerator
+    '        enumerator = channels.GetEnumerator
     '        Do While enumerator.MoveNext
     '            Dim current As Channel = enumerator.Current
     '            If (Enumerable.Count(Of Char)(current.ExternalId) > 1) Then
@@ -2899,17 +2901,17 @@ Label_059B:
     '                Dim strArray As String() = current.ExternalId.Split(New Char() {":"c})
     '                Try
     '                    str2 = strArray(0)
-    '                    num = Convert.ToInt32(strArray(1))
+    '                    num = strArray(1)
     '                Catch exception1 As Exception
     '                    ProjectData.SetProjectError(exception1)
     '                    ProjectData.ClearProjectError()
     '                    Continue Do
     '                End Try
     '                If (str2 = "SKYUK") Then
-    '                    If Not Channels.ContainsKey(num) Then
+    '                    If Not channels.ContainsKey Then
     '                        removechannel(current, deleteOldChannels, oldChannelFolder)
     '                    ElseIf useSkyRegions Then
-    '                        Dim channel2 As Sky_Channel = Channels.Item(num)
+    '                        Dim channel2 As Sky_Channel = channels.Item(num)
     '                        If (Not (channel2.ContainsLCN(BouquetIDtoUse, RegionIDtoUse) Or channel2.ContainsLCN(BouquetIDtoUse, &HFF)) AndAlso (current.IsTv And current.VisibleInGuide)) Then
     '                            current.RemoveFromAllGroups()
     '                            current.VisibleInGuide = False
@@ -2925,6 +2927,43 @@ Label_059B:
     '        Loop
     '    Finally
     '        enumerator.Dispose()
+    '    End Try
+    'End Sub
+
+    'Private Sub DeleteOldChannels()
+    '    Dim enumerator As List(Of Channel).Enumerator
+    '    Dim useskyregion As Boolean = Settings.UseSkyRegions
+    '    Dim deleteoldchannels As Boolean = Settings.DeleteOldChannels
+    '    Dim oldchannelfolder As String = Settings.OldChannelFolder
+    '    RegionIDtoUse = Settings.RegionID
+    '    Dim channels As List(Of Channel) = DirectCast(_layer.Channels, List(Of Channel))
+    '    Try
+    '        enumerator = channels.GetEnumerator()
+    '        Do While enumerator.MoveNext()
+    '            Dim current As Channel = enumerator.Current
+    '            If (Enumerable.Count(Of Char)(current.ExternalId) > 1) Then
+    '                Dim num As Integer
+    '                Dim str2 As String
+    '                Dim strarray As String() = current.ExternalId.Split(New Char() {":"c})
+    '                Try
+    '                    str2 = strarray(0)
+    '                    num = strarray(1)
+    '                Catch exception1 As Exception
+    '                    ProjectData.SetProjectError(exception1)
+    '                    ProjectData.ClearProjectError()
+    '                    Continue Do
+    '                End Try
+    '                If str2 = "SkyNZ" Then
+    '                    If Not channels.Containskey(num) Then
+    '                        removechannel(current, deleteoldchannels, oldchannelfolder)
+    '                    ElseIf useskyregion Then
+    '                        Dim channel2 As Sky_Channel = channels.Item(num)
+
+    '                    End If
+    '                End If
+    '        Loop
+    '    Catch ex As Exception
+
     '    End Try
     'End Sub
 
@@ -3073,9 +3112,6 @@ Label_059B:
             Dim back As Thread = New Thread(AddressOf Grabit)
             back.Start()
         End If
-    End Sub
-
-    Public Shared Sub ManualGrab()
     End Sub
 
     Public Function IsGrabbing() As Boolean
