@@ -5,6 +5,7 @@ Imports System.Drawing
 Imports System.IO
 Imports System.Drawing.Imaging
 Imports System.Drawing.Drawing2D
+Imports System.Windows.Forms
 Imports My
 Imports TvDatabase
 Imports TvLibrary.Channels
@@ -2085,66 +2086,66 @@ Public Class SkyGrabber
         End If
     End Sub
 
+    'Public Sub CreateGroups()
+    '    If Settings.UseSkyCategories Then
+    '        Dim list As New List(Of String)
+    '        Dim separator As String() = New String() {",.,"}
+    '        Dim textBoxNum As Integer = 1
+    '        Do
+    '            Dim categoryByTextBoxNum As String = Settings.GetCategoryByTextBoxNum(textBoxNum)
+    '            If Not categoryByTextBoxNum.StartsWith("-1") Then
+    '                Dim strArray2 As String() '= New String(3 - 1) {}
+    '                strArray2 = categoryByTextBoxNum.Split(separator, StringSplitOptions.None)
+    '                If Not list.Contains(strArray2(1)) Then
+    '                    list.Add(strArray2(1))
+    '                End If
+    '            End If
+    '            textBoxNum += 1
+    '        Loop While (textBoxNum <= 20)
+    '        Dim num As Integer = 1
+    '        Dim str2 As String
+    '        For Each str2 In list
+    '            _layer.CreateGroup(str2)
+    '            Dim groupByName As ChannelGroup = _layer.GetGroupByName(str2)
+    '            groupByName.SortOrder = num
+    '            groupByName.Persist()
+    '            num += 1
+    '        Next
+    '    End If
+    'Original Sky code.
     Public Sub CreateGroups()
         If Settings.UseSkyCategories Then
-            Dim list As New List(Of String)
-            Dim separator As String() = New String() {",.,"}
-            Dim textBoxNum As Integer = 1
-            Do
-                Dim categoryByTextBoxNum As String = Settings.GetCategoryByTextBoxNum(textBoxNum)
-                If Not categoryByTextBoxNum.StartsWith("-1") Then
-                    Dim strArray2 As String() '= New String(3 - 1) {}
-                    strArray2 = categoryByTextBoxNum.Split(separator, StringSplitOptions.None)
-                    If Not list.Contains(strArray2(1)) Then
-                        list.Add(strArray2(1))
-                    End If
-                End If
-                textBoxNum += 1
-            Loop While (textBoxNum <= 20)
-            Dim num As Integer = 1
-            Dim str2 As String
-            For Each str2 In list
-                _layer.CreateGroup(str2)
-                Dim groupByName As ChannelGroup = _layer.GetGroupByName(str2)
-                groupByName.SortOrder = num
-                groupByName.Persist()
-                num += 1
+            Dim groups As New List(Of String)
+            If Settings.GetSkySetting("CatByte20", "-1") <> "-1" And Settings.GetSkySetting("CatText20", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText20", ""))
+            If Settings.GetSkySetting("CatByte19", "-1") <> "-1" And Settings.GetSkySetting("CatText19", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText19", ""))
+            If Settings.GetSkySetting("CatByte18", "-1") <> "-1" And Settings.GetSkySetting("CatText18", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText18", ""))
+            If Settings.GetSkySetting("CatByte17", "-1") <> "-1" And Settings.GetSkySetting("CatText17", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText17", ""))
+            If Settings.GetSkySetting("CatByte16", "-1") <> "-1" And Settings.GetSkySetting("CatText16", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText16", ""))
+            If Settings.GetSkySetting("CatByte15", "-1") <> "-1" And Settings.GetSkySetting("CatText15", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText15", ""))
+            If Settings.GetSkySetting("CatByte14", "-1") <> "-1" And Settings.GetSkySetting("CatText14", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText14", ""))
+            If Settings.GetSkySetting("CatByte13", "-1") <> "-1" And Settings.GetSkySetting("CatText13", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText13", ""))
+            If Settings.GetSkySetting("CatByte12", "-1") <> "-1" And Settings.GetSkySetting("CatText12", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText12", ""))
+            If Settings.GetSkySetting("CatByte11", "-1") <> "-1" And Settings.GetSkySetting("CatText11", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText11", ""))
+            If Settings.GetSkySetting("CatByte10", "-1") <> "-1" And Settings.GetSkySetting("CatText10", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText10", ""))
+            If Settings.GetSkySetting("CatByte9", "-1") <> "-1" And Settings.GetSkySetting("CatText9", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText9", ""))
+            If Settings.GetSkySetting("CatByte8", "-1") <> "-1" And Settings.GetSkySetting("CatText8", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText8", ""))
+            If Settings.GetSkySetting("CatByte7", "-1") <> "-1" And Settings.GetSkySetting("CatText7", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText7", ""))
+            If Settings.GetSkySetting("CatByte6", "-1") <> "-1" And Settings.GetSkySetting("CatText6", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText6", ""))
+            If Settings.GetSkySetting("CatByte5", "-1") <> "-1" And Settings.GetSkySetting("CatText5", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText5", ""))
+            If Settings.GetSkySetting("CatByte4", "-1") <> "-1" And Settings.GetSkySetting("CatText4", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText4", ""))
+            If Settings.GetSkySetting("CatByte3", "-1") <> "-1" And Settings.GetSkySetting("CatText3", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText3", ""))
+            If Settings.GetSkySetting("CatByte2", "-1") <> "-1" And Settings.GetSkySetting("CatText2", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText2", ""))
+            If Settings.GetSkySetting("CatByte1", "-1") <> "-1" And Settings.GetSkySetting("CatText1", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText1", ""))
+            Dim a As Integer = groups.Count
+            For Each name As String In groups
+                _layer.CreateGroup(name)
+                Dim group1 As ChannelGroup
+                group1 = _layer.GetGroupByName(name)
+                group1.SortOrder = a
+                group1.Persist()
+                a -= 1
             Next
         End If
-        'Original Sky code.
-        'If Settings.UseSkyCategories Then
-        '    Dim groups As New List(Of String)
-        '    If Settings.GetSkySetting("CatByte20", "-1") <> "-1" And Settings.GetSkySetting("CatText20", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText20", ""))
-        '    If Settings.GetSkySetting("CatByte19", "-1") <> "-1" And Settings.GetSkySetting("CatText19", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText19", ""))
-        '    If Settings.GetSkySetting("CatByte18", "-1") <> "-1" And Settings.GetSkySetting("CatText18", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText18", ""))
-        '    If Settings.GetSkySetting("CatByte17", "-1") <> "-1" And Settings.GetSkySetting("CatText17", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText17", ""))
-        '    If Settings.GetSkySetting("CatByte16", "-1") <> "-1" And Settings.GetSkySetting("CatText16", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText16", ""))
-        '    If Settings.GetSkySetting("CatByte15", "-1") <> "-1" And Settings.GetSkySetting("CatText15", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText15", ""))
-        '    If Settings.GetSkySetting("CatByte14", "-1") <> "-1" And Settings.GetSkySetting("CatText14", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText14", ""))
-        '    If Settings.GetSkySetting("CatByte13", "-1") <> "-1" And Settings.GetSkySetting("CatText13", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText13", ""))
-        '    If Settings.GetSkySetting("CatByte12", "-1") <> "-1" And Settings.GetSkySetting("CatText12", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText12", ""))
-        '    If Settings.GetSkySetting("CatByte11", "-1") <> "-1" And Settings.GetSkySetting("CatText11", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText11", ""))
-        '    If Settings.GetSkySetting("CatByte10", "-1") <> "-1" And Settings.GetSkySetting("CatText10", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText10", ""))
-        '    If Settings.GetSkySetting("CatByte9", "-1") <> "-1" And Settings.GetSkySetting("CatText9", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText9", ""))
-        '    If Settings.GetSkySetting("CatByte8", "-1") <> "-1" And Settings.GetSkySetting("CatText8", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText8", ""))
-        '    If Settings.GetSkySetting("CatByte7", "-1") <> "-1" And Settings.GetSkySetting("CatText7", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText7", ""))
-        '    If Settings.GetSkySetting("CatByte6", "-1") <> "-1" And Settings.GetSkySetting("CatText6", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText6", ""))
-        '    If Settings.GetSkySetting("CatByte5", "-1") <> "-1" And Settings.GetSkySetting("CatText5", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText5", ""))
-        '    If Settings.GetSkySetting("CatByte4", "-1") <> "-1" And Settings.GetSkySetting("CatText4", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText4", ""))
-        '    If Settings.GetSkySetting("CatByte3", "-1") <> "-1" And Settings.GetSkySetting("CatText3", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText3", ""))
-        '    If Settings.GetSkySetting("CatByte2", "-1") <> "-1" And Settings.GetSkySetting("CatText2", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText2", ""))
-        '    If Settings.GetSkySetting("CatByte1", "-1") <> "-1" And Settings.GetSkySetting("CatText1", "") <> "" Then groups.Add(Settings.GetSkySetting("CatText1", ""))
-        '    Dim a As Integer = groups.Count
-        '    For Each Name As String In groups
-        '        _layer.CreateGroup(Name)
-        '        Dim group1 As ChannelGroup
-        '        group1 = _layer.GetGroupByName(Name)
-        '        group1.SortOrder = a
-        '        group1.Persist()
-        '        a -= 1
-        '    Next
-        'End If
-
     End Sub
 
     Public Sub UpdateAddChannels()
@@ -2165,7 +2166,7 @@ Public Class SkyGrabber
             End If
             Dim pair As KeyValuePair(Of Integer, Sky_Channel)
             For Each pair In Channels
-                Dim detail As TuningDetail
+                Dim detail As TuningDetail = Nothing
                 ChannelsAdded += 1
                 If (Not OnMessageEvent Is Nothing) Then
                     RaiseEvent OnMessage("(" & ChannelsAdded & "/" & Channels.Count & ") Channels sorted", True)
@@ -2195,6 +2196,9 @@ Public Class SkyGrabber
                 If (channelbySID.Provider = "") Then
                     channelbySID.Provider = "SkyNZ"
                 End If
+                If (channelbySID.Provider = "Freeview") Then
+                    channelbySID.Provider = "SkyNZ"
+                End If
                 If (ignoreScrambled And channelbySID.isFTA) Then
                     Continue For
                 End If
@@ -2212,15 +2216,13 @@ Public Class SkyGrabber
                 If Not detail Is Nothing Then
                     GoTo Label_072B
                 End If
-Label_0299:
+AddNewChannel:
                 If Not NITInfo.ContainsKey(scannedchannel.TID) Then
-                    'OnMessageEvent = OnMessageEvent
                     If (Not OnMessageEvent Is Nothing) Then
                         RaiseEvent OnMessage("No NIT found for : " & scannedchannel.SID, False)
                     End If
 
                     If (Not OnMessageEvent Is Nothing) Then
-                        'OnMessageEvent.Invoke("", False)
                         RaiseEvent OnMessage("", False)
                     End If
                     Continue For
@@ -2294,6 +2296,7 @@ Label_0520:
                 DBChannel.IsRadio = channelbySID.isRadio
                 DBChannel.IsTv = channelbySID.isTV
                 DBChannel.ExternalId = ("SKYNZ:" & scannedchannel.ChannelID.ToString)
+                'DBChannel.ExternalId = ("Freeview:" & scannedchannel.ChannelID.ToString)
                 DBChannel.Persist()
                 _layer.AddTuningDetails(DBChannel, DVBSChannel)
                 MapChannelToCards(DBChannel)
@@ -2307,7 +2310,10 @@ Label_0520:
 Label_072B:
                 DBChannel = detail.ReferencedChannel
                 If (DBChannel.ExternalId <> ("SKYNZ:" & key.ToString)) Then
-                    GoTo Label_0299
+                    GoTo AddNewChannel
+                End If
+                If (DBChannel.ExternalId <> ("Freeview:" & key.ToString)) Then
+                    GoTo AddNewChannel
                 End If
                 Dim tuningChannel As DVBSChannel = DirectCast(_layer.GetTuningChannel(detail), DVBSChannel)
                 If tuningChannel Is Nothing OrElse DBChannel Is Nothing OrElse Not SDTInfo.ContainsKey(scannedchannel.NID & "-" & scannedchannel.TID & "-" & scannedchannel.SID) Then
@@ -2743,7 +2749,7 @@ Label_0BD2:
                 End If
                 num += 1
                 If (Not OnMessageEvent Is Nothing) Then
-                    RaiseEvent OnMessage(String.Concat(New String() {"(", Conversions.ToString(num), "/", Conversions.ToString(Me.Channels.Count), ") Channels Updated"}), True)
+                    RaiseEvent OnMessage("(" & num & "/" & Channels.Count & ") Channels Updated", True)
                 End If
                 Dim channel5 As Sky_Channel = pair3.Value
                 Dim epgChannel As New EpgChannel
